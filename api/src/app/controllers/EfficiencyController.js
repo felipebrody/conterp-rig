@@ -25,12 +25,16 @@ class EfficiencyController {
       user_id,
       available_hours,
       repair_hours,
-      dtm_hours,
+      repair_classification,
+      hasRepairHours,
       has_gloss_hours,
       end_time_gloss,
       start_time_gloss,
       gloss_classification,
-      gloss_sub_category,
+      dtm_hours,
+      dtm_distance,
+      equipment_ratio,
+      fluid_ratio,
     } = request.body;
 
     if (!date || !rig_id || !user_id) {
@@ -48,7 +52,6 @@ class EfficiencyController {
       return response.status(404).json({ error: "O horário final não pode ser menor que o inicial!" });
     }
 
-    console.log((endTimeNumber[0] - startTimeNumber[0]) + available_hours + repair_hours)
 
     if (((endTimeNumber[0] - startTimeNumber[0]) + available_hours + repair_hours) > 24) {
       return response.status(404).json({ error: "A soma dos horários não pode ser maior que 24 Horas" });
@@ -91,6 +94,8 @@ class EfficiencyController {
         gloss_sub_category,
       });
     }
+
+    //***** */
 
     const efficiency = await EfficienciesRepositories.create({
       date,
