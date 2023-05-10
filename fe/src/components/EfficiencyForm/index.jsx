@@ -25,11 +25,19 @@ import {
   StyledInputBase,
   StyledSwitch,
   StyledFormControl,
+  SwitchContainer,
+  DTMHoursContainer,
+  RepairHoursContainer,
+  RatioContainer,
 } from "./styles";
 import "dayjs/locale/pt-br";
 
 import toast from "../../utils/toast";
-import classifications from "../../utils/glossClassifications";
+import {
+  glossClassification,
+  repairClassification,
+  distanceClassification,
+} from "../../utils/glossClassifications";
 
 import { StyledTextField } from "../StyledTextField";
 import EfficienciesServices from "../../services/EfficienciesServices";
@@ -40,7 +48,10 @@ const efficiencySchema = yup.object().shape({
   start_time_gloss: yup.string().nullable(),
   end_time_gloss: yup.string().nullable(),
   gloss_classification: yup.string().nullable(),
-  gloss_sub_category: yup.string().nullable(),
+  equipment_ratio: yup.string().nullable(),
+  fluid_ratio: yup.string().nullable(),
+  repair_classification: yup.string().nullable(),
+  dtm_distance: yup.string().nullable(),
   available_hours: yup.number().required("Obrigatório"),
   repair_hours: yup.number().required("Obrigatório"),
   dtm_hours: yup.number().required("Obrigatório"),
@@ -52,14 +63,18 @@ const EfficiencyForm = () => {
   const theme = useTheme();
 
   const [hasGlossHours, setHasGlossHours] = useState(false);
+  const [hasRepairHours, setHasRepairHours] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const initialValues = {
     date: "",
-    gloss_classification: "",
-    gloss_sub_category: "",
     start_time_gloss: "",
     end_time_gloss: "",
+    gloss_classification: "",
+    equipment_ratio: "",
+    fluid_ratio: "",
+    repair_classification: "",
+    dtm_distance: "",
     available_hours: "",
     repair_hours: "",
     dtm_hours: "",
@@ -81,13 +96,19 @@ const EfficiencyForm = () => {
       user_id: user.id,
       available_hours: values.available_hours,
       repair_hours: values.repair_hours,
+      repair_classification: values.repair_classification,
+      hasRepairHours: hasRepairHours,
       has_gloss_hours: hasGlossHours,
       end_time_gloss: end_hour,
       start_time_gloss: start_hour,
       gloss_classification: values.gloss_classification,
-      gloss_sub_category: values.gloss_sub_category,
       dtm_hours: values.dtm_hours,
+      dtm_distance: values.dtm_distance,
+      equipment_ratio: values.equipment_ratio,
+      fluid_ratio: values.fluid_ratio,
     });
+
+    return;
 
     try {
       const efficiency = await EfficienciesServices.createEfficiency({
@@ -96,12 +117,16 @@ const EfficiencyForm = () => {
         user_id: user.id,
         available_hours: values.available_hours,
         repair_hours: values.repair_hours,
+        repair_classification: values.repair_classification,
+        hasRepairHours: hasRepairHours,
         has_gloss_hours: hasGlossHours,
         end_time_gloss: end_hour,
         start_time_gloss: start_hour,
         gloss_classification: values.gloss_classification,
-        gloss_sub_category: values.gloss_sub_category,
         dtm_hours: values.dtm_hours,
+        dtm_distance: values.dtm_distance,
+        equipment_ratio: values.equipment_ratio,
+        fluid_ratio: values.fluid_ratio,
       });
 
       onSubmitProps.resetForm();
@@ -122,14 +147,12 @@ const EfficiencyForm = () => {
     }
   };
 
-  const equipment = classifications.find(
-    (classification) => classification.value === "equipment"
-  );
-
-  const equipmentSubCategories = equipment["subCategory"];
-
-  const handleSwitchChange = (event) => {
+  const handleGlossHoursSwitchChange = (event) => {
     setHasGlossHours(event.target.checked);
+  };
+
+  const handleRepairHoursSwitchChange = (event) => {
+    setHasRepairHours(event.target.checked);
   };
 
   console.log("Tem hora glosa? =>", hasGlossHours);
@@ -145,7 +168,7 @@ const EfficiencyForm = () => {
       borderRadius="1rem"
     >
       <Box display="flex" justifyContent="center" marginBottom="1rem">
-        <h1>Formulário de Eficiência</h1>
+        <h1>Boletim Diário de Ocorrência</h1>
       </Box>
 
       <Formik
@@ -190,23 +213,84 @@ const EfficiencyForm = () => {
                 </LocalizationProvider>
               </DatePickerContainer>
 
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                gridColumn="span 2"
-                border=".25px solid rgb(255, 255, 255, .25)"
-                borderRadius="4px"
-                padding=".25rem"
-              >
+              <SwitchContainer>
                 <Typography>Possui Glosa</Typography>
 
                 <StyledSwitch
                   checked={hasGlossHours}
-                  onChange={handleSwitchChange}
+                  onChange={handleGlossHoursSwitchChange}
                   theme={theme}
                 />
-              </Box>
+              </SwitchContainer>
+
+              <SwitchContainer>
+                <Typography>Possui Reparo</Typography>
+
+                <StyledSwitch
+                  checked={hasRepairHours}
+                  onChange={handleRepairHoursSwitchChange}
+                  theme={theme}
+                />
+              </SwitchContainer>
+
+              {hasRepairHours && (
+                <RepairHoursContainer>
+                  <Typography align="center">Hora Reparo</Typography>
+
+                  <Box margin="1rem">
+                    <StyledTextField
+                      fullWidth
+                      variant="outlined"
+                      type="number"
+                      name="repair_hours"
+                      label="Hora Reparo"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.repair_hours}
+                      error={
+                        Boolean(touched.repair_hours) &&
+                        Boolean(errors.repair_hours)
+                      }
+                      helperText={touched.repair_hours && errors.repair_hours}
+                    />
+                  </Box>
+
+                  <StyledFormControl>
+                    <InputLabel id="classification-label">
+                      Classificação
+                    </InputLabel>
+                    <Select
+                      labelId="classification-label"
+                      label="Nível de acesso"
+                      input={<StyledInputBase />}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.repair_classification}
+                      name="repair_classification"
+                      size="small"
+                      error={
+                        Boolean(touched.repair_classification) &&
+                        Boolean(errors.repair_classification)
+                      }
+                      sx={{
+                        padding: ".5rem",
+                        borderRadius: "1rem",
+                        outline: "none",
+                        backgroundColor: theme.palette.primary[500],
+                      }}
+                    >
+                      {repairClassification.map((classification) => (
+                        <MenuItem
+                          value={classification.value}
+                          key={classification.id}
+                        >
+                          {classification.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </StyledFormControl>
+                </RepairHoursContainer>
+              )}
 
               {hasGlossHours && (
                 <GlossHoursContainer>
@@ -255,7 +339,7 @@ const EfficiencyForm = () => {
                     </InputLabel>
                     <Select
                       labelId="classification-label"
-                      label="Nível de acesso"
+                      label="Classificação"
                       input={<StyledInputBase />}
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -273,7 +357,7 @@ const EfficiencyForm = () => {
                         backgroundColor: theme.palette.primary[500],
                       }}
                     >
-                      {classifications.map((classification) => (
+                      {glossClassification.map((classification) => (
                         <MenuItem
                           value={classification.value}
                           key={classification.id}
@@ -283,40 +367,6 @@ const EfficiencyForm = () => {
                       ))}
                     </Select>
                   </StyledFormControl>
-
-                  {values.gloss_classification === "equipment" && (
-                    <StyledFormControl>
-                      <InputLabel id="sub-category-label">
-                        Sub Categoria
-                      </InputLabel>
-                      <Select
-                        labelId="sub-category-label"
-                        label="Sub Categoria"
-                        input={<StyledInputBase />}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        value={values.gloss_sub_category}
-                        name="gloss_sub_category"
-                        size="small"
-                        error={
-                          Boolean(touched.gloss_sub_category) &&
-                          Boolean(errors.gloss_sub_category)
-                        }
-                        sx={{
-                          padding: ".5rem",
-                          borderRadius: "1rem",
-                          outline: "none",
-                          backgroundColor: theme.palette.primary[500],
-                        }}
-                      >
-                        {equipmentSubCategories.map((category) => (
-                          <MenuItem value={category.value} key={category.id}>
-                            {category.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </StyledFormControl>
-                  )}
                 </GlossHoursContainer>
               )}
 
@@ -334,38 +384,123 @@ const EfficiencyForm = () => {
                   Boolean(errors.available_hours)
                 }
                 helperText={touched.available_hours && errors.available_hours}
-                sx={{ gridColumn: "span 2" }}
+                sx={{ gridColumn: "span 4" }}
               />
 
-              <StyledTextField
-                fullWidth
-                variant="outlined"
-                type="number"
-                name="repair_hours"
-                label="Hora Reparo"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.repair_hours}
-                error={
-                  Boolean(touched.repair_hours) && Boolean(errors.repair_hours)
-                }
-                helperText={touched.repair_hours && errors.repair_hours}
-                sx={{ gridColumn: "span 2" }}
-              />
+              <DTMHoursContainer>
+                <Typography align="center">Hora DTM</Typography>
 
-              <StyledTextField
-                fullWidth
-                variant="outlined"
-                type="number"
-                name="dtm_hours"
-                label="Hora DTM"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.dtm_hours}
-                error={Boolean(touched.dtm_hours) && Boolean(errors.dtm_hours)}
-                helperText={touched.dtm_hours && errors.dtm_hours}
-                sx={{ gridColumn: "span 2" }}
-              />
+                <StyledTextField
+                  fullWidth
+                  variant="outlined"
+                  type="number"
+                  name="dtm_hours"
+                  label="Hora DTM"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.dtm_hours}
+                  error={
+                    Boolean(touched.dtm_hours) && Boolean(errors.dtm_hours)
+                  }
+                  helperText={touched.dtm_hours && errors.dtm_hours}
+                  sx={{ gridColumn: "span 2" }}
+                />
+
+                <StyledFormControl>
+                  <InputLabel id="distance-label">Distância</InputLabel>
+                  <Select
+                    labelId="distance-label"
+                    label="Distância"
+                    input={<StyledInputBase />}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.dtm_distance}
+                    name="dtm_distance"
+                    size="small"
+                    error={
+                      Boolean(touched.dtm_distance) &&
+                      Boolean(errors.dtm_distance)
+                    }
+                    sx={{
+                      padding: ".5rem",
+                      borderRadius: "1rem",
+                      outline: "none",
+                      backgroundColor: theme.palette.primary[500],
+                    }}
+                  >
+                    {distanceClassification.map((distance) => (
+                      <MenuItem value={distance.value} key={distance.id}>
+                        {distance.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </StyledFormControl>
+              </DTMHoursContainer>
+
+              <RatioContainer>
+                <Typography align="center">Taxas</Typography>
+                <StyledFormControl>
+                  <InputLabel id="fluid-label">Taxa de Fluídos</InputLabel>
+                  <Select
+                    labelId="fluid-label"
+                    label="Taxa de Fluídos"
+                    input={<StyledInputBase />}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.fluid_ratio}
+                    name="fluid_ratio"
+                    size="small"
+                    error={
+                      Boolean(touched.fluid_ratio) &&
+                      Boolean(errors.fluid_ratio)
+                    }
+                    sx={{
+                      padding: ".5rem",
+                      borderRadius: "1rem",
+                      outline: "none",
+                      backgroundColor: theme.palette.primary[500],
+                    }}
+                  >
+                    {distanceClassification.map((distance) => (
+                      <MenuItem value={distance.value} key={distance.id}>
+                        {distance.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </StyledFormControl>
+
+                <StyledFormControl>
+                  <InputLabel id="classification-label">
+                    Taxa de Equipamento
+                  </InputLabel>
+                  <Select
+                    labelId="equipment-label"
+                    label="Taxa de Equipamento"
+                    input={<StyledInputBase />}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.equipment_ratio}
+                    name="equipment_ratio"
+                    size="small"
+                    error={
+                      Boolean(touched.equipment_ratio) &&
+                      Boolean(errors.equipment_ratio)
+                    }
+                    sx={{
+                      padding: ".5rem",
+                      borderRadius: "1rem",
+                      outline: "none",
+                      backgroundColor: theme.palette.primary[500],
+                    }}
+                  >
+                    {distanceClassification.map((distance) => (
+                      <MenuItem value={distance.value} key={distance.id}>
+                        {distance.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </StyledFormControl>
+              </RatioContainer>
             </Box>
 
             <Box

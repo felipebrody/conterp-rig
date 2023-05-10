@@ -24,14 +24,37 @@ export const TimerPickerContainer = styled(Box)({
   display: "flex",
   justifyContent: "center",
   gap: "1.5rem",
-  gridColumn: "span 4",
   margin: "1rem",
 });
 
 export const GlossHoursContainer = styled(Box)({
   border: ".5px solid #fff",
   padding: "1rem",
-  gridColumn: "span 4",
+  gridColumn: "span 2",
+});
+
+export const RepairHoursContainer = styled(Box)({
+  border: ".5px solid #fff",
+  padding: "1rem",
+  gridColumn: "span 2",
+});
+
+export const DTMHoursContainer = styled(Box)({
+  border: ".5px solid #fff",
+  padding: "1rem",
+  gridColumn: "span 2",
+  display: "flex",
+  flexDirection: "column",
+  gap: "1rem",
+});
+
+export const RatioContainer = styled(Box)({
+  border: ".5px solid #fff",
+  padding: "1rem",
+  gridColumn: "span 2",
+  display: "flex",
+  flexDirection: "column",
+  gap: "1rem",
 });
 
 export const StyledInputBase = styled(InputBase)({
@@ -49,5 +72,15 @@ export const StyledInputBase = styled(InputBase)({
 
 export const StyledFormControl = styled(FormControl)({
   width: "100%",
-  margin: ".5rem",
+});
+
+export const SwitchContainer = styled(Box)({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gridColumn: "span 2",
+  border: ".25px solid rgb(255, 255, 255, .25)",
+  borderRadius: "4px",
+  padding: ".25rem",
+  gridColumn: "span 1",
 });
