@@ -34,6 +34,8 @@ class EfficienciesRepositories {
             gloss_details.start_hour AS gloss_start_hour,
             gloss_details.end_hour AS gloss_end_hour,
             repair_details.hours AS repair_hours,
+            dtm_details.hours AS dtm_hours,
+            dtm_details.distance as dtm_distance,
             users.name AS user_name,
             users.email AS user_email,
             rigs.name AS rig_name
@@ -42,6 +44,7 @@ class EfficienciesRepositories {
             LEFT JOIN users ON users.id = efficiencies.user_id
             LEFT JOIN rigs ON rigs.id = efficiencies.rig_id
             LEFT JOIN repair_details ON repair_details.id = efficiencies.repair_detail_id
+            LEFT JOIN dtm_details ON dtm_details.id = efficiencies.dtm_detail_id
             `
         );
 
@@ -82,8 +85,10 @@ class EfficienciesRepositories {
         user_id,
         gloss_detail_id,
         available_hours,
-        repair_hours,
-        dtm_hours,
+        repair_detail_id,
+        dtm_detail_id,
+        fluid_ratio,
+        equipment_ratio,
     }) {
         const [row] = await db.query(
             `INSERT INTO efficiencies(
@@ -92,10 +97,12 @@ class EfficienciesRepositories {
             user_id,
             gloss_detail_id,
             available_hours,
-            repair_hours,
-            dtm_hours
+            repair_detail_id,
+            dtm_detail_id,
+            fluid_ratio,
+            equipment_ratio
             )
-        VALUES($1,$2,$3,$4,$5,$6,$7)  
+        VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)  
         RETURNING *  
         `,
             [
@@ -104,8 +111,10 @@ class EfficienciesRepositories {
                 user_id,
                 gloss_detail_id,
                 available_hours,
-                repair_hours,
-                dtm_hours,
+                repair_detail_id,
+                dtm_detail_id,
+                fluid_ratio,
+                equipment_ratio,
             ]
         );
 

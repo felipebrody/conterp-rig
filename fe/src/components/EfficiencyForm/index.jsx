@@ -48,10 +48,10 @@ const efficiencySchema = yup.object().shape({
   start_time_gloss: yup.string().nullable(),
   end_time_gloss: yup.string().nullable(),
   gloss_classification: yup.string().nullable(),
-  equipment_ratio: yup.string().nullable(),
-  fluid_ratio: yup.string().nullable(),
+  equipment_ratio: yup.number().nullable(),
+  fluid_ratio: yup.number().nullable(),
   repair_classification: yup.string().nullable(),
-  dtm_distance: yup.string().nullable(),
+  dtm_distance: yup.number().nullable(),
   available_hours: yup.number().required("Obrigatório"),
   repair_hours: yup.number().required("Obrigatório"),
   dtm_hours: yup.number().required("Obrigatório"),
@@ -97,7 +97,7 @@ const EfficiencyForm = () => {
       available_hours: values.available_hours,
       repair_hours: values.repair_hours,
       repair_classification: values.repair_classification,
-      hasRepairHours: hasRepairHours,
+      has_repair_hours: hasRepairHours,
       has_gloss_hours: hasGlossHours,
       end_time_gloss: end_hour,
       start_time_gloss: start_hour,
@@ -108,8 +108,6 @@ const EfficiencyForm = () => {
       fluid_ratio: values.fluid_ratio,
     });
 
-    return;
-
     try {
       const efficiency = await EfficienciesServices.createEfficiency({
         date,
@@ -118,7 +116,7 @@ const EfficiencyForm = () => {
         available_hours: values.available_hours,
         repair_hours: values.repair_hours,
         repair_classification: values.repair_classification,
-        hasRepairHours: hasRepairHours,
+        has_repair_hours: hasRepairHours,
         has_gloss_hours: hasGlossHours,
         end_time_gloss: end_hour,
         start_time_gloss: start_hour,
@@ -406,100 +404,59 @@ const EfficiencyForm = () => {
                   sx={{ gridColumn: "span 2" }}
                 />
 
-                <StyledFormControl>
-                  <InputLabel id="distance-label">Distância</InputLabel>
-                  <Select
-                    labelId="distance-label"
-                    label="Distância"
-                    input={<StyledInputBase />}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.dtm_distance}
-                    name="dtm_distance"
-                    size="small"
-                    error={
-                      Boolean(touched.dtm_distance) &&
-                      Boolean(errors.dtm_distance)
-                    }
-                    sx={{
-                      padding: ".5rem",
-                      borderRadius: "1rem",
-                      outline: "none",
-                      backgroundColor: theme.palette.primary[500],
-                    }}
-                  >
-                    {distanceClassification.map((distance) => (
-                      <MenuItem value={distance.value} key={distance.id}>
-                        {distance.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </StyledFormControl>
+                <StyledTextField
+                  fullWidth
+                  variant="outlined"
+                  type="number"
+                  name="dtm_distance"
+                  label="Distância (km)"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.dtm_distance}
+                  error={
+                    Boolean(touched.dtm_distance) &&
+                    Boolean(errors.dtm_distance)
+                  }
+                  helperText={touched.dtm_distance && errors.dtm_distance}
+                  sx={{ gridColumn: "span 2" }}
+                />
               </DTMHoursContainer>
 
               <RatioContainer>
                 <Typography align="center">Taxas</Typography>
-                <StyledFormControl>
-                  <InputLabel id="fluid-label">Taxa de Fluídos</InputLabel>
-                  <Select
-                    labelId="fluid-label"
-                    label="Taxa de Fluídos"
-                    input={<StyledInputBase />}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.fluid_ratio}
-                    name="fluid_ratio"
-                    size="small"
-                    error={
-                      Boolean(touched.fluid_ratio) &&
-                      Boolean(errors.fluid_ratio)
-                    }
-                    sx={{
-                      padding: ".5rem",
-                      borderRadius: "1rem",
-                      outline: "none",
-                      backgroundColor: theme.palette.primary[500],
-                    }}
-                  >
-                    {distanceClassification.map((distance) => (
-                      <MenuItem value={distance.value} key={distance.id}>
-                        {distance.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </StyledFormControl>
 
-                <StyledFormControl>
-                  <InputLabel id="classification-label">
-                    Taxa de Equipamento
-                  </InputLabel>
-                  <Select
-                    labelId="equipment-label"
-                    label="Taxa de Equipamento"
-                    input={<StyledInputBase />}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.equipment_ratio}
-                    name="equipment_ratio"
-                    size="small"
-                    error={
-                      Boolean(touched.equipment_ratio) &&
-                      Boolean(errors.equipment_ratio)
-                    }
-                    sx={{
-                      padding: ".5rem",
-                      borderRadius: "1rem",
-                      outline: "none",
-                      backgroundColor: theme.palette.primary[500],
-                    }}
-                  >
-                    {distanceClassification.map((distance) => (
-                      <MenuItem value={distance.value} key={distance.id}>
-                        {distance.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </StyledFormControl>
+                <StyledTextField
+                  fullWidth
+                  variant="outlined"
+                  type="number"
+                  name="fluid_ratio"
+                  label="Taxa Fluído (km)"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.fluid_ratio}
+                  error={
+                    Boolean(touched.fluid_ratio) && Boolean(errors.fluid_ratio)
+                  }
+                  helperText={touched.fluid_ratio && errors.fluid_ratio}
+                  sx={{ gridColumn: "span 2" }}
+                />
+
+                <StyledTextField
+                  fullWidth
+                  variant="outlined"
+                  type="number"
+                  name="equipment_ratio"
+                  label="Taxa Equipamento (km)"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.equipment_ratio}
+                  error={
+                    Boolean(touched.equipment_ratio) &&
+                    Boolean(errors.equipment_ratio)
+                  }
+                  helperText={touched.equipment_ratio && errors.equipment_ratio}
+                  sx={{ gridColumn: "span 2" }}
+                />
               </RatioContainer>
             </Box>
 

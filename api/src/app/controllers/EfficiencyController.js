@@ -3,6 +3,8 @@ const RigsRepositories = require("../../app/repositories/RigsRepositories");
 const UsersRepositories = require("../../app/repositories/UsersRepositories");
 const isValidUUID = require("../utils/isValidUUID");
 const GlossDetailsRepositories = require("../repositories/GlossDetailsRepositories");
+const RepairDetailsRepositories = require("../repositories/RepairDetailsRepositories")
+const DtmDetailsRepositories = require("../repositories/DtmRepositories")
 
 class EfficiencyController {
   async index(request, response) {
@@ -26,7 +28,7 @@ class EfficiencyController {
       available_hours,
       repair_hours,
       repair_classification,
-      hasRepairHours,
+      has_repair_hours,
       has_gloss_hours,
       end_time_gloss,
       start_time_gloss,
@@ -45,9 +47,6 @@ class EfficiencyController {
     const startTimeNumber = start_time_gloss.split(":")
     const endTimeNumber = end_time_gloss.split(":")
 
-    console.log(startTimeNumber[0] > endTimeNumber[0])
-    console.log(startTimeNumber[0], endTimeNumber[0])
-
     if (startTimeNumber[0] > endTimeNumber[0]) {
       return response.status(404).json({ error: "O horário final não pode ser menor que o inicial!" });
     }
@@ -59,8 +58,6 @@ class EfficiencyController {
 
     const efficiencyDayAlreadyExists =
       await EfficienciesRepositories.findByDate({ rig_id, date });
-
-    console.log(efficiencyDayAlreadyExists)
 
     if (efficiencyDayAlreadyExists) {
       return response.status(404).json({ error: "Data já preenchida" });
@@ -83,19 +80,31 @@ class EfficiencyController {
     }
 
     let glossDetails = null;
+    let repairDetails = null;
+    let dtmDetails = null;
+
+    if (dtm_hours) {
+      console.log(dtm_distance)
+      dtmDetails = await DtmDetailsRepositories.create({
+        dtm_hours,
+        dtm_distance,
+      })
+    }
 
     if (has_gloss_hours) {
-      console.log(typeof start_time_gloss);
-
       glossDetails = await GlossDetailsRepositories.create({
         start_time_gloss,
         end_time_gloss,
         gloss_classification,
-        gloss_sub_category,
       });
     }
 
-    //***** */
+    if (has_repair_hours) {
+      repairDetails = await RepairDetailsRepositories.create({
+        repair_classification,
+        repair_hours
+      })
+    }
 
     const efficiency = await EfficienciesRepositories.create({
       date,
@@ -103,8 +112,10 @@ class EfficiencyController {
       user_id,
       gloss_detail_id: glossDetails?.id || null,
       available_hours,
-      repair_hours,
-      dtm_hours,
+      repair_detail_id: repairDetails?.id || null,
+      dtm_detail_id: dtmDetails?.id || null,
+      equipment_ratio,
+      fluid_ratio,
     });
 
     response.status(201).json(efficiency);

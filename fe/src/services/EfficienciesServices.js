@@ -24,12 +24,16 @@ class EfficienciesServices {
         user_id,
         available_hours,
         repair_hours,
+        repair_classification,
+        has_repair_hours,
         has_gloss_hours,
         end_time_gloss,
         start_time_gloss,
         gloss_classification,
-        gloss_sub_category,
-        dtm_hours
+        dtm_hours,
+        dtm_distance,
+        equipment_ratio,
+        fluid_ratio,
     }) {
 
         /* if (!rig_id) {
@@ -42,12 +46,16 @@ class EfficienciesServices {
             user_id,
             available_hours,
             repair_hours,
+            repair_classification,
+            has_repair_hours,
             has_gloss_hours,
             end_time_gloss,
             start_time_gloss,
             gloss_classification,
-            gloss_sub_category,
-            dtm_hours
+            dtm_hours,
+            dtm_distance,
+            equipment_ratio,
+            fluid_ratio,
         }
         const efficiency = await this.HttpClient.post(`/efficiencies`, { body: body })
 

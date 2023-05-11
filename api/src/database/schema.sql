@@ -27,8 +27,8 @@ CREATE TABLE efficiencies (
     available_hours NUMERIC(10,2),
     repair_detail_id UUID,
     dtm_detail_id UUID,
-    fluid_ratio NUMERIC(10,2),
-    equipment_ratio NUMERIC(10,2),
+    fluid_ratio NUMERIC(10,2) NOT NULL,
+    equipment_ratio NUMERIC(10,2) NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(rig_id) REFERENCES rigs(id),
     FOREIGN KEY (gloss_detail_id) REFERENCES gloss_details(id),
@@ -41,19 +41,20 @@ CREATE TABLE gloss_details (
     start_hour TIME NOT NULL,
     end_hour TIME NOT NULL,
     description VARCHAR,
-    classification VARCHAR NOT NULL,
+    classification VARCHAR NOT NULL
 );
 
 CREATE TABLE repair_details (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-    hours TIME NOT NULL
-)
+    hours NUMERIC(10,2) NOT NULL,
+    classification VARCHAR NOT NULL
+);
 
 CREATE TABLE dtm_details (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-    hours TIME NOT NULL,
-    distance NUMERIC(10,2)
-)
+    hours NUMERIC(10,2) NOT NULL,
+    distance NUMERIC(10,2) NOT NULL
+);
 
 INSERT INTO gloss_details (start_hour, end_hour, description, classification, sub_category)
 VALUES ('12:00:00', '12:00:00', 'TESTE', 'TESTE', 'TESTE')
