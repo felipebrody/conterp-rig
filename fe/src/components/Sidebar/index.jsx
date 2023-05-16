@@ -80,7 +80,7 @@ const Sidebar = ({
           icon: <FeedOutlined />,
         },
         {
-          text: "Listar Eficiências",
+          text: "Listar Ocorrências",
           navText: "list-efficiencies",
           icon: <TableViewOutlined />,
         },
@@ -113,7 +113,7 @@ const Sidebar = ({
           icon: <FeedOutlined />,
         },
         {
-          text: "Listar Eficiências",
+          text: "Listar Ocorrências",
           navText: "list-efficiencies",
           icon: <TableViewOutlined />,
         },
@@ -130,6 +130,8 @@ const Sidebar = ({
           icon: <TodayOutlined />,
         },
       ];
+
+    
 
   const handleToggleMenuItem = (lowerCaseText) => {
     navigate(`/user/${lowerCaseText}`);

@@ -7,7 +7,8 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useAuth } from "../../hooks/useAuth";
-import { useObjectFormatDate } from "../../hooks/useObjectFormatDate";
+import { useFormatEfficienciesArray } from "../../hooks/useFormatEfficienciesArray";
+import { DataGridContainer } from "./styles";
 
 const Efficiencies = () => {
   const [efficiencies, setEfficiencies] = useState([]);
@@ -28,20 +29,6 @@ const Efficiencies = () => {
       align: "center",
       flex: 0.5,
       type: "date",
-    },
-    {
-      field: "gloss_start_hour",
-      headerName: "Ínicio Glosa",
-      flex: 0.5,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "gloss_end_hour",
-      headerName: "Final Glosa",
-      flex: 0.5,
-      headerAlign: "center",
-      align: "center",
     },
     {
       field: "available_hours",
@@ -68,20 +55,46 @@ const Efficiencies = () => {
       align: "center",
     },
     {
-      field: "user_name",
-      headerName: "Enviado por:",
-      flex: 0.5,
+      field: "efficiency",
+      headerAlign: "center",
+      headerName: "Eficiência",
+      flex: 1,
+      renderCell: ({ row: { efficiency } }) => {
+        return (
+          <Box
+            width="35%"
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor="#1c7b7b"
+          >
+            <Typography> {efficiency}%</Typography>
+          </Box>
+        );
+      },
     },
   ];
 
   const user = useSelector((state) => state.user);
-  const formattedItems = useObjectFormatDate(efficiencies);
+  const formattedItems = useFormatEfficienciesArray(efficiencies);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const theme = useTheme();
 
-  console.log(efficiencies);
+  function getTotalHoursInMonth() {
+    const currentDate = new Date();
+    const lastDayOfMonth = currentDate.getDate() - 1;
+    const totalHours = lastDayOfMonth * 24;
+
+    return totalHours;
+  }
+
+  const totalHoursInMonth = getTotalHoursInMonth();
+  console.log(totalHoursInMonth);
+
+  console.log(formattedItems);
 
   useEffect(() => {
     setIsLoading(true);
@@ -108,34 +121,7 @@ const Efficiencies = () => {
     <Box m="1.5rem 2.5rem">
       <Header title="LISTAGEM DE EFICIÊNCIA" />
 
-      <Box
-        m=".25rem"
-        height="75vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: theme.palette.primary[500],
-            color: "#fff",
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: theme.palette.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            backgroundColor: theme.palette.primary[500],
-            color: "#fff",
-            borderTop: "none",
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: "#1c7b7b !important",
-          },
-        }}
-      >
+      <DataGridContainer theme={theme}>
         <DataGrid
           loading={isLoading}
           getRowId={(row) => row.id}
@@ -143,7 +129,7 @@ const Efficiencies = () => {
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
-      </Box>
+      </DataGridContainer>
     </Box>
   );
 };

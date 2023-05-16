@@ -53,8 +53,8 @@ const efficiencySchema = yup.object().shape({
   repair_classification: yup.string().nullable(),
   dtm_distance: yup.number().nullable(),
   available_hours: yup.number().required("Obrigatório"),
-  repair_hours: yup.number().required("Obrigatório"),
-  dtm_hours: yup.number().required("Obrigatório"),
+  repair_hours: yup.number(),
+  dtm_hours: yup.number(),
 });
 
 const EfficiencyForm = () => {
@@ -114,14 +114,14 @@ const EfficiencyForm = () => {
         rig_id: user.rig_id,
         user_id: user.id,
         available_hours: values.available_hours,
-        repair_hours: values.repair_hours,
+        repair_hours: values.repair_hours || 0,
         repair_classification: values.repair_classification,
         has_repair_hours: hasRepairHours,
         has_gloss_hours: hasGlossHours,
-        end_time_gloss: end_hour,
-        start_time_gloss: start_hour,
+        end_time_gloss: hasGlossHours ? end_hour : 0,
+        start_time_gloss: hasGlossHours ? start_hour : 0,
         gloss_classification: values.gloss_classification,
-        dtm_hours: values.dtm_hours,
+        dtm_hours: values.dtm_hours || 0,
         dtm_distance: values.dtm_distance,
         equipment_ratio: values.equipment_ratio,
         fluid_ratio: values.fluid_ratio,
@@ -160,7 +160,8 @@ const EfficiencyForm = () => {
       m="1rem"
       backgroundColor={theme.palette.primary[500]}
       padding="2rem"
-      maxWidth="800px"
+      maxWidth="1000px"
+      minWidth={isNonMobile ? "800px" : undefined}
       width={isNonMobile ? "60%" : "85%"}
       height="100%"
       borderRadius="1rem"
@@ -299,6 +300,7 @@ const EfficiencyForm = () => {
                       <TimePicker
                         label="Início"
                         onBlur={handleBlur}
+                        views={["hours"]}
                         onChange={(start_time_gloss) =>
                           setFieldValue("start_time_gloss", start_time_gloss)
                         }
@@ -314,6 +316,7 @@ const EfficiencyForm = () => {
                       />
                       <TimePicker
                         label="Fim"
+                        views={["hours"]}
                         onBlur={handleBlur}
                         name="end_time_gloss"
                         onChange={(end_time_gloss) =>
