@@ -30,4 +30,15 @@
         ))}
       </Select>
     </StyledFormControl>
+
+
+
+
+
+
+     //const date = new Date(values.date);
+    const start_hour_fullDate = new Date(values.start_time_gloss);
+    const end_hour_fullDate = new Date(values.end_time_gloss);
+    const end_hour = `${end_hour_fullDate.getHours()}:${end_hour_fullDate.getMinutes()}:00`;
+    const start_hour = `${start_hour_fullDate.getHours()}:${start_hour_fullDate.getMinutes()}:00`;
   )} */
