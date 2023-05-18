@@ -1,10 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App.jsx';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App.jsx";
 import { PersistGate } from "redux-persist/integration/react";
-
-
 
 import {
   persistStore,
@@ -18,9 +16,9 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import globalReducer from './state'
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
+import globalReducer from "./state";
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, globalReducer);
@@ -34,18 +32,13 @@ const store = configureStore({
     }),
 });
 
-
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistStore(store)}>
-
         <App />
       </PersistGate>
     </Provider>
   </React.StrictMode>
 );
-
-

@@ -11,8 +11,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { Formik } from "formik";
+import { useEffect, useState } from "react";
+import { FieldArray, Formik } from "formik";
 import * as yup from "yup";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -27,8 +27,9 @@ import {
   StyledFormControl,
   SwitchContainer,
   DTMHoursContainer,
-  RepairHoursContainer,
   RatioContainer,
+  GlossPeriodContainer,
+  GlossDetailContainer,
 } from "./styles";
 import "dayjs/locale/pt-br";
 
@@ -39,21 +40,43 @@ import {
   distanceClassification,
 } from "../../utils/glossClassifications";
 
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+
 import { StyledTextField } from "../StyledTextField";
 import EfficienciesServices from "../../services/EfficienciesServices";
 import { useNavigate } from "react-router-dom";
+import FlexBetween from "../FlexBetween";
+import EfficiencyMapper from "../../services/mappers/EfficiencyMapper";
 
 const efficiencySchema = yup.object().shape({
   date: yup.date().nullable().required("Obrigatório"),
-  start_time_gloss: yup.string().nullable(),
-  end_time_gloss: yup.string().nullable(),
-  gloss_classification: yup.string().nullable(),
-  equipment_ratio: yup.number().nullable(),
-  fluid_ratio: yup.number().nullable(),
-  repair_classification: yup.string().nullable(),
-  dtm_distance: yup.number().nullable(),
+  gloss_periods: yup
+    .array()
+    .ensure()
+    .of(
+      yup.object().shape({
+        start_time_gloss: yup.string().nullable(),
+        end_time_gloss: yup.string().nullable(),
+        gloss_classification: yup.string().nullable(),
+        gloss_description: yup.string().nullable(),
+      })
+    ),
+  repair_periods: yup
+    .array()
+    .ensure()
+    .of(
+      yup.object().shape({
+        start_time_repair: yup.string().nullable(),
+        end_time_repair: yup.string().nullable(),
+        repair_classification: yup.string().nullable(),
+        repair_description: yup.string().nullable(),
+      })
+    ),
+  equipment_ratio: yup.string().nullable(),
+  fluid_ratio: yup.string().nullable(),
+  dtm_distance: yup.string().nullable(),
   available_hours: yup.number().required("Obrigatório"),
-  repair_hours: yup.number(),
   dtm_hours: yup.number(),
 });
 
@@ -68,63 +91,72 @@ const EfficiencyForm = () => {
 
   const initialValues = {
     date: "",
-    start_time_gloss: "",
-    end_time_gloss: "",
-    gloss_classification: "",
+    gloss_periods: [
+      {
+        start_time_gloss: "",
+        end_time_gloss: "",
+        gloss_classification: "",
+        gloss_description: "",
+      },
+    ],
+    repair_periods: [
+      {
+        start_time_repair: "",
+        end_time_repair: "",
+        repair_classification: "",
+        repair_description: "",
+      },
+    ],
     equipment_ratio: "",
     fluid_ratio: "",
-    repair_classification: "",
     dtm_distance: "",
     available_hours: "",
-    repair_hours: "",
     dtm_hours: "",
   };
 
   const isNonMobile = useMediaQuery("(min-width:900px)");
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    setIsLoading(true);
-    const date = new Date(values.date);
-    const start_hour_fullDate = new Date(values.start_time_gloss);
-    const end_hour_fullDate = new Date(values.end_time_gloss);
-    const end_hour = `${end_hour_fullDate.getHours()}:${end_hour_fullDate.getMinutes()}:00`;
-    const start_hour = `${start_hour_fullDate.getHours()}:${start_hour_fullDate.getMinutes()}:00`;
-
-    console.log({
+    const {
       date,
-      rig_id: user.rig_id,
-      user_id: user.id,
-      available_hours: values.available_hours,
-      repair_hours: values.repair_hours,
-      repair_classification: values.repair_classification,
-      has_repair_hours: hasRepairHours,
-      has_gloss_hours: hasGlossHours,
-      end_time_gloss: end_hour,
-      start_time_gloss: start_hour,
-      gloss_classification: values.gloss_classification,
-      dtm_hours: values.dtm_hours,
-      dtm_distance: values.dtm_distance,
-      equipment_ratio: values.equipment_ratio,
-      fluid_ratio: values.fluid_ratio,
+      gloss_periods,
+      repair_periods,
+      equipment_ratio,
+      fluid_ratio,
+      dtm_distance,
+      available_hours,
+      dtm_hours,
+      has_repair_hours,
+      has_gloss_hours,
+    } = EfficiencyMapper.toDomain(values, hasRepairHours, hasGlossHours);
+    console.log("Object to Database ===> ", {
+      date,
+      gloss_periods,
+      repair_periods,
+      equipment_ratio,
+      fluid_ratio,
+      dtm_distance,
+      available_hours,
+      dtm_hours,
+      has_repair_hours,
+      has_gloss_hours,
     });
+
+    return;
+    setIsLoading(true);
 
     try {
       const efficiency = await EfficienciesServices.createEfficiency({
         date,
-        rig_id: user.rig_id,
-        user_id: user.id,
-        available_hours: values.available_hours,
-        repair_hours: values.repair_hours || 0,
-        repair_classification: values.repair_classification,
-        has_repair_hours: hasRepairHours,
-        has_gloss_hours: hasGlossHours,
-        end_time_gloss: hasGlossHours ? end_hour : 0,
-        start_time_gloss: hasGlossHours ? start_hour : 0,
-        gloss_classification: values.gloss_classification,
-        dtm_hours: values.dtm_hours || 0,
-        dtm_distance: values.dtm_distance,
-        equipment_ratio: values.equipment_ratio,
-        fluid_ratio: values.fluid_ratio,
+        gloss_periods,
+        repair_periods,
+        equipment_ratio,
+        fluid_ratio,
+        dtm_distance,
+        available_hours,
+        dtm_hours,
+        has_repair_hours,
+        has_gloss_hours,
       });
 
       onSubmitProps.resetForm();
@@ -155,16 +187,20 @@ const EfficiencyForm = () => {
 
   console.log("Tem hora glosa? =>", hasGlossHours);
 
+  useEffect(() => {
+    console.log("renderizou");
+  }, []);
+
   return (
     <Box
-      m="1rem"
+      m={isNonMobile ? "1rem" : "0"}
       backgroundColor={theme.palette.primary[500]}
-      padding="2rem"
+      padding={isNonMobile ? "2rem" : ".5rem"}
       maxWidth="1000px"
       minWidth={isNonMobile ? "800px" : undefined}
-      width={isNonMobile ? "60%" : "85%"}
+      width={isNonMobile ? "60%" : "100%"}
       height="100%"
-      borderRadius="1rem"
+      borderRadius={isNonMobile ? "1rem" : "0"}
     >
       <Box display="flex" justifyContent="center" marginBottom="1rem">
         <h1>Boletim Diário de Ocorrência</h1>
@@ -232,142 +268,295 @@ const EfficiencyForm = () => {
                 />
               </SwitchContainer>
 
-              {hasRepairHours && (
-                <RepairHoursContainer>
-                  <Typography align="center">Hora Reparo</Typography>
+              {hasGlossHours && (
+                <GlossHoursContainer isNonMobile={isNonMobile}>
+                  <Typography align="center">Períodos Glosa</Typography>
 
-                  <Box margin="1rem">
-                    <StyledTextField
-                      fullWidth
-                      variant="outlined"
-                      type="number"
-                      name="repair_hours"
-                      label="Hora Reparo"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.repair_hours}
-                      error={
-                        Boolean(touched.repair_hours) &&
-                        Boolean(errors.repair_hours)
-                      }
-                      helperText={touched.repair_hours && errors.repair_hours}
-                    />
-                  </Box>
+                  <FieldArray name="gloss_periods">
+                    {({ push, remove, form }) => (
+                      <>
+                        {form.values.gloss_periods.map((period, index) => (
+                          <Box key={index}>
+                            <GlossPeriodContainer isNonMobile={isNonMobile}>
+                              <GlossDetailContainer isNonMobile={isNonMobile}>
+                                <TimerPickerContainer>
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterDayjs}
+                                  >
+                                    <TimePicker
+                                      label="Início"
+                                      onBlur={form.handleBlur}
+                                      onChange={(value) =>
+                                        form.setFieldValue(
+                                          `gloss_periods[${index}].start_time_gloss`,
+                                          value
+                                        )
+                                      }
+                                      value={period.start_time_gloss}
+                                      name={`gloss_periods[${index}].start_time_gloss`}
+                                    />
+                                    <TimePicker
+                                      label="Fim"
+                                      name={`gloss_periods[${index}].end_time_gloss`}
+                                      onBlur={form.handleBlur}
+                                      onChange={(value) =>
+                                        form.setFieldValue(
+                                          `gloss_periods[${index}].end_time_gloss`,
+                                          value
+                                        )
+                                      }
+                                      value={period.end_time_gloss}
+                                    />
+                                  </LocalizationProvider>
+                                </TimerPickerContainer>
 
-                  <StyledFormControl>
-                    <InputLabel id="classification-label">
-                      Classificação
-                    </InputLabel>
-                    <Select
-                      labelId="classification-label"
-                      label="Nível de acesso"
-                      input={<StyledInputBase />}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.repair_classification}
-                      name="repair_classification"
-                      size="small"
-                      error={
-                        Boolean(touched.repair_classification) &&
-                        Boolean(errors.repair_classification)
-                      }
-                      sx={{
-                        padding: ".5rem",
-                        borderRadius: "1rem",
-                        outline: "none",
-                        backgroundColor: theme.palette.primary[500],
-                      }}
-                    >
-                      {repairClassification.map((classification) => (
-                        <MenuItem
-                          value={classification.value}
-                          key={classification.id}
+                                <StyledFormControl>
+                                  <InputLabel id="classification-label">
+                                    Classificação
+                                  </InputLabel>
+                                  <Select
+                                    labelId="classification-label"
+                                    label="Classificação"
+                                    input={<StyledInputBase />}
+                                    onBlur={form.handleBlur}
+                                    onChange={(event) =>
+                                      form.setFieldValue(
+                                        `gloss_periods[${index}].gloss_classification`,
+                                        event.target.value
+                                      )
+                                    }
+                                    value={period.gloss_classification}
+                                    name={`gloss_periods[${index}].gloss_classification`}
+                                    size="small"
+                                    error={
+                                      Boolean(touched.gloss_classification) &&
+                                      Boolean(errors.gloss_classification)
+                                    }
+                                    sx={{
+                                      padding: ".5rem",
+                                      borderRadius: "1rem",
+                                      outline: "none",
+                                      backgroundColor:
+                                        theme.palette.primary[500],
+                                    }}
+                                  >
+                                    <MenuItem value="">Selecione</MenuItem>
+                                    {glossClassification.map(
+                                      (classification) => (
+                                        <MenuItem
+                                          value={classification.value}
+                                          key={classification.id}
+                                        >
+                                          {classification.name}
+                                        </MenuItem>
+                                      )
+                                    )}
+                                  </Select>
+                                </StyledFormControl>
+                              </GlossDetailContainer>
+
+                              <StyledTextField
+                                fullWidth
+                                variant="outlined"
+                                name={`gloss_periods[${index}].gloss_description`}
+                                label="Descrição"
+                                onBlur={form.handleBlur}
+                                onChange={(event) =>
+                                  form.setFieldValue(
+                                    `gloss_periods[${index}].gloss_description`,
+                                    event.target.value
+                                  )
+                                }
+                                multiline
+                                rows={1}
+                                value={period.gloss_description}
+                              />
+
+                              {index > 0 && (
+                                <Box
+                                  display="flex"
+                                  justifyContent="end"
+                                  mt=".5rem"
+                                  width="100%"
+                                >
+                                  <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => remove(index)}
+                                    startIcon={<RemoveIcon />}
+                                  >
+                                    Remover Período
+                                  </Button>
+                                </Box>
+                              )}
+                            </GlossPeriodContainer>
+                          </Box>
+                        ))}
+                        <Button
+                          startIcon={<AddIcon />}
+                          variant="contained"
+                          sx={{ mt: "1rem" }}
+                          color="secondary"
+                          onClick={() =>
+                            push({
+                              start_time_gloss: "",
+                              end_time_gloss: "",
+                              gloss_description: "",
+                              gloss_classification: "",
+                            })
+                          }
                         >
-                          {classification.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </StyledFormControl>
-                </RepairHoursContainer>
+                          Adicionar Período
+                        </Button>
+                      </>
+                    )}
+                  </FieldArray>
+                </GlossHoursContainer>
               )}
 
-              {hasGlossHours && (
-                <GlossHoursContainer>
-                  <Typography align="center">Hora Glosa</Typography>
+              {hasRepairHours && (
+                <GlossHoursContainer isNonMobile={isNonMobile}>
+                  <Typography align="center">Períodos Reparo</Typography>
 
-                  <TimerPickerContainer>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <TimePicker
-                        label="Início"
-                        onBlur={handleBlur}
-                        views={["hours"]}
-                        onChange={(start_time_gloss) =>
-                          setFieldValue("start_time_gloss", start_time_gloss)
-                        }
-                        value={values.start_time_gloss}
-                        name="start_time_gloss"
-                        error={
-                          Boolean(touched.start_time_gloss) &&
-                          Boolean(errors.start_time_gloss)
-                        }
-                        helperText={
-                          touched.start_time_gloss && errors.start_time_gloss
-                        }
-                      />
-                      <TimePicker
-                        label="Fim"
-                        views={["hours"]}
-                        onBlur={handleBlur}
-                        name="end_time_gloss"
-                        onChange={(end_time_gloss) =>
-                          setFieldValue("end_time_gloss", end_time_gloss)
-                        }
-                        value={values.end_time_gloss}
-                        error={
-                          Boolean(touched.end_time_gloss) &&
-                          Boolean(errors.end_time_gloss)
-                        }
-                        helperText={
-                          touched.end_time_gloss && errors.end_time_gloss
-                        }
-                      />
-                    </LocalizationProvider>
-                  </TimerPickerContainer>
+                  <FieldArray name="repair_periods">
+                    {({ push, remove, form }) => (
+                      <>
+                        {form.values.repair_periods.map((period, index) => (
+                          <Box key={index}>
+                            <GlossPeriodContainer isNonMobile={isNonMobile}>
+                              <GlossDetailContainer isNonMobile={isNonMobile}>
+                                <TimerPickerContainer>
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterDayjs}
+                                  >
+                                    <TimePicker
+                                      label="Início"
+                                      onBlur={form.handleBlur}
+                                      onChange={(value) =>
+                                        form.setFieldValue(
+                                          `repair_periods[${index}].start_time_repair`,
+                                          value
+                                        )
+                                      }
+                                      value={period.start_time_repair}
+                                      name={`repair_periods[${index}].start_time_repair`}
+                                    />
+                                    <TimePicker
+                                      label="Fim"
+                                      name={`repair_periods[${index}].end_time_repair`}
+                                      onBlur={form.handleBlur}
+                                      onChange={(value) =>
+                                        form.setFieldValue(
+                                          `repair_periods[${index}].end_time_repair`,
+                                          value
+                                        )
+                                      }
+                                      value={period.end_time_repair}
+                                    />
+                                  </LocalizationProvider>
+                                </TimerPickerContainer>
 
-                  <StyledFormControl>
-                    <InputLabel id="classification-label">
-                      Classificação
-                    </InputLabel>
-                    <Select
-                      labelId="classification-label"
-                      label="Classificação"
-                      input={<StyledInputBase />}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.gloss_classification}
-                      name="gloss_classification"
-                      size="small"
-                      error={
-                        Boolean(touched.gloss_classification) &&
-                        Boolean(errors.gloss_classification)
-                      }
-                      sx={{
-                        padding: ".5rem",
-                        borderRadius: "1rem",
-                        outline: "none",
-                        backgroundColor: theme.palette.primary[500],
-                      }}
-                    >
-                      {glossClassification.map((classification) => (
-                        <MenuItem
-                          value={classification.value}
-                          key={classification.id}
+                                <StyledFormControl>
+                                  <InputLabel id="classification-label">
+                                    Classificação
+                                  </InputLabel>
+                                  <Select
+                                    labelId="classification-label"
+                                    label="Classificação"
+                                    input={<StyledInputBase />}
+                                    onBlur={form.handleBlur}
+                                    onChange={(event) =>
+                                      form.setFieldValue(
+                                        `repair_periods[${index}].repair_classification`,
+                                        event.target.value
+                                      )
+                                    }
+                                    value={period.repair_classification}
+                                    name={`repair_periods[${index}].repair_classification`}
+                                    size="small"
+                                    error={
+                                      Boolean(touched.repair_classification) &&
+                                      Boolean(errors.repair_classification)
+                                    }
+                                    sx={{
+                                      padding: ".5rem",
+                                      borderRadius: "1rem",
+                                      outline: "none",
+                                      backgroundColor:
+                                        theme.palette.primary[500],
+                                    }}
+                                  >
+                                    <MenuItem value="">Selecione</MenuItem>
+                                    {repairClassification.map(
+                                      (classification) => (
+                                        <MenuItem
+                                          value={classification.value}
+                                          key={classification.id}
+                                        >
+                                          {classification.name}
+                                        </MenuItem>
+                                      )
+                                    )}
+                                  </Select>
+                                </StyledFormControl>
+                              </GlossDetailContainer>
+
+                              <StyledTextField
+                                fullWidth
+                                variant="outlined"
+                                name={`repair_periods[${index}].repair_description`}
+                                label="Descrição"
+                                onBlur={form.handleBlur}
+                                onChange={(event) =>
+                                  form.setFieldValue(
+                                    `repair_periods[${index}].repair_description`,
+                                    event.target.value
+                                  )
+                                }
+                                multiline
+                                rows={1}
+                                value={period.repair_description}
+                              />
+
+                              {index > 0 && (
+                                <Box
+                                  display="flex"
+                                  justifyContent="end"
+                                  mt=".5rem"
+                                  width="100%"
+                                >
+                                  <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => remove(index)}
+                                    startIcon={<RemoveIcon />}
+                                  >
+                                    Remover Período
+                                  </Button>
+                                </Box>
+                              )}
+                            </GlossPeriodContainer>
+                          </Box>
+                        ))}
+                        <Button
+                          startIcon={<AddIcon />}
+                          variant="contained"
+                          sx={{ mt: "1rem" }}
+                          color="secondary"
+                          onClick={() =>
+                            push({
+                              start_time_repair: "",
+                              end_time_repair: "",
+                              repair_description: "",
+                              repair_classification: "",
+                            })
+                          }
                         >
-                          {classification.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </StyledFormControl>
+                          Adicionar Período
+                        </Button>
+                      </>
+                    )}
+                  </FieldArray>
                 </GlossHoursContainer>
               )}
 
@@ -407,59 +596,101 @@ const EfficiencyForm = () => {
                   sx={{ gridColumn: "span 2" }}
                 />
 
-                <StyledTextField
-                  fullWidth
-                  variant="outlined"
-                  type="number"
-                  name="dtm_distance"
-                  label="Distância (km)"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.dtm_distance}
-                  error={
-                    Boolean(touched.dtm_distance) &&
-                    Boolean(errors.dtm_distance)
-                  }
-                  helperText={touched.dtm_distance && errors.dtm_distance}
-                  sx={{ gridColumn: "span 2" }}
-                />
+                <StyledFormControl>
+                  <InputLabel id="dtm-distance-label">Distância</InputLabel>
+                  <Select
+                    labelId="dtm-distance-label"
+                    label="Distância"
+                    input={<StyledInputBase />}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.dtm_distance}
+                    name="dtm_distance"
+                    size="small"
+                    error={
+                      Boolean(touched.dtm_distance) &&
+                      Boolean(errors.dtm_distance)
+                    }
+                    sx={{
+                      padding: ".5rem",
+                      borderRadius: "1rem",
+                      outline: "none",
+                      backgroundColor: theme.palette.primary[500],
+                    }}
+                  >
+                    {distanceClassification.map((category) => (
+                      <MenuItem value={category.value} key={category.id}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </StyledFormControl>
               </DTMHoursContainer>
 
               <RatioContainer>
                 <Typography align="center">Taxas</Typography>
 
-                <StyledTextField
-                  fullWidth
-                  variant="outlined"
-                  type="number"
-                  name="fluid_ratio"
-                  label="Taxa Fluído (km)"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.fluid_ratio}
-                  error={
-                    Boolean(touched.fluid_ratio) && Boolean(errors.fluid_ratio)
-                  }
-                  helperText={touched.fluid_ratio && errors.fluid_ratio}
-                  sx={{ gridColumn: "span 2" }}
-                />
+                <StyledFormControl>
+                  <InputLabel id="distance-label">Taxa Flúído</InputLabel>
+                  <Select
+                    labelId="distance-label"
+                    label="Taxa Flúído"
+                    input={<StyledInputBase />}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.fluid_ratio}
+                    name="fluid_ratio"
+                    size="small"
+                    error={
+                      Boolean(touched.fluid_ratio) &&
+                      Boolean(errors.fluid_ratio)
+                    }
+                    sx={{
+                      padding: ".5rem",
+                      borderRadius: "1rem",
+                      outline: "none",
+                      backgroundColor: theme.palette.primary[500],
+                    }}
+                  >
+                    {distanceClassification.map((category) => (
+                      <MenuItem value={category.value} key={category.id}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </StyledFormControl>
 
-                <StyledTextField
-                  fullWidth
-                  variant="outlined"
-                  type="number"
-                  name="equipment_ratio"
-                  label="Taxa Equipamento (km)"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.equipment_ratio}
-                  error={
-                    Boolean(touched.equipment_ratio) &&
-                    Boolean(errors.equipment_ratio)
-                  }
-                  helperText={touched.equipment_ratio && errors.equipment_ratio}
-                  sx={{ gridColumn: "span 2" }}
-                />
+                <StyledFormControl>
+                  <InputLabel id="equipment-distance-label">
+                    Taxa Equipamento
+                  </InputLabel>
+                  <Select
+                    labelId="equipment-distance-label"
+                    label="Taxa Equipamento"
+                    input={<StyledInputBase />}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.equipment_ratio}
+                    name="equipment_ratio"
+                    size="small"
+                    error={
+                      Boolean(touched.equipment_ratio) &&
+                      Boolean(errors.equipment_ratio)
+                    }
+                    sx={{
+                      padding: ".5rem",
+                      borderRadius: "1rem",
+                      outline: "none",
+                      backgroundColor: theme.palette.primary[500],
+                    }}
+                  >
+                    {distanceClassification.map((category) => (
+                      <MenuItem value={category.value} key={category.id}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </StyledFormControl>
               </RatioContainer>
             </Box>
 

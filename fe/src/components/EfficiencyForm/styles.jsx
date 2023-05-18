@@ -23,15 +23,29 @@ export const DatePickerContainer = styled(Box)({
 export const TimerPickerContainer = styled(Box)({
   display: "flex",
   justifyContent: "center",
-  gap: "1.5rem",
+  gap: ".5rem",
   margin: "1rem",
 });
 
-export const GlossHoursContainer = styled(Box)({
+export const GlossHoursContainer = styled(Box)(({ isNonMobile }) => ({
+  border: isNonMobile ? "6px solid #fff" : "2px solid #fff",
+  padding: "1rem",
+  gridColumn: "span 4",
+}));
+
+export const GlossDetailContainer = styled(Box)(({ isNonMobile }) => ({
+  display: isNonMobile ? "flex" : undefined,
+  alignItems: "center",
+}));
+
+export const GlossPeriodContainer = styled(Box)(({ isNonMobile }) => ({
+  margin: "1rem",
   border: ".5px solid #fff",
   padding: "1rem",
-  gridColumn: "span 2",
-});
+  gridColumn: "span 4",
+  display: isNonMobile ? undefined : "flex",
+  flexDirection: isNonMobile ? undefined : "column",
+}));
 
 export const RepairHoursContainer = styled(Box)({
   border: ".5px solid #fff",
