@@ -17,6 +17,7 @@ import UserHome from "./pages/UserHome";
 import Efficiencies from "./pages/Efficiencies";
 import Rig from "./pages/Rig";
 import Admin from "./pages/Admin";
+import EfficiencyDetails from "./pages/EfficiencyDetails";
 
 //Hooks
 import { useAuth } from "./hooks/useAuth";
@@ -66,6 +67,10 @@ function App() {
               <Route
                 path="/user/list-efficiencies"
                 element={<Efficiencies />}
+              />
+              <Route
+                path="/user/list-efficiencies/details/:id"
+                element={<EfficiencyDetails />}
               />
               {/* Fim das rotas do Layout */}
             </Route>

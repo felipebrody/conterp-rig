@@ -10,47 +10,65 @@ class EfficienciesRepositories {
 
   async findByRigId(id) {
     const rows = await db.query(
-      `SELECT efficiencies.*,
-            gloss_details.start_hour AS gloss_start_hour,
-            gloss_details.end_hour AS gloss_end_hour,
-            repair_details.hours AS repair_hours,
-            dtm_details.hours AS dtm_hours,
-            dtm_details.distance as dtm_distance,
-            users.name AS user_name,
-            users.email AS user_email,
-            rigs.name AS rig_name
-            FROM efficiencies
-            LEFT JOIN gloss_details ON gloss_details.id = efficiencies.gloss_detail_id
-            LEFT JOIN users ON users.id = efficiencies.user_id
-            LEFT JOIN rigs ON rigs.id = efficiencies.rig_id
-            LEFT JOIN repair_details ON repair_details.id = efficiencies.repair_detail_id
-            LEFT JOIN dtm_details ON dtm_details.id = efficiencies.dtm_detail_id
-            WHERE efficiencies.rig_id = $1`,
+      `SELECT
+    efficiencies.id AS id,
+    efficiencies.date,
+    efficiencies.available_hours,
+    rigs.name AS rig_name,
+    users.name AS user_name,
+    oil_wells.name AS oil_well_name,
+    dtm_details.hours AS dtm_hours,
+    dtm_details.distance AS dtm_distance,
+    fluid_ratio.ratio AS fluid_ratio,
+    equipment_ratio.ratio AS equipment_ratio,
+    gloss_details.id AS gloss_detail_id,
+    repair_details.id AS repair_detail_id
+  FROM
+    efficiencies
+    JOIN rigs ON efficiencies.rig_id = rigs.id
+    JOIN users ON efficiencies.user_id = users.id
+    JOIN oil_wells ON efficiencies.oil_well_id = oil_wells.id
+    LEFT JOIN gloss_details ON gloss_details.efficiency_id = efficiencies.id
+    LEFT JOIN repair_details ON repair_details.efficiency_id = efficiencies.id
+    LEFT JOIN dtm_details ON dtm_details.efficiency_id = efficiencies.id
+    LEFT JOIN fluid_ratio ON fluid_ratio.efficiency_id = efficiencies.id
+    LEFT JOIN equipment_ratio ON equipment_ratio.efficiency_id = efficiencies.id
+    
+
+    WHERE efficiencies.rig_id = $1;
+  `,
       [id]
     );
+
     return rows;
   }
 
   async findAll() {
-    const rows = await db.query(
-      `SELECT efficiencies.*, 
-            gloss_details.start_hour AS gloss_start_hour,
-            gloss_details.end_hour AS gloss_end_hour,
-            repair_details.hours AS repair_hours,
-            dtm_details.hours AS dtm_hours,
-            dtm_details.distance as dtm_distance,
-            users.name AS user_name,
-            users.email AS user_email,
-            rigs.name AS rig_name
-            FROM efficiencies
-            LEFT JOIN gloss_details ON gloss_details.id = efficiencies.gloss_detail_id
-            LEFT JOIN users ON users.id = efficiencies.user_id
-            LEFT JOIN rigs ON rigs.id = efficiencies.rig_id
-            LEFT JOIN repair_details ON repair_details.id = efficiencies.repair_detail_id
-            LEFT JOIN dtm_details ON dtm_details.id = efficiencies.dtm_detail_id
-            `
-    );
-
+    const rows = await db.query(`SELECT
+    efficiencies.id AS id,
+    efficiencies.date,
+    efficiencies.available_hours,
+    rigs.name AS rig_name,
+    users.name AS user_name,
+    oil_wells.name AS oil_well_name,
+    dtm_details.hours AS dtm_hours,
+    dtm_details.distance AS dtm_distance,
+    fluid_ratio.ratio AS fluid_ratio,
+    equipment_ratio.ratio AS equipment_ratio,
+    gloss_details.id AS gloss_detail_id,
+    repair_details.id AS repair_detail_id
+  FROM
+    efficiencies
+    JOIN rigs ON efficiencies.rig_id = rigs.id
+    JOIN users ON efficiencies.user_id = users.id
+    JOIN oil_wells ON efficiencies.oil_well_id = oil_wells.id
+    LEFT JOIN gloss_details ON gloss_details.efficiency_id = efficiencies.id
+    LEFT JOIN repair_details ON repair_details.efficiency_id = efficiencies.id
+    LEFT JOIN dtm_details ON dtm_details.efficiency_id = efficiencies.id
+    LEFT JOIN fluid_ratio ON fluid_ratio.efficiency_id = efficiencies.id
+    LEFT JOIN equipment_ratio ON equipment_ratio.efficiency_id = efficiencies.id
+    
+  `);
     return rows;
   }
 
@@ -82,43 +100,19 @@ class EfficienciesRepositories {
     return row;
   }
 
-  async create({
-    date,
-    rig_id,
-    user_id,
-    gloss_detail_id,
-    available_hours,
-    repair_detail_id,
-    dtm_detail_id,
-    fluid_ratio,
-    equipment_ratio,
-  }) {
+  async create({ date, rig_id, user_id, oil_well, available_hours }) {
     const [row] = await db.query(
       `INSERT INTO efficiencies(
-            date,
-            rig_id,
-            user_id,
-            gloss_detail_id,
-            available_hours,
-            repair_detail_id,
-            dtm_detail_id,
-            fluid_ratio,
-            equipment_ratio
-            )
-        VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)  
-        RETURNING *  
-        `,
-      [
         date,
         rig_id,
         user_id,
-        gloss_detail_id,
-        available_hours,
-        repair_detail_id,
-        dtm_detail_id,
-        fluid_ratio,
-        equipment_ratio,
-      ]
+        oil_well_id,
+        available_hours
+        )
+        VALUES($1,$2,$3,$4,$5)  
+        RETURNING *  
+        `,
+      [date, rig_id, user_id, oil_well, available_hours]
     );
 
     return row;

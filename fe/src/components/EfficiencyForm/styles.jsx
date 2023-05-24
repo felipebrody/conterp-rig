@@ -17,7 +17,7 @@ export const StyledSwitch = styled(Switch)(({ theme }) => ({
 export const DatePickerContainer = styled(Box)({
   display: "flex",
   justifyContent: "center",
-  gridColumn: "span 2",
+  gridColumn: "span 1",
 });
 
 export const TimerPickerContainer = styled(Box)({

@@ -48,3 +48,21 @@ export const distanceClassification = [
     value: "greater_than_50",
   },
 ];
+
+export const oilWells = [
+  {
+    id: "MBW-46",
+    name: "MBW-46",
+    value: "MBW-46",
+  },
+  {
+    id: "MBW-54",
+    name: "MBW-54",
+    value: "MBW-54",
+  },
+  {
+    id: "MBW-32",
+    name: "MBW-32",
+    value: "MBW-32",
+  },
+];

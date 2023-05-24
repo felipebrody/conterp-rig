@@ -17,7 +17,7 @@ CREATE TABLE users (
     FOREIGN KEY(rig_id) REFERENCES rigs(id)
 );
 
-CREATE TABLE oil_well (
+CREATE TABLE oil_wells (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     name VARCHAR
 )
@@ -101,26 +101,3 @@ CREATE TABLE equipment_ratio (
 
 
 
-==========================================================
-
-CREATE TABLE repair_details (
-    id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-    hours NUMERIC(10,2) NOT NULL,
-    classification VARCHAR NOT NULL
-);
-
-CREATE TABLE dtm_details (
-    id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-    hours NUMERIC(10,2) NOT NULL,
-    distance NUMERIC(10,2) NOT NULL
-);
-
-INSERT INTO gloss_details (start_hour, end_hour, description, classification, sub_category)
-VALUES ('12:00:00', '12:00:00', 'TESTE', 'TESTE', 'TESTE')
-RETURNING *;
-
-
-DROP TABLE efficiencies;
-
-DROP TABLE gloss_details;
-            

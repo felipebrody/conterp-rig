@@ -40,6 +40,7 @@ import {
   distanceClassification,
 } from "../../utils/glossClassifications";
 
+import OilWellsServices from "../../services/OilWellsServices";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
@@ -78,6 +79,7 @@ const efficiencySchema = yup.object().shape({
   dtm_distance: yup.string().nullable(),
   available_hours: yup.number().required("Obrigatório"),
   dtm_hours: yup.number(),
+  oil_well: yup.string().nullable(),
 });
 
 const EfficiencyForm = () => {
@@ -88,6 +90,12 @@ const EfficiencyForm = () => {
   const [hasGlossHours, setHasGlossHours] = useState(false);
   const [hasRepairHours, setHasRepairHours] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [oilWells, setOilWells] = useState([]);
+  const [isLoadingOilWells, setIsLoadingOilWells] = useState(false);
+
+  useEffect(() => {
+    console.log("renderizou");
+  }, []);
 
   const initialValues = {
     date: "",
@@ -112,9 +120,30 @@ const EfficiencyForm = () => {
     dtm_distance: "",
     available_hours: "",
     dtm_hours: "",
+    oil_well: "",
   };
 
-  const isNonMobile = useMediaQuery("(min-width:900px)");
+  useEffect(() => {
+    const loadRigs = async () => {
+      setIsLoadingOilWells(true);
+      try {
+        const response = await OilWellsServices.listOilWells();
+        setOilWells(response);
+        console.log("rigs ===>", oilWells);
+      } catch (error) {
+        toast({
+          type: "error",
+          text: "Erro ao carregar os Poços!",
+        });
+        console.log(error);
+      } finally {
+        setIsLoadingOilWells(false);
+      }
+    };
+    loadRigs();
+  }, [setOilWells]);
+
+  const isNonMobile = useMediaQuery("(min-width:800px)");
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     const {
@@ -128,6 +157,7 @@ const EfficiencyForm = () => {
       dtm_hours,
       has_repair_hours,
       has_gloss_hours,
+      oil_well,
     } = EfficiencyMapper.toDomain(values, hasRepairHours, hasGlossHours);
     console.log("Object to Database ===> ", {
       date,
@@ -140,9 +170,11 @@ const EfficiencyForm = () => {
       dtm_hours,
       has_repair_hours,
       has_gloss_hours,
+      rig_id: user.rig_id,
+      user_id: user.id,
+      oil_well,
     });
 
-    return;
     setIsLoading(true);
 
     try {
@@ -157,6 +189,9 @@ const EfficiencyForm = () => {
         dtm_hours,
         has_repair_hours,
         has_gloss_hours,
+        rig_id: user.rig_id,
+        user_id: user.id,
+        oil_well,
       });
 
       onSubmitProps.resetForm();
@@ -168,6 +203,8 @@ const EfficiencyForm = () => {
 
       navigate(`/user/home`);
     } catch (error) {
+      console.log("caiu dentro do try/catch ### error");
+
       toast({
         type: "error",
         text: error.message,
@@ -184,12 +221,6 @@ const EfficiencyForm = () => {
   const handleRepairHoursSwitchChange = (event) => {
     setHasRepairHours(event.target.checked);
   };
-
-  console.log("Tem hora glosa? =>", hasGlossHours);
-
-  useEffect(() => {
-    console.log("renderizou");
-  }, []);
 
   return (
     <Box
@@ -247,6 +278,33 @@ const EfficiencyForm = () => {
                   />
                 </LocalizationProvider>
               </DatePickerContainer>
+
+              <StyledFormControl>
+                <InputLabel id="oil-wellce-label">Poço</InputLabel>
+                <Select
+                  labelId="oil-well-label"
+                  label="Taxa Equipamento"
+                  input={<StyledInputBase />}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.oil_well}
+                  name="oil_well"
+                  size="small"
+                  error={Boolean(touched.oil_well) && Boolean(errors.oil_well)}
+                  sx={{
+                    padding: ".5rem",
+                    borderRadius: "1rem",
+                    outline: "none",
+                    backgroundColor: theme.palette.primary[500],
+                  }}
+                >
+                  {oilWells.map((oilWell) => (
+                    <MenuItem value={oilWell.id} key={oilWell.id}>
+                      {oilWell.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </StyledFormControl>
 
               <SwitchContainer>
                 <Typography>Possui Glosa</Typography>

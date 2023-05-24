@@ -9,51 +9,119 @@ const DailyEfficiencyLineChart = ({ isDashboard }) => {
       color: "#1c7b7b",
       data: [
         {
-          x: "Janeiro",
+          x: "1",
           y: 90,
         },
         {
-          x: "Fevereiro",
+          x: "2",
           y: 100,
         },
         {
-          x: "Março",
+          x: "3",
           y: 100,
         },
         {
-          x: "Abril",
+          x: "4",
           y: 100,
         },
         {
-          x: "Maio",
+          x: "5",
           y: 97,
         },
         {
-          x: "Junho",
+          x: "6",
           y: 96,
         },
         {
-          x: "Julho",
+          x: "7",
           y: 100,
         },
         {
-          x: "Agosto",
+          x: "8",
           y: 100,
         },
         {
-          x: "Setembro",
+          x: "9",
           y: 98,
         },
         {
-          x: "Outubro",
+          x: "10",
           y: 100,
         },
         {
-          x: "Novembro",
+          x: "11",
           y: 96,
         },
         {
-          x: "Dezembro",
+          x: "12",
+          y: 100,
+        },
+        {
+          x: "13",
+          y: 90,
+        },
+        {
+          x: "14",
+          y: 100,
+        },
+        {
+          x: "15",
+          y: 100,
+        },
+        {
+          x: "16",
+          y: 100,
+        },
+        {
+          x: "17",
+          y: 97,
+        },
+        {
+          x: "18",
+          y: 96,
+        },
+        {
+          x: "19",
+          y: 100,
+        },
+        {
+          x: "20",
+          y: 100,
+        },
+        {
+          x: "21",
+          y: 98,
+        },
+        {
+          x: "22",
+          y: 100,
+        },
+        {
+          x: "23",
+          y: 96,
+        },
+        {
+          x: "24",
+          y: 100,
+        },
+        {
+          x: "25",
+          y: 100,
+        },
+        {
+          x: "26",
+          y: 100,
+        },
+        {
+          x: "27",
+          y: 100,
+        },
+        {
+          x: "28",
+          y: 100,
+        },
+        {
+          x: "29",
           y: 100,
         },
       ],
@@ -101,7 +169,7 @@ const DailyEfficiencyLineChart = ({ isDashboard }) => {
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
-          min: "0",
+          min: "50",
           max: "100",
           stacked: false,
           reverse: false,
@@ -110,14 +178,14 @@ const DailyEfficiencyLineChart = ({ isDashboard }) => {
         axisTop={null}
         axisRight={null}
         axisBottom={{
-          format: (v) => {
+          /* format: (v) => {
             if (isDashboard) return v.slice(0, 3);
             return v;
-          },
+          }, */
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: isDashboard ? "" : "Mêses", // added
+          legend: isDashboard ? "" : "Dias", // added
           legendOffset: 36,
           legendPosition: "middle",
         }}

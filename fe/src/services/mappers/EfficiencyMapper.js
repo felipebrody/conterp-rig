@@ -68,13 +68,14 @@ class EfficiencyMapper {
       date: dateString,
       gloss_periods: mappedGlossPeriod,
       repair_periods: mappedRepairPeroids,
-      equipment_ratio: persistenceEfficiency.equipment_ratio,
-      fluid_ratio: persistenceEfficiency.fluid_ratio,
-      dtm_distance: persistenceEfficiency.dtm_distance,
+      equipment_ratio: persistenceEfficiency.equipment_ratio || null,
+      fluid_ratio: persistenceEfficiency.fluid_ratio || null,
+      dtm_distance: persistenceEfficiency.dtm_distance || null,
       available_hours: persistenceEfficiency.available_hours,
-      dtm_hours: persistenceEfficiency.dtm_hours,
+      dtm_hours: persistenceEfficiency.dtm_hours || null,
       has_repair_hours: hasRepairHours,
       has_gloss_hours: hasGlossHours,
+      oil_well: persistenceEfficiency.oil_well,
     };
 
     return toDatabase;
