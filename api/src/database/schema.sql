@@ -26,6 +26,7 @@ CREATE TABLE oil_wells (
 CREATE TABLE efficiencies (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     date DATE NOT NULL,
+    available_hours NUMERIC(10,2) NOT NULL,
     rig_id UUID,
     user_id UUID,
     oil_well_id UUID,

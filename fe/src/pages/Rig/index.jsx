@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import EfficiencyForm from "../../components/EfficiencyForm";
+import EfficiencyForm from "../../components/EfficiencyFormCopy";
 import Header from "../../components/Header";
 
 import { useSelector } from "react-redux";
@@ -15,7 +15,7 @@ const Rig = () => {
 
       <Box display="flex" justifyContent="center">
         <EfficiencyForm />
-      </Box>
+      </Box> 
     </>
   );
 };

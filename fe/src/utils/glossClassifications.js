@@ -66,3 +66,26 @@ export const oilWells = [
     value: "MBW-32",
   },
 ];
+
+export const periodType = [
+  {
+    id: "working",
+    name: "Operando",
+    value: "working",
+  },
+  {
+    id: "dtm",
+    name: "DTM",
+    value: "dtm",
+  },
+  {
+    id: "gloss",
+    name: "Glosa",
+    value: "gloss",
+  },
+  {
+    id: "repair",
+    name: "Reparo",
+    value: "repair",
+  },
+];
