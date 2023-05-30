@@ -33,14 +33,12 @@ CREATE TABLE efficiencies (
     FOREIGN KEY(rig_id) REFERENCES rigs(id),
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(oil_well_id) REFERENCES oil_well(id),
-
 );
 
 CREATE TABLE gloss_details (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     efficiency_id UUID,
     FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
-
 );
 
 CREATE TABLE gloss_periods (
@@ -53,6 +51,21 @@ CREATE TABLE gloss_periods (
     FOREIGN KEY(gloss_detail_id) REFERENCES gloss_details(id)
 
 );
+
+CREATE TABLE operating_periods_details (
+    id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    efficiency_id UUID,
+    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
+)
+
+CREATE TABLE operating_periods (
+    id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    start_hour TIME NOT NULL,
+    end_hour TIME NOT NULL,
+    description TEXT,
+    operating_periods_detail_id UUID,
+    FOREIGN KEY(operating_periods_details) REFERENCES operating_periods_details(id)
+)
 
 
 CREATE TABLE repair_details (
@@ -73,24 +86,44 @@ CREATE TABLE repair_periods (
 
 CREATE TABLE dtm_details (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-    hours NUMERIC(10,2) NOT NULL,
-    distance VARCHAR NOT NULL
     efficiency_id UUID,
     FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
 );
 
-CREATE TABLE fluid_ratio (
+CREATE TABLE dtm_periods (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-    ratio VARCHAR,
-    efficiency_id UUID,
-    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
+   start_hour TIME NOT NULL,
+    end_hour TIME NOT NULL,
+    distance VARCHAR NOT NULL,
+    dtm_detail_id UUID,
+    description TEXT,
+    FOREIGN KEY(dtm_detail_id) REFERENCES efficiencies(id)
 );
 
-CREATE TABLE equipment_ratio (
+CREATE TABLE fluid_ratio_details (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-    ratio VARCHAR,
     efficiency_id UUID,
     FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
+)
+
+CREATE TABLE fluid_ratio_periods (
+    id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    ratio VARCHAR,
+    fluid_ratio_detail_id UUID,
+    FOREIGN KEY(fluid_ratio_detail_id) REFERENCES fluid_ratio_details(id)
+);
+
+CREATE TABLE equipment_ratio_details (
+    id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    efficiency_id UUID,
+    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
+)
+
+CREATE TABLE equipment_ratio_periods (
+    id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    ratio VARCHAR,
+    equipment_ratio_detail_id UUID,
+    FOREIGN KEY(equipment_ratio_detail_id) REFERENCES equipment_ratio_details(id)
 );
 
 
