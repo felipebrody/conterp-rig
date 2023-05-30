@@ -96,9 +96,8 @@ export const SwitchContainer = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  gridColumn: "span 6",
+  gridColumn: "span 3",
   border: ".25px solid rgb(255, 255, 255, .25)",
   borderRadius: "4px",
   padding: ".25rem",
-  gridColumn: "span 1",
 });
