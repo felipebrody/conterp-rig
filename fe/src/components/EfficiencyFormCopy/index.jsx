@@ -73,10 +73,11 @@ const EfficiencyForm = () => {
       repairClassification: "",
       description: "",
       DTMDistance: "",
+      equipmentRatio: "",
+      fluidRatio: "",
     },
   ]);
 
-  const [hasEquipmentRatio, setHasEquipmentRatio] = useState(false);
   const [hasRepairHours, setHasRepairHours] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [oilWells, setOilWells] = useState([]);
@@ -115,15 +116,6 @@ const EfficiencyForm = () => {
 
     const result = periods.reduce(
       (acc, period, index) => {
-        /* startHour: "",
-      endHour: "",
-      type: "",
-      oilWell: "",
-      glossClassification: "",
-      repairClassification: "",
-      description: "",
-      DTMDistance: "", */
-
         console.log("acc", acc);
 
         const startHourInMinutes =
@@ -174,16 +166,24 @@ const EfficiencyForm = () => {
           return acc;
         }
 
+        if (period.equipmentRatio) {
+          acc["equipment_ratio"].push(period.equipmentRatio);
+        }
+
+        if (period.fluidRatio) {
+          acc["fluid_ratio"].push(period.fluidRatio);
+        }
+
         return acc;
       },
       {
         gloss_periods: [],
         repair_periods: [],
         dtm_periods: [],
-        equipment_ratio: "",
-        fluid_ratio: "",
+        equipment_ratio: [],
+        fluid_ratio: [],
         available_hours: 0,
-        oil_well: "",
+        oil_well: [],
         totalHoursInMinutes: 0,
       }
     );
@@ -229,10 +229,6 @@ const EfficiencyForm = () => {
     } finally {
       setIsLoading(false);
     } */
-  };
-
-  const handleEquipmentRatioSwitchChange = (event) => {
-    setHasEquipmentRatio(event.target.checked);
   };
 
   const handleDateChange = (value) => {
@@ -310,6 +306,26 @@ const EfficiencyForm = () => {
     const newPeriods = periods.map((period) => {
       return period.id === id
         ? { ...period, repairClassification: event.target.value }
+        : period;
+    });
+
+    setPeriods(newPeriods);
+  };
+
+  const handleEquipmentRatioChange = (id, event) => {
+    const newPeriods = periods.map((period) => {
+      return period.id === id
+        ? { ...period, equipmentRatio: event.target.value }
+        : period;
+    });
+
+    setPeriods(newPeriods);
+  };
+
+  const handleFluidRatioChange = (id, event) => {
+    const newPeriods = periods.map((period) => {
+      return period.id === id
+        ? { ...period, fluidRatio: event.target.value }
         : period;
     });
 
@@ -571,15 +587,72 @@ const EfficiencyForm = () => {
                   ))}
                 </Select>
               </StyledFormControl>
-              <SwitchContainer>
-                <Typography>Movimentação de Equipamento</Typography>
 
-                <StyledSwitch
-                  checked={hasEquipmentRatio}
-                  onChange={handleEquipmentRatioSwitchChange}
-                  theme={theme}
-                />
-              </SwitchContainer>
+              <StyledFormControl
+                isNonMobile={isNonMobile}
+                sx={{ gridColumn: "span 6" }}
+              >
+                <InputLabel id="equipment-ratio">
+                  Movimentação de Equipamento
+                </InputLabel>
+                <Select
+                  labelId="equipment-ratio"
+                  label="Movimentação de Equipamento"
+                  input={<StyledInputBase />}
+                  onChange={(event) =>
+                    handleEquipmentRatioChange(period.id, event)
+                  }
+                  value={period.equipmentRatio}
+                  size="small"
+                  sx={{
+                    margin: "auto 0",
+                    borderRadius: "1rem",
+                    outline: "none",
+                    backgroundColor: theme.palette.primary[500],
+                  }}
+                >
+                  <MenuItem value="">Não teve</MenuItem>
+                  {distanceClassification.map((classification) => (
+                    <MenuItem
+                      value={classification.value}
+                      key={classification.id}
+                    >
+                      {classification.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </StyledFormControl>
+
+              <StyledFormControl
+                isNonMobile={isNonMobile}
+                sx={{ gridColumn: "span 6" }}
+              >
+                <InputLabel id="fluid-ratio">Movimentação de Flúido</InputLabel>
+                <Select
+                  labelId="fluid-ratio"
+                  label="Taxa Flúido"
+                  input={<StyledInputBase />}
+                  onChange={(event) => handleFluidRatioChange(period.id, event)}
+                  value={period.fluidRatio}
+                  size="small"
+                  sx={{
+                    margin: "auto 0",
+                    borderRadius: "1rem",
+                    outline: "none",
+                    backgroundColor: theme.palette.primary[500],
+                  }}
+                >
+                  <MenuItem value="">Não teve</MenuItem>
+                  {distanceClassification.map((classification) => (
+                    <MenuItem
+                      value={classification.value}
+                      key={classification.id}
+                    >
+                      {classification.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </StyledFormControl>
 
               {periods.length > 1 && (
                 <Box
