@@ -28,18 +28,13 @@ class EfficiencyController {
   async store(request, response) {
     const {
       date,
-      gloss_periods,
-      repair_periods,
-      equipment_ratio,
-      fluid_ratio,
-      dtm_distance,
       available_hours,
       dtm_hours,
-      has_repair_hours,
-      has_gloss_hours,
-      rig_id,
-      user_id,
-      oil_well,
+      equipment_ratio,
+      fluid_ratio,
+      gloss_periods,
+      repair_periods,
+      working_periods,
     } = request.body;
 
     if (!date || !rig_id || !user_id) {
@@ -69,12 +64,6 @@ class EfficiencyController {
 
     if (!userIdExists) {
       return response.status(404).json({ error: "Usuário não encontrado." });
-    }
-
-    const oilWellId = await OilWellRepositories.findById(oil_well);
-
-    if (!oilWellId) {
-      return response.status(404).json({ error: "Poço não encontrado!" });
     }
 
     const efficiency = await EfficienciesRepositories.create({
