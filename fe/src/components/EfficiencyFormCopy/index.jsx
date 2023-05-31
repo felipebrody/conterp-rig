@@ -118,6 +118,9 @@ const EfficiencyForm = () => {
       (acc, period, index) => {
         console.log("acc", acc);
 
+        //Transforma as horas em minutos
+
+        //Hora
         const startHourInMinutes =
           period.startHour.$H * 60 + period.startHour.$m;
 
@@ -131,26 +134,61 @@ const EfficiencyForm = () => {
 
         acc["totalHoursInMinutes"] += endHourInMinutes - startHourInMinutes;
 
+        //Transforma as horas em String
+
+        //Função para adicionar um dígito na string
+        const addDigit = (digits) => {
+          let string = digits.toString();
+
+          if (string.length < 2) {
+            string = `0${string}`;
+            return string;
+          }
+
+          return digits;
+        };
+
+        const startHour = addDigit(period.startHour.$H);
+        const endHour = addDigit(period.endHour.$H);
+        const startMinute = addDigit(period.startHour.$m);
+        const endMinute = addDigit(period.endHour.$m);
+
         if (period.type === "working") {
           acc["available_hours"] +=
             (endHourInMinutes - startHourInMinutes) / 60;
+
+          acc["working_periods"].push({
+            start_time: `${startHour}:${startMinute}:00`,
+            end_time: `${endHour}:${endMinute}:00`,
+            description: period.description,
+            oil_well_id: period.oilWell,
+          });
         }
 
         if (period.type === "dtm") {
           acc["dtm_periods"].push({
-            start_time_dtm: period.startHour,
-            end_time_dtm: period.endHour,
+            start_time: `${startHour}:${startMinute}:00`,
+            end_time: `${endHour}:${endMinute}:00`,
             dtm_distance: period.DTMDistance,
+            description: period.description,
+            oil_well_id: period.oilWell,
           });
+
+          acc["available_hours"] +=
+            (endHourInMinutes - startHourInMinutes) / 60;
+
+          acc["dtm_hours"] += (endHourInMinutes - startHourInMinutes) / 60;
 
           return acc;
         }
 
         if (period.type === "repair") {
           acc["repair_periods"].push({
-            start_time_repair: period.startHour,
-            end_time_repair: period.endHour,
+            start_time: `${startHour}:${startMinute}:00`,
+            end_time: `${endHour}:${endMinute}:00`,
             repair_classification: period.repairClassification,
+            description: period.description,
+            oil_well_id: period.oilWell,
           });
 
           return acc;
@@ -158,9 +196,11 @@ const EfficiencyForm = () => {
 
         if (period.type === "gloss") {
           acc["gloss_periods"].push({
-            start_time_gloss: period.startHour,
-            end_time_gloss: period.endHour,
+            start_time: `${startHour}:${startMinute}:00`,
+            end_time: `${endHour}:${endMinute}:00`,
             gloss_classification: period.glossClassification,
+            description: period.description,
+            oil_well_id: period.oilWell,
           });
 
           return acc;
@@ -177,13 +217,15 @@ const EfficiencyForm = () => {
         return acc;
       },
       {
+        working_periods: [],
         gloss_periods: [],
         repair_periods: [],
         dtm_periods: [],
         equipment_ratio: [],
         fluid_ratio: [],
         available_hours: 0,
-        oil_well: [],
+        dtm_hours: 0,
+
         totalHoursInMinutes: 0,
       }
     );
@@ -351,6 +393,8 @@ const EfficiencyForm = () => {
         repairClassification: "",
         description: "",
         DTMDistance: "",
+        equipmentRatio: "",
+        fluidRatio: "",
       },
     ]);
   };
@@ -611,7 +655,6 @@ const EfficiencyForm = () => {
                     backgroundColor: theme.palette.primary[500],
                   }}
                 >
-                  <MenuItem value="">Não teve</MenuItem>
                   {distanceClassification.map((classification) => (
                     <MenuItem
                       value={classification.value}
@@ -642,7 +685,6 @@ const EfficiencyForm = () => {
                     backgroundColor: theme.palette.primary[500],
                   }}
                 >
-                  <MenuItem value="">Não teve</MenuItem>
                   {distanceClassification.map((classification) => (
                     <MenuItem
                       value={classification.value}
