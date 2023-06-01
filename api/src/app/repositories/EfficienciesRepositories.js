@@ -100,19 +100,18 @@ class EfficienciesRepositories {
     return row;
   }
 
-  async create({ date, rig_id, user_id, oil_well, available_hours }) {
+  async create({ date, available_hours, rig_id, user_id }) {
     const [row] = await db.query(
       `INSERT INTO efficiencies(
         date,
+        available_hours,
         rig_id,
-        user_id,
-        oil_well_id,
-        available_hours
+        user_id
         )
-        VALUES($1,$2,$3,$4,$5)  
+        VALUES($1,$2,$3,$4)  
         RETURNING *  
         `,
-      [date, rig_id, user_id, oil_well, available_hours]
+      [date, available_hours, rig_id, user_id]
     );
 
     return row;

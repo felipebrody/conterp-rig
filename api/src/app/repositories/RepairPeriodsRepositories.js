@@ -22,23 +22,25 @@ class RepairPeriodsRepositories {
   }
 
   async create({
-    start_time_repair,
-    end_time_repair,
+    start_time,
+    end_time,
+    description,
     repair_classification,
-    repair_description,
+    oil_well_id,
     repair_detail_id,
   }) {
     const [row] = await db.query(
-      `INSERT INTO repair_periods (start_hour,end_hour,classification,description,repair_detail_id)
-             VALUES ($1,$2,$3,$4,$5)
+      `INSERT INTO repair_periods (start_hour,end_hour,classification,description,repair_detail_id, oil_well_id)
+             VALUES ($1,$2,$3,$4,$5,$6)
             RETURNING *
             `,
       [
-        start_time_repair,
-        end_time_repair,
+        start_time,
+        end_time,
         repair_classification,
-        repair_description,
+        description,
         repair_detail_id,
+        oil_well_id,
       ]
     );
     return row;

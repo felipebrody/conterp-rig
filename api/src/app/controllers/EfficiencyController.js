@@ -6,8 +6,13 @@ const GlossDetailsRepositories = require("../repositories/GlossDetailsRepositori
 const GlossPeriodsRepositories = require("../repositories/GlossPeriodsRepositories");
 const RepairDetailsRepositories = require("../repositories/RepairDetailsRepositories");
 const RepairPeriodsRepositories = require("../repositories/RepairPeriodsRepositories");
-const DtmDetailsRepositories = require("../repositories/DtmRepositories");
+const DtmDetailsRepositories = require("../repositories/DtmDetailsRepositories");
 const OilWellRepositories = require("../repositories/OilWellRepositories");
+const DtmPeriodsRepositories = require("../repositories/DtmPeriodsRepositories");
+
+const OperatingPeriodsDetailsRepositories = require("../repositories/OperatingPeriodsDetailsRepositories");
+
+const OperatingPeriodsRepositories = require("../repositories/OperatingPeriodsRepositories");
 
 const FluidRatioRepositories = require("../repositories/FluidRatioRepositories");
 const EquipmentRatioRepositories = require("../repositories/EquipmentRatioRepositories");
@@ -35,6 +40,9 @@ class EfficiencyController {
       gloss_periods,
       repair_periods,
       working_periods,
+      user_id,
+      rig_id,
+      dtm_periods,
     } = request.body;
 
     if (!date || !rig_id || !user_id) {
@@ -68,13 +76,28 @@ class EfficiencyController {
 
     const efficiency = await EfficienciesRepositories.create({
       date,
+      available_hours,
       rig_id,
       user_id,
-      oil_well,
-      available_hours,
     });
 
-    if (has_gloss_hours) {
+    const verifyPeriodsHours = (startTime, endTime) => {
+      let startTimeString = startTime.split(":");
+      let endTimeString = endTime.split(":");
+
+      let startTimeNumber = parseInt(startTimeString[0]);
+      let endTimeNumber = parseInt(endTimeString[0]);
+
+      console.log(startTimeNumber, endTimeNumber);
+
+      if (startTimeNumber > endTimeNumber) {
+        return false;
+      } else {
+        return true;
+      }
+    };
+
+    if (gloss_periods.length !== 0) {
       const glossDetail = await GlossDetailsRepositories.create({
         efficiency_id: efficiency.id,
       });
@@ -82,48 +105,142 @@ class EfficiencyController {
       await gloss_periods.map(
         async (
           {
-            end_time_gloss,
-            start_time_gloss,
+            start_time,
+            end_time,
             gloss_classification,
-            gloss_description,
+            oil_well_id,
+            description,
           },
           index
         ) => {
-          let startTimeString = null;
-          let endTimeString = null;
-
-          let startTimeNumber = null;
-          let endTimeNumber = null;
-
-          startTimeString = start_time_gloss.split(":");
-          endTimeString = end_time_gloss.split(":");
-
-          startTimeNumber = startTimeString[0];
-          endTimeNumber = endTimeString[0];
-
-          if (startTimeNumber[0] > endTimeNumber[0]) {
-            return response.status(404).json({
-              error: `O horário final não pode ser menor que o inicial! 
-              Período: ${index + 1}`,
-            });
-          }
-
           if (!gloss_classification) {
             return response.status(404).json({
               error: `Classifique o Período: ${index + 1}`,
             });
           }
 
+          const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
+
+          if (verifiedPeriods === false) {
+            return response.status(404).json({
+              error: `O horário final não pode ser menor que o inicial`,
+            });
+          }
+
           await GlossPeriodsRepositories.create({
-            start_time_gloss,
-            end_time_gloss,
+            start_time,
+            end_time,
             gloss_classification,
-            gloss_description,
+            oil_well_id,
+            description,
             gloss_detail_id: glossDetail.id,
           });
         }
       );
     }
+
+    if (repair_periods.length !== 0) {
+      const repairDetail = await RepairDetailsRepositories.create({
+        efficiency_id: efficiency.id,
+      });
+
+      await repair_periods.map(
+        async ({
+          start_time,
+          end_time,
+          description,
+          repair_classification,
+          oil_well_id,
+        }) => {
+          if (!repair_classification) {
+            return response.status(404).json({
+              error: `Classifique o Período: ${index + 1}`,
+            });
+          }
+
+          const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
+
+          if (verifiedPeriods === false) {
+            return response.status(404).json({
+              error: `O horário final não pode ser menor que o inicial`,
+            });
+          }
+
+          await RepairPeriodsRepositories.create({
+            start_time,
+            end_time,
+            description,
+            repair_classification,
+            oil_well_id,
+            repair_detail_id: repairDetail.id,
+          });
+        }
+      );
+    }
+
+    console.log("Working Periods", working_periods);
+    if (working_periods.length !== 0) {
+      const operatingPeriodsDetails =
+        await OperatingPeriodsDetailsRepositories.create({
+          efficiency_id: efficiency.id,
+        });
+
+      await working_periods.map(
+        async ({ start_time, end_time, description, oil_well_id }) => {
+          const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
+
+          if (verifiedPeriods === false) {
+            return response.status(404).json({
+              error: `O horário final não pode ser menor que o inicial`,
+            });
+          }
+
+          await OperatingPeriodsRepositories.create({
+            start_time,
+            end_time,
+            description,
+            oil_well_id,
+            operating_detail_id: operatingPeriodsDetails.id,
+          });
+        }
+      );
+    }
+
+    if (dtm_periods.length !== 0) {
+      const dtmDetails = await DtmDetailsRepositories.create({
+        efficiency_id: efficiency.id,
+      });
+
+      console.log("dtmDetails", dtmDetails);
+      await dtm_periods.map(
+        async ({
+          start_time,
+          end_time,
+          description,
+          oil_well_id,
+          dtm_distance,
+        }) => {
+          const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
+
+          if (verifiedPeriods === false) {
+            return response.status(404).json({
+              error: `O horário final não pode ser menor que o inicial`,
+            });
+          }
+
+          await DtmPeriodsRepositories.create({
+            start_time,
+            end_time,
+            description,
+            oil_well_id,
+            dtm_distance,
+            dtm_detail_id: dtmDetails.id,
+          });
+        }
+      );
+    }
+
+    return response.status(201).json(efficiency);
 
     if (has_repair_hours) {
       const repairDetail = await RepairDetailsRepositories.create({

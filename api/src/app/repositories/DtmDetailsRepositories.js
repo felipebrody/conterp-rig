@@ -1,5 +1,5 @@
 const db = require("../../database/index");
-class DtmRepositories {
+class DtmDetailsRepositories {
   async findAll() {
     const rows = await db.query(`SELECT * FROM dtm_details`);
 
@@ -20,16 +20,16 @@ class DtmRepositories {
     return row;
   }
 
-  async create({ dtm_hours, dtm_distance, efficiency_id }) {
+  async create({ efficiency_id }) {
     const [row] = await db.query(
-      `INSERT INTO dtm_details (hours,distance, efficiency_id)
-             VALUES ($1,$2, $3)
-            RETURNING *
-            `,
-      [dtm_hours, dtm_distance, efficiency_id]
+      `INSERT INTO dtm_details (efficiency_id)
+                 VALUES ($1)
+                RETURNING *
+                `,
+      [efficiency_id]
     );
     return row;
   }
 }
 
-module.exports = new DtmRepositories();
+module.exports = new DtmDetailsRepositories();
