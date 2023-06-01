@@ -63,6 +63,8 @@ CREATE TABLE operating_periods (
     end_hour TIME NOT NULL,
     description TEXT,
     oil_well_id UUID,
+    operating_detail_id UUID,
+    FOREIGN KEY(operating_detail_id) REFERENCES operating_periods_details(id),
     FOREIGN KEY(oil_well_id) REFERENCES oil_wells(id)
 );
 
@@ -100,7 +102,7 @@ CREATE TABLE dtm_periods (
     description TEXT,
     oil_well_id UUID ,
     FOREIGN KEY(oil_well_id) REFERENCES oil_wells(id),
-    FOREIGN KEY(dtm_detail_id) REFERENCES efficiencies(id)
+    FOREIGN KEY(dtm_detail_id) REFERENCES dtm_details(id)
 );
 
 CREATE TABLE fluid_ratio_details (
