@@ -225,13 +225,13 @@ const Efficiencies = () => {
       <Header title="LISTAGEM DE EFICIÊNCIA" />
 
       <DataGridContainer theme={theme}>
-        <DataGrid
+        {/* <DataGrid
           loading={isLoading}
           getRowId={(row) => row.id}
           rows={formattedItems}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
-        />
+        /> */}
       </DataGridContainer>
     </Box>
   );

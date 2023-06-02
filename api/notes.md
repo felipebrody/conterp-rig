@@ -21,3 +21,24 @@ Este readme contém uma lista de comandos úteis para trabalhar com Docker, Post
 - \l - Lista as bases de dados
 - \c <nome_da_base> - Conecta à base de dados
 - \dt - Lista as tabelas na base de dados
+
+SELECT
+efficiencies.id AS id,
+efficiencies.date,
+efficiencies.available_hours,
+rigs.name AS rig_name,
+users.name AS user_name,
+dtm_details.id AS dtm_id,
+fluid_ratio.ratio AS fluid_ratio,
+equipment_ratio.ratio AS equipment_ratio,
+gloss_details.id AS gloss_detail_id,
+repair_details.id AS repair_detail_id
+FROM
+efficiencies
+JOIN rigs ON efficiencies.rig_id = rigs.id
+JOIN users ON efficiencies.user_id = users.id
+LEFT JOIN gloss_details ON gloss_details.efficiency_id = efficiencies.id
+LEFT JOIN repair_details ON repair_details.efficiency_id = efficiencies.id
+LEFT JOIN dtm_details ON dtm_details.efficiency_id = efficiencies.id
+LEFT JOIN fluid_ratio ON fluid_ratio.efficiency_id = efficiencies.id
+LEFT JOIN equipment_ratio ON equipment_ratio.efficiency_id = efficiencies.id;

@@ -10,9 +10,6 @@ export const useFormatEfficienciesArray = (efficiencies) => {
     const hasGlossHours = item.gloss_detail_id ? true : false;
     const hasRepairHours = item.repair_detail_id ? true : false;
 
-    console.log("availableHours", typeof availableHours);
-    console.log("dtmHours", typeof dtmHours);
-
     const efficiency =
       (parseFloat(availableHours) + parseFloat(dtmHours)) / 24.0;
 
