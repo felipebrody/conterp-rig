@@ -240,6 +240,24 @@ class EfficiencyController {
       );
     }
 
+    if (fluid_ratio) {
+      await fluid_ratio.map(async (fluid_ratio) => {
+        await FluidRatioRepositories.create({
+          fluid_ratio,
+          efficiency_id: efficiency.id,
+        });
+      });
+    }
+
+    if (equipment_ratio) {
+      await equipment_ratio.map(async (equipment_ratio) => {
+        await EquipmentRatioRepositories.create({
+          equipment_ratio,
+          efficiency_id: efficiency.id,
+        });
+      });
+    }
+
     return response.status(201).json(efficiency);
 
     if (has_repair_hours) {
@@ -297,20 +315,6 @@ class EfficiencyController {
       await DtmDetailsRepositories.create({
         dtm_hours,
         dtm_distance,
-        efficiency_id: efficiency.id,
-      });
-    }
-
-    if (fluid_ratio) {
-      await FluidRatioRepositories.create({
-        fluid_ratio,
-        efficiency_id: efficiency.id,
-      });
-    }
-
-    if (equipment_ratio) {
-      await EquipmentRatioRepositories.create({
-        equipment_ratio,
         efficiency_id: efficiency.id,
       });
     }

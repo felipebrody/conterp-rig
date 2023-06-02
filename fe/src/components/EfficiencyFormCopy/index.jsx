@@ -118,7 +118,6 @@ const EfficiencyForm = () => {
 
     console.log("Resultado do Método toDomain ===>", result);
 
-    return;
     setIsLoading(true);
 
     try {

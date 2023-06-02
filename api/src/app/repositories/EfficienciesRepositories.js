@@ -8,7 +8,7 @@ class EfficienciesRepositories {
     return row;
   }
 
-  async findByRigId(id) {
+  /*  async findByRigId(id) {
     const rows = await db.query(
       `SELECT
     efficiencies.id AS id,
@@ -41,9 +41,14 @@ class EfficienciesRepositories {
     );
 
     return rows;
-  }
+  } */
 
   async findAll() {
+    const rows = await db.query(`SELECT * FROM efficiencies`);
+    return rows;
+  }
+
+  /* async findAll() {
     const rows = await db.query(`SELECT
     efficiencies.id AS id,
     efficiencies.date,
@@ -70,7 +75,7 @@ class EfficienciesRepositories {
     
   `);
     return rows;
-  }
+  } */
 
   async update(
     id,
