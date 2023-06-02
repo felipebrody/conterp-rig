@@ -105,32 +105,19 @@ CREATE TABLE dtm_periods (
     FOREIGN KEY(dtm_detail_id) REFERENCES dtm_details(id)
 );
 
-CREATE TABLE fluid_ratio_details (
+CREATE TABLE fluid_ratio (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    ratio VARCHAR,
     efficiency_id UUID,
     FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
 );
 
-CREATE TABLE fluid_ratio_periods (
+CREATE TABLE equipment_ratio (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     ratio VARCHAR,
-    fluid_ratio_detail_id UUID,
-    FOREIGN KEY(fluid_ratio_detail_id) REFERENCES fluid_ratio_details(id)
-);
-
-CREATE TABLE equipment_ratio_details (
-    id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     efficiency_id UUID,
     FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
 );
-
-CREATE TABLE equipment_ratio_periods (
-    id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-    ratio VARCHAR,
-    equipment_ratio_detail_id UUID,
-    FOREIGN KEY(equipment_ratio_detail_id) REFERENCES equipment_ratio_details(id)
-);
-
 
 
 
