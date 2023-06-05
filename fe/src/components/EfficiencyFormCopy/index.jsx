@@ -128,7 +128,7 @@ const EfficiencyForm = () => {
         text: "Dados Enviados com Sucesso!",
       });
 
-      //navigate(`/user/home`);
+      navigate(`/user/home`);
     } catch (error) {
       console.log("caiu dentro do try/catch ### error");
 

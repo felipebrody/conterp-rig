@@ -60,15 +60,11 @@ class UserController {
       return response.status(400).json({ error: "Email já cadastrado!" });
     }
 
-
-    console.log("Rig id => ", rig_id)
     const rigExists = await RigsRepositories.findById(rig_id);
 
     if (rig_id && !rigExists) {
       return response.status(400).json({ error: "Sonda não encontrada!" });
     }
-
-
 
     //Gerar hash da senha
     const salt = await bcrypt.genSalt();

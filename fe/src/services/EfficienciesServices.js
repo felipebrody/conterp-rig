@@ -12,6 +12,11 @@ class EfficienciesServices {
     return efficiencies;
   }
 
+  async getEfficiencyById(id) {
+    const efficiency = await this.HttpClient.get(`/efficiencies/${id}`);
+    return efficiency;
+  }
+
   async listEfficienciesByRigId(id) {
     const efficiencies = await this.HttpClient.get(`/efficiencies-rig/${id}`);
     return efficiencies;

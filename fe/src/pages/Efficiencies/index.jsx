@@ -18,14 +18,6 @@ const Efficiencies = () => {
 
   const columns = [
     {
-      field: "rig_name",
-      headerName: "Sonda",
-      flex: 0.3,
-      cellClassName: "name-column--cell",
-      align: "center",
-      headerAlign: "center",
-    },
-    {
       field: "date",
       headerName: "Data",
       headerAlign: "center",
@@ -104,28 +96,6 @@ const Efficiencies = () => {
       },
     },
     {
-      field: "dtm_hours",
-      headerName: "Hora DTM",
-      flex: 0.5,
-      headerAlign: "center",
-      type: "number",
-      align: "center",
-      renderCell: ({ row: { dtm_hours } }) => {
-        return (
-          <Box
-            width="100%"
-            m="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            backgroundColor="#1c7b7b"
-          >
-            <Typography> {dtm_hours}Hrs</Typography>
-          </Box>
-        );
-      },
-    },
-    {
       field: "efficiency",
       headerAlign: "center",
       headerName: "Eficiência",
@@ -140,7 +110,7 @@ const Efficiencies = () => {
             justifyContent="center"
             backgroundColor="#1c7b7b"
           >
-            <Typography> {efficiency}%</Typography>
+            <Typography> {efficiency.toFixed(2)}%</Typography>
           </Box>
         );
       },
@@ -150,7 +120,7 @@ const Efficiencies = () => {
       headerAlign: "center",
       headerName: "Detalhes",
       flex: 0.5,
-      renderCell: ({ row: { id } }) => {
+      renderCell: ({ row: { efficiency_id } }) => {
         return (
           <Box
             width="35%"
@@ -159,11 +129,11 @@ const Efficiencies = () => {
             display="flex"
             justifyContent="center"
           >
-            <Link to={`/user/list-efficiencies/details/${id}`}>
+            <Link to={`/user/list-efficiencies/details/${efficiency_id}`}>
               <Button
                 variant="contained"
                 color="success"
-                onClick={() => handleSeeDetailsClick(id)}
+                onClick={() => handleSeeDetailsClick(efficiency_id)}
               >
                 <Typography color="#fff"> Ver Mais</Typography>
               </Button>
@@ -225,13 +195,13 @@ const Efficiencies = () => {
       <Header title="LISTAGEM DE EFICIÊNCIA" />
 
       <DataGridContainer theme={theme}>
-        {/* <DataGrid
+        <DataGrid
           loading={isLoading}
-          getRowId={(row) => row.id}
+          getRowId={(row) => row.efficiency_id}
           rows={formattedItems}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
-        /> */}
+        />
       </DataGridContainer>
     </Box>
   );

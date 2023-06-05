@@ -88,8 +88,6 @@ class EfficiencyController {
       let startTimeNumber = parseInt(startTimeString[0]);
       let endTimeNumber = parseInt(endTimeString[0]);
 
-      console.log(startTimeNumber, endTimeNumber);
-
       if (startTimeNumber > endTimeNumber) {
         return false;
       } else {
@@ -178,7 +176,6 @@ class EfficiencyController {
       );
     }
 
-    console.log("Working Periods", working_periods);
     if (working_periods.length !== 0) {
       const operatingPeriodsDetails =
         await OperatingPeriodsDetailsRepositories.create({
@@ -211,7 +208,6 @@ class EfficiencyController {
         efficiency_id: efficiency.id,
       });
 
-      console.log("dtmDetails", dtmDetails);
       await dtm_periods.map(
         async ({
           start_time,

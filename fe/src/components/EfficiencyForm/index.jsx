@@ -93,10 +93,6 @@ const EfficiencyForm = () => {
   const [oilWells, setOilWells] = useState([]);
   const [isLoadingOilWells, setIsLoadingOilWells] = useState(false);
 
-  useEffect(() => {
-    console.log("renderizou");
-  }, []);
-
   const initialValues = {
     date: "",
     gloss_periods: [
@@ -129,7 +125,6 @@ const EfficiencyForm = () => {
       try {
         const response = await OilWellsServices.listOilWells();
         setOilWells(response);
-        console.log("rigs ===>", oilWells);
       } catch (error) {
         toast({
           type: "error",
@@ -159,21 +154,6 @@ const EfficiencyForm = () => {
       has_gloss_hours,
       oil_well,
     } = EfficiencyMapper.toDomain(values, hasRepairHours, hasGlossHours);
-    console.log("Object to Database ===> ", {
-      date,
-      gloss_periods,
-      repair_periods,
-      equipment_ratio,
-      fluid_ratio,
-      dtm_distance,
-      available_hours,
-      dtm_hours,
-      has_repair_hours,
-      has_gloss_hours,
-      rig_id: user.rig_id,
-      user_id: user.id,
-      oil_well,
-    });
 
     setIsLoading(true);
 

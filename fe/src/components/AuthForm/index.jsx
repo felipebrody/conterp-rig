@@ -69,13 +69,11 @@ const Form = ({ formType = "login" }) => {
       try {
         const rigs = await RigsServices.listRigs();
         setRigs(rigs);
-        console.log("rigs ===>", rigs);
       } catch (error) {
         toast({
           type: "error",
           text: "Erro ao carregar as rigs!",
         });
-        console.log(error);
       } finally {
         setIsLoadingrigs(false);
       }
@@ -109,7 +107,6 @@ const Form = ({ formType = "login" }) => {
   };
 
   const user = useSelector((state) => state.user);
-  console.log("user", user);
 
   const login = async (values, onSubmitProps) => {
     setIsLoading(true);
@@ -130,7 +127,6 @@ const Form = ({ formType = "login" }) => {
       toast({
         text: `Bem-vindo de volta ${loggedUser.user.name}!`,
       });
-      console.log("Usuário", loggedUser, "Logado com sucesso!");
     } catch (error) {
       toast({
         type: "error",
@@ -156,8 +152,6 @@ const Form = ({ formType = "login" }) => {
   }, [formType]);
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    console.log(values);
-
     if (isRegisterPage) await register(values, onSubmitProps);
     if (isLoginPage) await login(values, onSubmitProps);
   };
