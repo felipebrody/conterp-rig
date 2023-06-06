@@ -57,23 +57,61 @@ const EfficiencyDetails = () => {
         // Função para adicionar períodos ao array
         const addPeriodsToArray = (periods, type) => {
           periods.forEach((period) => {
-            const formattedPeriod = {
-              id: period.id,
-              start_hour: period.start_hour,
-              end_hour: period.end_hour,
-              description: period.description,
-              classification: period.classification,
-              oil_well_name: period.oil_wells_name,
-              type: type,
-            };
+            let formattedPeriod = null;
+            if (type === "repair") {
+              formattedPeriod = {
+                id: period.id,
+                start_hour: period.start_hour,
+                end_hour: period.end_hour,
+                description: period.description,
+                classification: period.classification,
+                oil_well_name: period.oil_well_name,
+                type: "Reparo",
+              };
+            }
+
+            if (type === "gloss") {
+              formattedPeriod = {
+                id: period.id,
+                start_hour: period.start_hour,
+                end_hour: period.end_hour,
+                description: period.description,
+                classification: period.type,
+                oil_well_name: period.oil_well_name,
+                type: "Glosa",
+              };
+            }
+
+            if (type === "working") {
+              formattedPeriod = {
+                id: period.id,
+                start_hour: period.start_hour,
+                end_hour: period.end_hour,
+                description: period.description,
+                oil_well_name: period.oil_well_name,
+                type: "Operando",
+              };
+            }
+
+            if (type === "DTM") {
+              formattedPeriod = {
+                id: period.id,
+                start_hour: period.start_hour,
+                end_hour: period.end_hour,
+                description: period.description,
+                classification: period.distance,
+                oil_well_name: period.oil_well_name,
+                type: "DTM",
+              };
+            }
             allPeriods.push(formattedPeriod);
           });
         };
 
         // Adicionando os períodos de cada tipo ao array
-        addPeriodsToArray(efficiencyData.gloss_periods, "Glosa");
-        addPeriodsToArray(efficiencyData.repair_periods, "Reparo");
-        addPeriodsToArray(efficiencyData.operating_periods, "Operando");
+        addPeriodsToArray(efficiencyData.gloss_periods, "gloss");
+        addPeriodsToArray(efficiencyData.repair_periods, "repair");
+        addPeriodsToArray(efficiencyData.operating_periods, "working");
         addPeriodsToArray(efficiencyData.dtm_periods, "DTM");
 
         // Imprimindo o array com todos os períodos

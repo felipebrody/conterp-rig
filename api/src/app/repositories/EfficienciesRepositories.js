@@ -46,7 +46,7 @@ class EfficienciesRepositories {
           'start_hour', operating_periods.start_hour,
           'end_hour', operating_periods.end_hour,
           'description', operating_periods.description,
-          'oil_wells_name', oil_wells.name
+          'oil_well_name', oil_wells.name
         )
       FROM operating_periods_details
       JOIN operating_periods ON operating_periods.operating_detail_id = operating_periods_details.id
@@ -61,7 +61,8 @@ class EfficienciesRepositories {
           'start_hour', dtm_periods.start_hour,
           'end_hour', dtm_periods.end_hour,
           'description', dtm_periods.description,
-          'oil_wells_name', oil_wells.name
+          'distance', dtm_periods.distance,
+          'oil_well_name', oil_wells.name
         )
       FROM dtm_details
       JOIN dtm_periods ON dtm_periods.dtm_detail_id = dtm_details.id
@@ -123,7 +124,7 @@ class EfficienciesRepositories {
             'start_hour', operating_periods.start_hour,
             'end_hour', operating_periods.end_hour,
             'description', operating_periods.description,
-            'oil_wells_name', oil_wells.name
+            'oil_well_name', oil_wells.name
           )
         FROM operating_periods_details
         JOIN operating_periods ON operating_periods.operating_detail_id = operating_periods_details.id
@@ -138,7 +139,8 @@ class EfficienciesRepositories {
             'start_hour', dtm_periods.start_hour,
             'end_hour', dtm_periods.end_hour,
             'description', dtm_periods.description,
-            'oil_wells_name', oil_wells.name
+            'distance', dtm_periods.distance,
+            'oil_well_name', oil_wells.name
           )
         FROM dtm_details
         JOIN dtm_periods ON dtm_periods.dtm_detail_id = dtm_details.id
@@ -199,7 +201,7 @@ class EfficienciesRepositories {
           'start_hour', operating_periods.start_hour,
           'end_hour', operating_periods.end_hour,
           'description', operating_periods.description,
-          'oil_wells_name', oil_wells.name
+          'oil_well_name', oil_wells.name
         )
       FROM operating_periods_details
       JOIN operating_periods ON operating_periods.operating_detail_id = operating_periods_details.id
@@ -214,7 +216,8 @@ class EfficienciesRepositories {
           'start_hour', dtm_periods.start_hour,
           'end_hour', dtm_periods.end_hour,
           'description', dtm_periods.description,
-          'oil_wells_name', oil_wells.name
+          'distance', dtm_periods.distance,
+          'oil_well_name', oil_wells.name
         )
       FROM dtm_details
       JOIN dtm_periods ON dtm_periods.dtm_detail_id = dtm_details.id
