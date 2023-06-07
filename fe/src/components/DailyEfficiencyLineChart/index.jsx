@@ -1,132 +1,35 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import EfficienciesServices from "../../services/EfficienciesServices";
+import { useFormatEfficienciesLineChart } from "../../hooks/useFormatEfficienciesLineChart";
 
-const DailyEfficiencyLineChart = ({ isDashboard }) => {
+const DailyEfficiencyLineChart = ({
+  isDashboard,
+  efficiencies,
+  selectedRig,
+}) => {
   const theme = useTheme();
+  const user = useSelector((state) => state.user);
+
+  const [selectedMonth, setSelectedMonth] = useState("June");
+
+  const mappedEfficiencies = useFormatEfficienciesLineChart(
+    efficiencies,
+    selectedMonth
+  );
+
+  console.log(mappedEfficiencies);
+
   const data = [
     {
-      id: "SPT 60",
+      id: selectedRig,
       color: "#1c7b7b",
-      data: [
-        {
-          x: "1",
-          y: 90,
-        },
-        {
-          x: "2",
-          y: 100,
-        },
-        {
-          x: "3",
-          y: 100,
-        },
-        {
-          x: "4",
-          y: 100,
-        },
-        {
-          x: "5",
-          y: 97,
-        },
-        {
-          x: "6",
-          y: 96,
-        },
-        {
-          x: "7",
-          y: 100,
-        },
-        {
-          x: "8",
-          y: 100,
-        },
-        {
-          x: "9",
-          y: 98,
-        },
-        {
-          x: "10",
-          y: 100,
-        },
-        {
-          x: "11",
-          y: 96,
-        },
-        {
-          x: "12",
-          y: 100,
-        },
-        {
-          x: "13",
-          y: 90,
-        },
-        {
-          x: "14",
-          y: 100,
-        },
-        {
-          x: "15",
-          y: 100,
-        },
-        {
-          x: "16",
-          y: 100,
-        },
-        {
-          x: "17",
-          y: 97,
-        },
-        {
-          x: "18",
-          y: 96,
-        },
-        {
-          x: "19",
-          y: 100,
-        },
-        {
-          x: "20",
-          y: 100,
-        },
-        {
-          x: "21",
-          y: 98,
-        },
-        {
-          x: "22",
-          y: 100,
-        },
-        {
-          x: "23",
-          y: 96,
-        },
-        {
-          x: "24",
-          y: 100,
-        },
-        {
-          x: "25",
-          y: 100,
-        },
-        {
-          x: "26",
-          y: 100,
-        },
-        {
-          x: "27",
-          y: 100,
-        },
-        {
-          x: "28",
-          y: 100,
-        },
-        {
-          x: "29",
-          y: 100,
-        },
-      ],
+      data: mappedEfficiencies,
     },
   ];
+
   return (
     <>
       <ResponsiveLine
@@ -169,7 +72,7 @@ const DailyEfficiencyLineChart = ({ isDashboard }) => {
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
-          min: "50",
+          min: "0",
           max: "100",
           stacked: false,
           reverse: false,

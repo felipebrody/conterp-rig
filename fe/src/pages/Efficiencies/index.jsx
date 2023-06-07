@@ -110,7 +110,7 @@ const Efficiencies = () => {
             justifyContent="center"
             backgroundColor="#1c7b7b"
           >
-            <Typography> {efficiency.toFixed(2)}%</Typography>
+            <Typography> {efficiency?.toFixed(2)}%</Typography>
           </Box>
         );
       },

@@ -24,6 +24,7 @@ CREATE TABLE efficiencies (
     available_hours NUMERIC(10,2) NOT NULL,
     rig_id UUID,
     user_id UUID,
+    efficiency NUMERIC(10,2) NOT NULL,
     FOREIGN KEY(rig_id) REFERENCES rigs(id),
     FOREIGN KEY(user_id) REFERENCES users(id)
 );

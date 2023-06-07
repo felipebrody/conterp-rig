@@ -34,11 +34,13 @@ class EfficienciesServices {
     user_id,
     rig_id,
     dtm_periods,
+    efficiency,
   }) {
     const body = {
       date,
       available_hours,
       dtm_hours,
+      efficiency,
       equipment_ratio,
       fluid_ratio,
       gloss_periods,
@@ -48,11 +50,11 @@ class EfficienciesServices {
       rig_id,
       dtm_periods,
     };
-    const efficiency = await this.HttpClient.post(`/efficiencies`, {
+    const efficiencyBody = await this.HttpClient.post(`/efficiencies`, {
       body: body,
     });
 
-    return efficiency;
+    return efficiencyBody;
   }
 }
 

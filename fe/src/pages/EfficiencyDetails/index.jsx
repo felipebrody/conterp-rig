@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { DataGridContainer } from "./styles";
 import { Box } from "@mui/material";
 import Header from "../../components/Header";
+import EfficiencyMapper from "../../services/mappers/EfficiencyMapper";
+import { useFormatDate } from "../../hooks/useFormatDate";
 const EfficiencyDetails = () => {
   const { id } = useParams();
   const [efficiency, setEfficiency] = useState(null);
@@ -50,75 +52,9 @@ const EfficiencyDetails = () => {
       try {
         efficiencyData = await EfficienciesServices.getEfficiencyById(id);
 
-        /*========================================== */
+        const allPeriods = EfficiencyMapper.toDataGrid(efficiencyData);
 
-        let allPeriods = [];
-
-        // Função para adicionar períodos ao array
-        const addPeriodsToArray = (periods, type) => {
-          periods.forEach((period) => {
-            let formattedPeriod = null;
-            if (type === "repair") {
-              formattedPeriod = {
-                id: period.id,
-                start_hour: period.start_hour,
-                end_hour: period.end_hour,
-                description: period.description,
-                classification: period.classification,
-                oil_well_name: period.oil_well_name,
-                type: "Reparo",
-              };
-            }
-
-            if (type === "gloss") {
-              formattedPeriod = {
-                id: period.id,
-                start_hour: period.start_hour,
-                end_hour: period.end_hour,
-                description: period.description,
-                classification: period.type,
-                oil_well_name: period.oil_well_name,
-                type: "Glosa",
-              };
-            }
-
-            if (type === "working") {
-              formattedPeriod = {
-                id: period.id,
-                start_hour: period.start_hour,
-                end_hour: period.end_hour,
-                description: period.description,
-                oil_well_name: period.oil_well_name,
-                type: "Operando",
-              };
-            }
-
-            if (type === "DTM") {
-              formattedPeriod = {
-                id: period.id,
-                start_hour: period.start_hour,
-                end_hour: period.end_hour,
-                description: period.description,
-                classification: period.distance,
-                oil_well_name: period.oil_well_name,
-                type: "DTM",
-              };
-            }
-            allPeriods.push(formattedPeriod);
-          });
-        };
-
-        // Adicionando os períodos de cada tipo ao array
-        addPeriodsToArray(efficiencyData.gloss_periods, "gloss");
-        addPeriodsToArray(efficiencyData.repair_periods, "repair");
-        addPeriodsToArray(efficiencyData.operating_periods, "working");
-        addPeriodsToArray(efficiencyData.dtm_periods, "DTM");
-
-        // Imprimindo o array com todos os períodos
-        console.log("All PEriods =>", allPeriods);
         setRows(allPeriods);
-
-        /*========================================== */
 
         setEfficiency(efficiencyData);
       } catch (error) {
@@ -134,10 +70,14 @@ const EfficiencyDetails = () => {
   }, []);
 
   console.log("Efficiency From Details", efficiency);
+  const date = useFormatDate(efficiency?.date);
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="DETALHES DA OPERAÇÃO" subtitle={efficiency?.date} />
+      <Header
+        title="DETALHES DA OPERAÇÃO"
+        subtitle={`${date} - ${efficiency?.rig_name}`}
+      />
       <DataGridContainer>
         <DataGrid getRowId={(row) => row.id} rows={rows} columns={columns} />
       </DataGridContainer>

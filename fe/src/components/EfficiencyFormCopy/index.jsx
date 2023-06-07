@@ -267,10 +267,6 @@ const EfficiencyForm = () => {
     ]);
   };
 
-  /*   useEffect(() => {
-    console.log("Periods Array =====>", periods);
-  }, [periods]); */
-
   return (
     <Box
       m={isNonMobile ? "1rem" : "0"}

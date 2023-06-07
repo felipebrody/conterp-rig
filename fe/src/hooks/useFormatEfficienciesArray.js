@@ -10,16 +10,13 @@ export const useFormatEfficienciesArray = (efficiencies) => {
     const hasGlossHours = item.gloss_periods.length != 0 ? true : false;
     const hasRepairHours = item.repair_periods.length != 0 ? true : false;
 
-    const efficiency =
-      (parseFloat(availableHours) + parseFloat(dtmHours)) / 24.0;
-
     return {
       ...item,
       date: dataObj,
       hasDtm,
       hasGlossHours,
       hasRepairHours,
-      efficiency: efficiency.toFixed(2) * 100,
+      efficiency: parseFloat(item.efficiency),
     };
   });
 

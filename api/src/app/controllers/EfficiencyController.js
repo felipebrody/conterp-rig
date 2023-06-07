@@ -34,7 +34,7 @@ class EfficiencyController {
     const {
       date,
       available_hours,
-      dtm_hours,
+      efficiency,
       equipment_ratio,
       fluid_ratio,
       gloss_periods,
@@ -74,9 +74,12 @@ class EfficiencyController {
       return response.status(404).json({ error: "Usuário não encontrado." });
     }
 
-    const efficiency = await EfficienciesRepositories.create({
+    console.log("efficineyc", efficiency);
+
+    const efficiencyObj = await EfficienciesRepositories.create({
       date,
       available_hours,
+      efficiency,
       rig_id,
       user_id,
     });
@@ -97,7 +100,7 @@ class EfficiencyController {
 
     if (gloss_periods.length !== 0) {
       const glossDetail = await GlossDetailsRepositories.create({
-        efficiency_id: efficiency.id,
+        efficiency_id: efficiencyObj.id,
       });
 
       await gloss_periods.map(
@@ -139,7 +142,7 @@ class EfficiencyController {
 
     if (repair_periods.length !== 0) {
       const repairDetail = await RepairDetailsRepositories.create({
-        efficiency_id: efficiency.id,
+        efficiency_id: efficiencyObj.id,
       });
 
       await repair_periods.map(
@@ -179,7 +182,7 @@ class EfficiencyController {
     if (working_periods.length !== 0) {
       const operatingPeriodsDetails =
         await OperatingPeriodsDetailsRepositories.create({
-          efficiency_id: efficiency.id,
+          efficiency_id: efficiencyObj.id,
         });
 
       await working_periods.map(
@@ -205,7 +208,7 @@ class EfficiencyController {
 
     if (dtm_periods.length !== 0) {
       const dtmDetails = await DtmDetailsRepositories.create({
-        efficiency_id: efficiency.id,
+        efficiency_id: efficiencyObj.id,
       });
 
       await dtm_periods.map(
@@ -240,7 +243,7 @@ class EfficiencyController {
       await fluid_ratio.map(async (fluid_ratio) => {
         await FluidRatioRepositories.create({
           fluid_ratio,
-          efficiency_id: efficiency.id,
+          efficiency_id: efficiencyObj.id,
         });
       });
     }
@@ -249,101 +252,12 @@ class EfficiencyController {
       await equipment_ratio.map(async (equipment_ratio) => {
         await EquipmentRatioRepositories.create({
           equipment_ratio,
-          efficiency_id: efficiency.id,
+          efficiency_id: efficiencyObj.id,
         });
       });
     }
 
-    return response.status(201).json(efficiency);
-
-    if (has_repair_hours) {
-      const repairDetail = await RepairDetailsRepositories.create({
-        efficiency_id: efficiency.id,
-      });
-
-      await repair_periods.map(
-        async (
-          {
-            end_time_repair,
-            start_time_repair,
-            repair_classification,
-            repair_description,
-          },
-          index
-        ) => {
-          let startTimeString = null;
-          let endTimeString = null;
-
-          let startTimeNumber = null;
-          let endTimeNumber = null;
-
-          startTimeString = start_time_repair.split(":");
-          endTimeString = end_time_repair.split(":");
-
-          startTimeNumber = startTimeString[0];
-          endTimeNumber = endTimeString[0];
-
-          if (startTimeNumber[0] > endTimeNumber[0]) {
-            return response.status(404).json({
-              error: `O horário final não pode ser menor que o inicial! 
-              Período: ${index + 1}`,
-            });
-          }
-
-          if (!repair_classification) {
-            return response.status(404).json({
-              error: `Classifique o Período: ${index + 1}`,
-            });
-          }
-
-          await RepairPeriodsRepositories.create({
-            start_time_repair,
-            end_time_repair,
-            repair_classification,
-            repair_description,
-            repair_detail_id: repairDetail.id,
-          });
-        }
-      );
-    }
-
-    if (dtm_hours) {
-      await DtmDetailsRepositories.create({
-        dtm_hours,
-        dtm_distance,
-        efficiency_id: efficiency.id,
-      });
-    }
-
-    return response.status(201).json(efficiency);
-
-    if (
-      endTimeNumber -
-        startTimeNumber +
-        available_hours +
-        repair_hours +
-        dtm_hours >
-      24
-    ) {
-      return response
-        .status(404)
-        .json({ error: "A soma dos horários não pode ser maior que 24 Horas" });
-    }
-
-    if (
-      endTimeNumber -
-        startTimeNumber +
-        available_hours +
-        repair_hours +
-        dtm_hours <
-      24
-    ) {
-      return response
-        .status(404)
-        .json({ error: "A soma dos horários não pode ser menor que 24 Horas" });
-    }
-
-    response.status(201).json(efficiency);
+    return response.status(201).json(efficiencyObj);
   }
 
   async show(request, response) {
