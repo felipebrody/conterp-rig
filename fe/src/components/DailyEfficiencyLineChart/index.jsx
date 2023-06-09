@@ -9,18 +9,17 @@ const DailyEfficiencyLineChart = ({
   isDashboard,
   efficiencies,
   selectedRig,
+  selectedMonth,
 }) => {
   const theme = useTheme();
   const user = useSelector((state) => state.user);
-
-  const [selectedMonth, setSelectedMonth] = useState("June");
 
   const mappedEfficiencies = useFormatEfficienciesLineChart(
     efficiencies,
     selectedMonth
   );
 
-  console.log(mappedEfficiencies);
+  console.log("Daily Line Mapped Efficiencies", mappedEfficiencies);
 
   const data = [
     {
