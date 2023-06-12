@@ -8,7 +8,7 @@ import { useFormatEfficienciesLineChart } from "../../hooks/useFormatEfficiencie
 const DailyEfficiencyLineChart = ({
   isDashboard,
   efficiencies,
-  selectedRig,
+  selectedRig = "SPT",
   selectedMonth,
 }) => {
   const theme = useTheme();
@@ -16,7 +16,8 @@ const DailyEfficiencyLineChart = ({
 
   const mappedEfficiencies = useFormatEfficienciesLineChart(
     efficiencies,
-    selectedMonth
+    selectedMonth,
+    selectedRig
   );
 
   console.log("Daily Line Mapped Efficiencies", mappedEfficiencies);
@@ -66,7 +67,7 @@ const DailyEfficiencyLineChart = ({
             },
           },
         }}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 50, bottom: 30, left: 60 }}
         colors={{ datum: "color" }}
         xScale={{ type: "point" }}
         yScale={{
@@ -112,12 +113,12 @@ const DailyEfficiencyLineChart = ({
         }}
         pointLabelYOffset={-12}
         useMesh={true}
-        legends={[
+        /* legends={[
           {
             anchor: "bottom-right",
             direction: "column",
             justify: false,
-            translateX: 100,
+            translateX: 0,
             translateY: 0,
             itemsSpacing: 0,
             itemDirection: "left-to-right",
@@ -137,7 +138,7 @@ const DailyEfficiencyLineChart = ({
               },
             ],
           },
-        ]}
+        ]} */
         motionConfig={{
           mass: 1,
           tension: 170,

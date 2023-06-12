@@ -18,6 +18,28 @@ const Efficiencies = () => {
 
   const columns = [
     {
+      field: "rig_name",
+      headerName: "Sonda",
+      flex: 0.5,
+      headerAlign: "center",
+      align: "center",
+      type: "number",
+      renderCell: ({ row: { rig_name } }) => {
+        return (
+          <Box
+            width="40%"
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor="#1c7b7b"
+          >
+            <Typography> {rig_name}</Typography>
+          </Box>
+        );
+      },
+    },
+    {
       field: "date",
       headerName: "Data",
       headerAlign: "center",
@@ -130,11 +152,7 @@ const Efficiencies = () => {
             justifyContent="center"
           >
             <Link to={`/user/list-efficiencies/details/${efficiency_id}`}>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => handleSeeDetailsClick(efficiency_id)}
-              >
+              <Button variant="contained" color="success">
                 <Typography color="#fff"> Ver Mais</Typography>
               </Button>
             </Link>
@@ -144,10 +162,6 @@ const Efficiencies = () => {
     },
   ];
 
-  const handleSeeDetailsClick = (id) => {
-    console.log(id);
-  };
-
   const user = useSelector((state) => state.user);
   console.log("Efficiencies from Database ===>", efficiencies);
   const formattedItems = useFormatEfficienciesArray(efficiencies);
@@ -155,17 +169,6 @@ const Efficiencies = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const theme = useTheme();
-
-  function getTotalHoursInMonth() {
-    const currentDate = new Date();
-    const lastDayOfMonth = currentDate.getDate() - 1;
-    const totalHours = lastDayOfMonth * 24;
-
-    return totalHours;
-  }
-
-  const totalHoursInMonth = getTotalHoursInMonth();
-  console.log(totalHoursInMonth);
 
   console.log("formatedd items ===>", formattedItems);
 

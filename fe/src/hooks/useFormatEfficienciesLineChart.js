@@ -1,5 +1,9 @@
 import { months } from "../utils/monthsArray";
-export const useFormatEfficienciesLineChart = (efficiencies, selectedMonth) => {
+export const useFormatEfficienciesLineChart = (
+  efficiencies,
+  selectedMonth,
+  selectedRig
+) => {
   if (efficiencies) {
     let mappedEfficiencies = [];
     efficiencies.map((efficiency) => {
@@ -10,12 +14,22 @@ export const useFormatEfficienciesLineChart = (efficiencies, selectedMonth) => {
       const month = dateObj.getMonth();
       const year = dateObj.getFullYear();
 
-      if (months[dateObj.getMonth()] === selectedMonth) {
+      if (
+        months[dateObj.getMonth()] === selectedMonth &&
+        selectedRig === efficiency.rig_name
+      ) {
         mappedEfficiencies.push({
           x: `${day}/${month + 1}`,
           y: efficiency.efficiency,
         });
       }
+    });
+
+    mappedEfficiencies.sort((a, b) => {
+      const dayA = parseInt(a.x.split("/")[0]);
+      const dayB = parseInt(b.x.split("/")[0]);
+
+      return dayA - dayB;
     });
 
     return mappedEfficiencies;
