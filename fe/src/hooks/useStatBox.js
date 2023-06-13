@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { months } from "../utils/monthsArray";
 import { monthsDays } from "../utils/monthsDaysArray";
 
-export const useStatBox = (efficiencies, selectedMonth) => {
+export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
   console.log("Efficiencies", efficiencies);
   const [statBoxOne, setStatBoxOne] = useState({});
   const [statBoxTwo, setStatBoxTwo] = useState(0);
@@ -28,11 +28,15 @@ export const useStatBox = (efficiencies, selectedMonth) => {
     if (efficiencies) {
       let hoursAvailable = 0;
       let glossHours = 0;
-      efficiencies.map(({ available_hours, date }) => {
+      efficiencies.map(({ available_hours, date, rig_name }) => {
         const dateObj = new Date(date);
-        //dateObj.setHours(12);
-        console.log(dateObj.getUTCMonth());
-        if (dateObj.getUTCMonth() === months.indexOf(selectedMonth)) {
+
+        console.log("selected Rig", selectedRig);
+        console.log("Rig Name", rig_name);
+        if (
+          dateObj.getUTCMonth() === months.indexOf(selectedMonth) &&
+          selectedRig === rig_name
+        ) {
           hoursAvailable += parseFloat(available_hours);
           glossHours += parseFloat(24 - available_hours);
           return { available_hours, date };
@@ -56,7 +60,7 @@ export const useStatBox = (efficiencies, selectedMonth) => {
         hours: glossHours.toFixed(2),
       });
     }
-  }, [selectedMonth, efficiencies]);
+  }, [selectedMonth, efficiencies, selectedRig]);
 
   return {
     statBoxOne,

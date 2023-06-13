@@ -1,3 +1,4 @@
+import { months } from "../utils/monthsArray";
 export const useFormatEfficienciesArray = (efficiencies) => {
   const formatedItems = efficiencies.map((item) => {
     const dataObj = new Date(item?.date);
@@ -9,10 +10,15 @@ export const useFormatEfficienciesArray = (efficiencies) => {
     const hasDtm = item.dtm_periods.length != 0 ? true : false;
     const hasGlossHours = item.gloss_periods.length != 0 ? true : false;
     const hasRepairHours = item.repair_periods.length != 0 ? true : false;
+    const day = dataObj.getDate();
+    const month = months[dataObj.getMonth()];
+    const year = dataObj.getFullYear();
+    const dateString = `${day} de ${month} ${year}`;
 
     return {
       ...item,
       date: dataObj,
+      dateString,
       hasDtm,
       hasGlossHours,
       hasRepairHours,

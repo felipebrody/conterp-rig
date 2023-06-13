@@ -9,6 +9,8 @@ import DataThresholdingIcon from "@mui/icons-material/DataThresholding";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 
+import RigsServices from "../../services/RigsServices";
+
 import DailyEfficiencyLineChart from "../../components/DailyEfficiencyLineChart";
 import MonthlyEfficiencyPieChart from "../../components/MonthlyEfficiencyPieChart";
 import { months } from "../../utils/monthsArray";
@@ -28,28 +30,42 @@ import {
 
 import StatBox from "../../components/StatBox";
 import { useStatBox } from "../../hooks/useStatBox";
+import { useAuth } from "../../hooks/useAuth";
 
 const UserHome = () => {
-  const theme = useTheme();
-  const isNonMobile = useMediaQuery("(min-width:800px)");
-  const [efficiencies, setEfficiencies] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState("Junho");
-
   const user = useSelector((state) => state.user);
+  const { isUserAdm } = useAuth();
+  const theme = useTheme();
 
-  const getRig = () => {
-    if (user?.access_level === "adm") {
-      return "SPT 111";
+  const getRig = (rigs) => {
+    if (isUserAdm) {
+      return rigs[0]?.name;
     } else {
       return user?.rig_name;
     }
   };
 
+  const isNonMobile = useMediaQuery("(min-width:800px)");
+  const [efficiencies, setEfficiencies] = useState([]);
+
+  const [filteredEfficiencies, setFilteredEfficiencies] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState("Junho");
+  const [rigs, setRigs] = useState([]);
+  const [selectedRig, setSelectedRig] = useState(getRig(rigs));
+  const [isLoading, setIsLoading] = useState(true);
+
+  console.log("Rigs in userHome", rigs);
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
   };
 
-  const [selectedRig, setSelectedRig] = useState(getRig());
+  const handleRigChange = (event) => {
+    const newEfficiencies = efficiencies.filter((efficiency) => {
+      return efficiency.rig_name === event.target.value;
+    });
+    setFilteredEfficiencies(newEfficiencies);
+    setSelectedRig(event.target.value);
+  };
 
   useEffect(() => {
     const loadRigEfficiencies = async () => {
@@ -60,16 +76,25 @@ const UserHome = () => {
           : await EfficienciesServices.listEfficiencies();
         setEfficiencies(efficienciesData);
 
+        const rigs = await RigsServices.listRigs();
+        setRigs(rigs);
+
         console.log("eeficiency coming from user home", efficienciesData);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     loadRigEfficiencies();
   }, []);
 
-  const { statBoxOne, statBoxTwo } = useStatBox(efficiencies, selectedMonth);
+  const { statBoxOne, statBoxTwo } = useStatBox(
+    efficiencies,
+    selectedMonth,
+    selectedRig
+  );
 
   return (
     <>
@@ -84,52 +109,54 @@ const UserHome = () => {
           gap="1rem"
           alignItems="center"
         >
-          <Box
-            display="flex"
-            justifyContent={isNonMobile ? "flex-end" : "flex-start"}
-            gap="1rem"
-            alignItems="center"
-            width={isNonMobile ? "35%" : "50%"}
-          >
-            <InputLabel id="month" sx={{ color: "#000" }}>
-              Mês 1:
-            </InputLabel>
-            <Select
-              labelId="month"
-              label="Selecione o Mês"
-              input={<StyledInputBase />}
-              onChange={(event) => handleMonthChange(event)}
-              value={selectedMonth}
-              size="small"
-              sx={{
-                margin: "auto 0",
-                borderRadius: "1rem",
-                outline: "none",
-                backgroundColor: theme.palette.primary[500],
-                width: "50%",
-              }}
+          {isUserAdm && (
+            <Box
+              display="flex"
+              justifyContent={isNonMobile ? "flex-end" : "center"}
+              gap="1rem"
+              alignItems="center"
+              width={isNonMobile ? "25%" : "50%"}
             >
-              {months.map((month) => (
-                <MenuItem value={month} key={month}>
-                  {month}
-                </MenuItem>
-              ))}
-            </Select>
-          </Box>
+              <InputLabel id="month" sx={{ color: "#000" }}>
+                SPT:
+              </InputLabel>
+              <Select
+                labelId="month"
+                label=" SPT:"
+                input={<StyledInputBase />}
+                onChange={(event) => handleRigChange(event)}
+                value={selectedRig}
+                size="small"
+                sx={{
+                  margin: "auto 0",
+                  borderRadius: "1rem",
+                  outline: "none",
+                  backgroundColor: theme.palette.primary[500],
+                  width: "50%",
+                }}
+              >
+                {rigs.map(({ id, name }) => (
+                  <MenuItem value={name} key={id}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+          )}
+
           <Box
-            border="1px solid blue"
             display="flex"
-            justifyContent="center"
+            justifyContent={isNonMobile ? "flex-end" : "center"}
             gap="1rem"
             alignItems="center"
             width={isNonMobile ? "25%" : "50%"}
           >
             <InputLabel id="month" sx={{ color: "#000" }}>
-              Mês2 :
+              Mês :
             </InputLabel>
             <Select
               labelId="month"
-              label="Selecione o Mês"
+              label="Mês :"
               input={<StyledInputBase />}
               onChange={(event) => handleMonthChange(event)}
               value={selectedMonth}
@@ -245,8 +272,9 @@ const UserHome = () => {
             gridRow="span 3"
             backgroundColor={theme.palette.grey[400]}
             borderRadius=".25rem"
+            overflow="auto"
           >
-            <ListEfficiencies efficiencies={efficiencies} />
+            <ListEfficiencies efficiencies={filteredEfficiencies} />
           </Box>
         </Box>
       </Box>

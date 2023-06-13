@@ -2,7 +2,8 @@ export const useFormatDate = (date) => {
   const dateObj = new Date(date);
   dateObj.setHours(dateObj.getHours() + 12);
 
-  console.log("Date no hook", date);
+  console.log("Efficiencies ======>", date);
+
   if (!date) {
     return "";
   }

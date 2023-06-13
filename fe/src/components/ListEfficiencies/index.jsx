@@ -1,8 +1,11 @@
 import { Typography, Box, useTheme, Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useFormatDate } from "../../hooks/useFormatDate";
+import { useFormatEfficienciesArray } from "../../hooks/useFormatEfficienciesArray";
 
 const ListEfficiencies = ({ efficiencies }) => {
   const theme = useTheme();
+  const formattedEfficiencies = useFormatEfficienciesArray(efficiencies);
 
   return (
     <>
@@ -22,7 +25,7 @@ const ListEfficiencies = ({ efficiencies }) => {
           Útimos Registros
         </Typography>
       </Box>
-      {efficiencies.slice(0, 6).map((efficiency) => (
+      {formattedEfficiencies.map((efficiency) => (
         <Box
           key={efficiency.id}
           display="flex"
@@ -31,18 +34,20 @@ const ListEfficiencies = ({ efficiencies }) => {
           borderBottom={`4px solid ${theme.palette.primary[300]}`}
           padding=".5rem .25rem"
         >
-          <Typography variant="h5" fontWeight="600">
-            {efficiency.rig_name}
-          </Typography>
+          <Box>
+            <Typography variant="h5" fontWeight="600">
+              {efficiency.dateString}
+            </Typography>
 
-          <Box
-            backgroundColor={theme.palette.primary[500]}
-            p="5px 10px"
-            borderRadius="4px"
-            maxHeight="100%"
-            overflow="auto"
-          >
-            {efficiency.efficiency}
+            <Box
+              backgroundColor={theme.palette.primary[500]}
+              p="5px 10px"
+              borderRadius="4px"
+              maxHeight="100%"
+              overflow="auto"
+            >
+              {efficiency.efficiency}
+            </Box>
           </Box>
 
           <Box display="flex" justifyContent="center">
