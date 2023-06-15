@@ -122,7 +122,7 @@ const EfficiencyForm = () => {
       navigate(`/user/home`);
     } catch (error) {
       console.log("caiu dentro do try/catch ### error");
-
+      console.log(error);
       toast({
         type: "error",
         text: error.message,
@@ -243,7 +243,7 @@ const EfficiencyForm = () => {
       ...periods,
       {
         id: uuidv4(),
-        startHour: "",
+        startHour: periods[periods.length - 1].endHour,
         endHour: "",
         type: "",
         oilWell: "",

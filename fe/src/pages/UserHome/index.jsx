@@ -42,8 +42,6 @@ import { months } from "../../utils/monthsArray";
 import { useStatBox } from "../../hooks/useStatBox";
 import { useAuth } from "../../hooks/useAuth";
 
-
-
 const UserHome = () => {
   const user = useSelector((state) => state.user);
   const { isUserAdm } = useAuth();
@@ -107,7 +105,7 @@ const UserHome = () => {
 
   return (
     <>
-      <Header title="User Home Page" subtitle="Página de início do usuário." />
+      <Header title="DASHBOARD" subtitle="Página de início do usuário." />
 
       <Box height="90%" width="100%" padding="0 2rem">
         <Box

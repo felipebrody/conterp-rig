@@ -74,16 +74,6 @@ class EfficiencyController {
       return response.status(404).json({ error: "Usuário não encontrado." });
     }
 
-    console.log("efficineyc", efficiency);
-
-    const efficiencyObj = await EfficienciesRepositories.create({
-      date,
-      available_hours,
-      efficiency,
-      rig_id,
-      user_id,
-    });
-
     const verifyPeriodsHours = (startTime, endTime) => {
       let startTimeString = startTime.split(":");
       let endTimeString = endTime.split(":");
@@ -98,46 +88,133 @@ class EfficiencyController {
       }
     };
 
-    if (gloss_periods.length !== 0) {
-      const glossDetail = await GlossDetailsRepositories.create({
-        efficiency_id: efficiencyObj.id,
-      });
+    //teste======================//
 
-      await gloss_periods.map(
-        async (
-          {
-            start_time,
-            end_time,
-            gloss_classification,
-            oil_well_id,
-            description,
-          },
-          index
-        ) => {
+    if (gloss_periods.length !== 0) {
+      try {
+        for (const {
+          start_time,
+          end_time,
+          gloss_classification,
+          oil_well_id,
+        } of gloss_periods) {
           if (!gloss_classification) {
-            return response.status(404).json({
-              error: `Classifique o Período: ${index + 1}`,
-            });
+            throw new Error(`Classifique o Período`);
+          }
+
+          if (!oil_well_id) {
+            throw new Error(`Período sem poço selecionado`);
           }
 
           const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
 
           if (verifiedPeriods === false) {
-            return response.status(404).json({
-              error: `O horário final não pode ser menor que o inicial`,
-            });
+            throw new Error(`O horário final não pode ser menor que o inicial`);
+          }
+        }
+      } catch (error) {
+        return response.status(404).json({ error: error.message });
+      }
+    }
+
+    //========================================
+
+    if (repair_periods.length !== 0) {
+      try {
+        for (const {
+          start_time,
+          end_time,
+          repair_classification,
+          oil_well_id,
+        } of repair_periods) {
+          if (!repair_classification) {
+            throw new Error(`Classifique o Período`);
           }
 
-          await GlossPeriodsRepositories.create({
-            start_time,
-            end_time,
-            gloss_classification,
-            oil_well_id,
-            description,
-            gloss_detail_id: glossDetail.id,
-          });
+          if (!oil_well_id) {
+            throw new Error(`Período sem poço selecionado`);
+          }
+
+          const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
+
+          if (verifiedPeriods === false) {
+            throw new Error(`O horário final não pode ser menor que o inicial`);
+          }
         }
-      );
+      } catch (error) {
+        return response.status(404).json({ error: error.message });
+      }
+    }
+
+    if (working_periods.length !== 0) {
+      try {
+        for (const { start_time, end_time, oil_well_id } of working_periods) {
+          if (!oil_well_id) {
+            throw new Error(`Período sem poço selecionado`);
+          }
+
+          const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
+
+          if (verifiedPeriods === false) {
+            throw new Error(`O horário final não pode ser menor que o inicial`);
+          }
+        }
+      } catch (error) {
+        return response.status(404).json({ error: error.message });
+      }
+    }
+
+    if (dtm_periods.length !== 0) {
+      try {
+        for (const { start_time, end_time, oil_well_id } of dtm_periods) {
+          if (!repair_classification) {
+            throw new Error(`Classifique o Período`);
+          }
+
+          if (!oil_well_id) {
+            throw new Error(`Período sem poço selecionado`);
+          }
+
+          const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
+
+          if (verifiedPeriods === false) {
+            throw new Error(`O horário final não pode ser menor que o inicial`);
+          }
+        }
+      } catch (error) {
+        return response.status(404).json({ error: error.message });
+      }
+    }
+
+    const efficiencyObj = await EfficienciesRepositories.create({
+      date,
+      available_hours,
+      efficiency,
+      rig_id,
+      user_id,
+    });
+
+    if (gloss_periods.length !== 0) {
+      const glossDetail = await GlossDetailsRepositories.create({
+        efficiency_id: efficiencyObj.id,
+      });
+
+      for (const {
+        start_time,
+        end_time,
+        gloss_classification,
+        oil_well_id,
+        description,
+      } of gloss_periods) {
+        await GlossPeriodsRepositories.create({
+          start_time,
+          end_time,
+          gloss_classification,
+          oil_well_id,
+          description,
+          gloss_detail_id: glossDetail.id,
+        });
+      }
     }
 
     if (repair_periods.length !== 0) {
@@ -145,38 +222,22 @@ class EfficiencyController {
         efficiency_id: efficiencyObj.id,
       });
 
-      await repair_periods.map(
-        async ({
+      for (const {
+        start_time,
+        end_time,
+        description,
+        repair_classification,
+        oil_well_id,
+      } of repair_periods) {
+        await RepairPeriodsRepositories.create({
           start_time,
           end_time,
           description,
           repair_classification,
           oil_well_id,
-        }) => {
-          if (!repair_classification) {
-            return response.status(404).json({
-              error: `Classifique o Período: ${index + 1}`,
-            });
-          }
-
-          const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
-
-          if (verifiedPeriods === false) {
-            return response.status(404).json({
-              error: `O horário final não pode ser menor que o inicial`,
-            });
-          }
-
-          await RepairPeriodsRepositories.create({
-            start_time,
-            end_time,
-            description,
-            repair_classification,
-            oil_well_id,
-            repair_detail_id: repairDetail.id,
-          });
-        }
-      );
+          repair_detail_id: repairDetail.id,
+        });
+      }
     }
 
     if (working_periods.length !== 0) {
@@ -185,25 +246,20 @@ class EfficiencyController {
           efficiency_id: efficiencyObj.id,
         });
 
-      await working_periods.map(
-        async ({ start_time, end_time, description, oil_well_id }) => {
-          const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
-
-          if (verifiedPeriods === false) {
-            return response.status(404).json({
-              error: `O horário final não pode ser menor que o inicial`,
-            });
-          }
-
-          await OperatingPeriodsRepositories.create({
-            start_time,
-            end_time,
-            description,
-            oil_well_id,
-            operating_detail_id: operatingPeriodsDetails.id,
-          });
-        }
-      );
+      for (const {
+        start_time,
+        end_time,
+        description,
+        oil_well_id,
+      } of working_periods) {
+        await OperatingPeriodsRepositories.create({
+          start_time,
+          end_time,
+          description,
+          oil_well_id,
+          operating_detail_id: operatingPeriodsDetails.id,
+        });
+      }
     }
 
     if (dtm_periods.length !== 0) {
@@ -211,50 +267,40 @@ class EfficiencyController {
         efficiency_id: efficiencyObj.id,
       });
 
-      await dtm_periods.map(
-        async ({
+      for (const {
+        start_time,
+        end_time,
+        description,
+        oil_well_id,
+        dtm_distance,
+      } of dtm_periods) {
+        await DtmPeriodsRepositories.create({
           start_time,
           end_time,
           description,
           oil_well_id,
           dtm_distance,
-        }) => {
-          const verifiedPeriods = verifyPeriodsHours(start_time, end_time);
-
-          if (verifiedPeriods === false) {
-            return response.status(404).json({
-              error: `O horário final não pode ser menor que o inicial`,
-            });
-          }
-
-          await DtmPeriodsRepositories.create({
-            start_time,
-            end_time,
-            description,
-            oil_well_id,
-            dtm_distance,
-            dtm_detail_id: dtmDetails.id,
-          });
-        }
-      );
+          dtm_detail_id: dtmDetails.id,
+        });
+      }
     }
 
     if (fluid_ratio) {
-      await fluid_ratio.map(async (fluid_ratio) => {
+      for (const ratio of fluid_ratio) {
         await FluidRatioRepositories.create({
-          fluid_ratio,
+          fluid_ratio: ratio.fluid_ratio,
           efficiency_id: efficiencyObj.id,
         });
-      });
+      }
     }
 
     if (equipment_ratio) {
-      await equipment_ratio.map(async (equipment_ratio) => {
+      for (const ratio of equipment_ratio) {
         await EquipmentRatioRepositories.create({
-          equipment_ratio,
+          equipment_ratio: ratio.equipment_ratio,
           efficiency_id: efficiencyObj.id,
         });
-      });
+      }
     }
 
     return response.status(201).json(efficiencyObj);
