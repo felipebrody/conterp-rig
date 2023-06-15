@@ -1,20 +1,11 @@
+//React / Redux / Router
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import EfficienciesServices from "../../services/EfficienciesServices";
-import Header from "../../components/Header";
-import ListEfficiencies from "../../components/ListEfficiencies";
-import PercentIcon from "@mui/icons-material/Percent";
-import DataUsageIcon from "@mui/icons-material/DataUsage";
-import DataThresholdingIcon from "@mui/icons-material/DataThresholding";
-import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
-import EngineeringIcon from "@mui/icons-material/Engineering";
 
-import RigsServices from "../../services/RigsServices";
-
-import DailyEfficiencyLineChart from "../../components/DailyEfficiencyLineChart";
-import MonthlyEfficiencyPieChart from "../../components/MonthlyEfficiencyPieChart";
-import { months } from "../../utils/monthsArray";
+//Styles
 import { StyledInputBase } from "./styles";
+
+//MUI
 import {
   Box,
   Button,
@@ -27,10 +18,31 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
+import PercentIcon from "@mui/icons-material/Percent";
+import DataUsageIcon from "@mui/icons-material/DataUsage";
+import DataThresholdingIcon from "@mui/icons-material/DataThresholding";
+import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import EngineeringIcon from "@mui/icons-material/Engineering";
 
+//Components
+import Header from "../../components/Header";
+import ListEfficiencies from "../../components/ListEfficiencies";
+import DailyEfficiencyLineChart from "../../components/DailyEfficiencyLineChart";
+import MonthlyEfficiencyPieChart from "../../components/MonthlyEfficiencyPieChart";
 import StatBox from "../../components/StatBox";
+
+//Services
+import EfficienciesServices from "../../services/EfficienciesServices";
+import RigsServices from "../../services/RigsServices";
+
+//Utils
+import { months } from "../../utils/monthsArray";
+
+//Hooks
 import { useStatBox } from "../../hooks/useStatBox";
 import { useAuth } from "../../hooks/useAuth";
+
+
 
 const UserHome = () => {
   const user = useSelector((state) => state.user);
