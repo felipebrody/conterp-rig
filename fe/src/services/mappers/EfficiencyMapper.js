@@ -4,8 +4,6 @@ class EfficiencyMapper {
   toDomain(persistenceEfficiencyPeriods, date, user) {
     const toDatabase = persistenceEfficiencyPeriods.reduce(
       (acc, period, index) => {
-        console.log("acc", acc);
-
         //Transforma as horas em minutos
 
         //Hora
@@ -19,8 +17,6 @@ class EfficiencyMapper {
         } else {
           endHourInMinutes = period.endHour.$H * 60 + period.endHour.$m;
         }
-
-        console.log("period.equipmentRatio", period.equipmentRatio);
 
         if (period.equipmentRatio) {
           acc["equipment_ratio"].push(period.equipmentRatio);
@@ -191,9 +187,6 @@ class EfficiencyMapper {
     addPeriodsToArray(efficiencyData.repair_periods, "repair");
     addPeriodsToArray(efficiencyData.operating_periods, "working");
     addPeriodsToArray(efficiencyData.dtm_periods, "DTM");
-
-    // Imprimindo o array com todos os períodos
-    console.log("All PEriods =>", allPeriods);
 
     return allPeriods;
   }

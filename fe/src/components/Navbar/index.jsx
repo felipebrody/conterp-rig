@@ -47,8 +47,6 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   const user = userState ? userState : {};
 
-  console.log("Object User in Store =>", user);
-
   const handleChangeMode = () => {
     dispatch(setMode());
   };

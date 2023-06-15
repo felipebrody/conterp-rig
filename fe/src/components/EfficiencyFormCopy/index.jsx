@@ -84,16 +84,11 @@ const EfficiencyForm = () => {
   const [isLoadingOilWells, setIsLoadingOilWells] = useState(false);
 
   useEffect(() => {
-    console.log("renderizou");
-  }, []);
-
-  useEffect(() => {
     const loadRigs = async () => {
       setIsLoadingOilWells(true);
       try {
         const response = await OilWellsServices.listOilWells();
         setOilWells(response);
-        console.log("rigs ===>", oilWells);
       } catch (error) {
         toast({
           type: "error",
@@ -112,11 +107,7 @@ const EfficiencyForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(periods, date);
-
     const result = EfficiencyMapper.toDomain(periods, date, user);
-
-    console.log("Resultado do Método toDomain ===>", result);
 
     setIsLoading(true);
 
@@ -162,7 +153,6 @@ const EfficiencyForm = () => {
   };
 
   const handleTypeChange = (id, event) => {
-    console.log("value", event);
     const newPeriods = periods.map((period) => {
       return period.id === id
         ? { ...period, type: event.target.value }

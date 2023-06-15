@@ -20,8 +20,6 @@ const DailyEfficiencyLineChart = ({
     selectedRig
   );
 
-  console.log("Daily Line Mapped Efficiencies", mappedEfficiencies);
-
   const data = [
     {
       id: selectedRig,

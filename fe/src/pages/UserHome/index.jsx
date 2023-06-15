@@ -37,12 +37,12 @@ const UserHome = () => {
   const { isUserAdm } = useAuth();
   const theme = useTheme();
 
-  const getRig = (rigs) => {
+  const getRig = () => {
     if (isUserAdm) {
-      return rigs[0]?.name;
-    } else {
-      return user?.rig_name;
+      return "";
     }
+
+    return user?.rig_name;
   };
 
   const isNonMobile = useMediaQuery("(min-width:800px)");
@@ -51,10 +51,9 @@ const UserHome = () => {
   const [filteredEfficiencies, setFilteredEfficiencies] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState("Junho");
   const [rigs, setRigs] = useState([]);
-  const [selectedRig, setSelectedRig] = useState(getRig(rigs));
+  const [selectedRig, setSelectedRig] = useState(getRig());
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log("Rigs in userHome", rigs);
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
   };
@@ -78,8 +77,6 @@ const UserHome = () => {
 
         const rigs = await RigsServices.listRigs();
         setRigs(rigs);
-
-        console.log("eeficiency coming from user home", efficienciesData);
       } catch (error) {
         console.log(error);
       } finally {
@@ -88,9 +85,9 @@ const UserHome = () => {
     };
 
     loadRigEfficiencies();
-  }, []);
+  }, [selectedRig]);
 
-  const { statBoxOne, statBoxTwo } = useStatBox(
+  const { statBoxOne, statBoxTwo, statBoxThree } = useStatBox(
     efficiencies,
     selectedMonth,
     selectedRig
@@ -232,10 +229,10 @@ const UserHome = () => {
           >
             <StatBox
               icon={<DataThresholdingIcon />}
-              title={`${statBoxOne}%`}
-              subtitle="Eficiência proporcional ao mês"
-              percentage="+12%"
-              progress={statBoxOne / 100}
+              title={` DTMs: ${statBoxThree.totalDtms}`}
+              subtitle="Quantidade de DTMs no mês"
+              percentage=""
+              progress={0}
             />
           </Box>
           <Box
@@ -247,10 +244,11 @@ const UserHome = () => {
             justifyContent="center"
           >
             <StatBox
-              title={`${statBoxOne}%`}
-              subtitle="Eficiência proporcional ao mês"
-              percentage="+12%"
-              progress={statBoxOne / 100}
+              icon={<DataThresholdingIcon />}
+              title={`Movimentações: ${statBoxThree.totalDtms}`}
+              subtitle="Movimentações no mês"
+              percentage=""
+              progress={0}
             />
           </Box>
           <Box
@@ -274,7 +272,9 @@ const UserHome = () => {
             borderRadius=".25rem"
             overflow="auto"
           >
-            <ListEfficiencies efficiencies={filteredEfficiencies} />
+            <ListEfficiencies
+              efficiencies={isUserAdm ? filteredEfficiencies : efficiencies}
+            />
           </Box>
         </Box>
       </Box>

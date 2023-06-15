@@ -163,14 +163,12 @@ const Efficiencies = () => {
   ];
 
   const user = useSelector((state) => state.user);
-  console.log("Efficiencies from Database ===>", efficiencies);
+
   const formattedItems = useFormatEfficienciesArray(efficiencies);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const theme = useTheme();
-
-  console.log("formatedd items ===>", formattedItems);
 
   useEffect(() => {
     setIsLoading(true);

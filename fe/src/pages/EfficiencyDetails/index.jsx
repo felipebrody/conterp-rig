@@ -69,7 +69,6 @@ const EfficiencyDetails = () => {
     loadEfficiency();
   }, []);
 
-  console.log("Efficiency From Details", efficiency);
   const date = useFormatDate(efficiency?.date);
 
   return (

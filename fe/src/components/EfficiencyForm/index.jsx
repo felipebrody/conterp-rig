@@ -130,7 +130,6 @@ const EfficiencyForm = () => {
           type: "error",
           text: "Erro ao carregar os Poços!",
         });
-        console.log(error);
       } finally {
         setIsLoadingOilWells(false);
       }
@@ -183,8 +182,6 @@ const EfficiencyForm = () => {
 
       navigate(`/user/home`);
     } catch (error) {
-      console.log("caiu dentro do try/catch ### error");
-
       toast({
         type: "error",
         text: error.message,

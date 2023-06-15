@@ -3,9 +3,9 @@ import { months } from "../utils/monthsArray";
 import { monthsDays } from "../utils/monthsDaysArray";
 
 export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
-  console.log("Efficiencies", efficiencies);
   const [statBoxOne, setStatBoxOne] = useState({});
-  const [statBoxTwo, setStatBoxTwo] = useState(0);
+  const [statBoxTwo, setStatBoxTwo] = useState({});
+  const [statBoxThree, setStatBoxThree] = useState({});
 
   useEffect(() => {
     function getTotalHoursInMonth() {
@@ -28,22 +28,21 @@ export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
     if (efficiencies) {
       let hoursAvailable = 0;
       let glossHours = 0;
-      efficiencies.map(({ available_hours, date, rig_name }) => {
+      let totalDtms = 0;
+
+      efficiencies.map(({ available_hours, date, rig_name, dtm_periods }) => {
         const dateObj = new Date(date);
 
-        console.log("selected Rig", selectedRig);
-        console.log("Rig Name", rig_name);
         if (
           dateObj.getUTCMonth() === months.indexOf(selectedMonth) &&
           selectedRig === rig_name
         ) {
+          totalDtms += dtm_periods.length;
           hoursAvailable += parseFloat(available_hours);
           glossHours += parseFloat(24 - available_hours);
           return { available_hours, date };
         }
       });
-
-      console.log("Horas disponivel no mes selecionado ==>", hoursAvailable);
 
       const totalHoursInMonth = getTotalHoursInMonth();
       //setInforOne(totalHoursInMonth);
@@ -59,11 +58,15 @@ export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
         percentage: glossInMonth.toFixed(0),
         hours: glossHours.toFixed(2),
       });
+      setStatBoxThree({
+        totalDtms: totalDtms,
+      });
     }
   }, [selectedMonth, efficiencies, selectedRig]);
 
   return {
     statBoxOne,
     statBoxTwo,
+    statBoxThree,
   };
 };

@@ -8,8 +8,6 @@ class OilWellsServices {
   async listOilWells() {
     const rigs = await this.HttpClient.get(`/oil-well`);
 
-    console.log("Poços no http", rigs);
-
     return rigs;
   }
 }

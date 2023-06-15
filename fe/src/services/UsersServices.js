@@ -8,13 +8,10 @@ class UsersServices {
   async listUsers(orderBy = "asc") {
     const users = await this.HttpClient.get(`/users?orderBy=${orderBy}`);
 
-    console.log(users);
-
     return users;
   }
 
   async createUser(user) {
-    console.log("user HHPT", user);
     const body = {
       name: user.name,
       email: user.email,
