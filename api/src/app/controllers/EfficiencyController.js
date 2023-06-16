@@ -166,8 +166,13 @@ class EfficiencyController {
 
     if (dtm_periods.length !== 0) {
       try {
-        for (const { start_time, end_time, oil_well_id } of dtm_periods) {
-          if (!repair_classification) {
+        for (const {
+          start_time,
+          end_time,
+          oil_well_id,
+          dtm_distance,
+        } of dtm_periods) {
+          if (!dtm_distance) {
             throw new Error(`Classifique o Período`);
           }
 

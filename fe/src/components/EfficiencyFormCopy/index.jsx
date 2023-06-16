@@ -24,17 +24,10 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import {
   DatePickerContainer,
   TimerPickerContainer,
-  GlossHoursContainer,
   StyledInputBase,
   StyledSwitch,
   StyledFormControl,
-  SwitchContainer,
-  DTMHoursContainer,
-  RatioContainer,
-  GlossPeriodContainer,
-  GlossDetailContainer,
 } from "./styles";
-import "dayjs/locale/pt-br";
 
 import toast from "../../utils/toast";
 import {
@@ -51,7 +44,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { StyledTextField } from "../StyledTextField";
 import EfficienciesServices from "../../services/EfficienciesServices";
 import { useNavigate } from "react-router-dom";
-import FlexBetween from "../FlexBetween";
+
 import EfficiencyMapper from "../../services/mappers/EfficiencyMapper";
 
 const EfficiencyForm = () => {
@@ -78,10 +71,12 @@ const EfficiencyForm = () => {
     },
   ]);
 
-  const [hasRepairHours, setHasRepairHours] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [oilWells, setOilWells] = useState([]);
-  const [isLoadingOilWells, setIsLoadingOilWells] = useState(false);
+  const [isLoadingOilWells, setIsLoadingOilWells] = useState(true);
+  const [minutes, setMinutes] = useState(0);
+
+  const isFormValid = !isLoadingOilWells && minutes === 1440 && date;
 
   useEffect(() => {
     const loadRigs = async () => {
@@ -112,7 +107,7 @@ const EfficiencyForm = () => {
     setIsLoading(true);
 
     try {
-      const efficiency = await EfficienciesServices.createEfficiency(result);
+      await EfficienciesServices.createEfficiency(result);
 
       toast({
         type: "default",
@@ -256,6 +251,25 @@ const EfficiencyForm = () => {
       },
     ]);
   };
+
+  useEffect(() => {
+    let minutesSelected = 0;
+    for (const { endHour, startHour } of periods) {
+      let startHourInMinutes = startHour?.$H * 60 + startHour?.$m;
+      let endHourInMinutes = 0;
+
+      if (endHour.$H === 23 && endHour.$m === 55) {
+        endHourInMinutes = 1440;
+      } else {
+        endHourInMinutes = endHour?.$H * 60 + endHour?.$m;
+      }
+
+      minutesSelected += endHourInMinutes - startHourInMinutes;
+    }
+
+    console.log("Minutes selected ==>", minutesSelected);
+    setMinutes(minutesSelected);
+  }, [periods]);
 
   return (
     <Box
@@ -590,9 +604,9 @@ const EfficiencyForm = () => {
             variant="contained"
             size="large"
             sx={{ width: "50%" }}
-            disabled={isLoading}
+            disabled={!isFormValid || isLoading}
           >
-            Enviar
+            {isLoading ? "Enviando..." : "Enviar"}
           </Button>
         </Box>
       </form>

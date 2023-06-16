@@ -34,7 +34,7 @@ import { useEffect, useState } from "react";
 
 import logo from "../../assets/logo_dark.png";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -130,8 +130,6 @@ const Sidebar = ({
           icon: <TodayOutlined />,
         },
       ];
-
-    
 
   const handleToggleMenuItem = (lowerCaseText) => {
     navigate(`/user/${lowerCaseText}`);
