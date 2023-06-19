@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { months } from "../utils/monthsArray";
 import { monthsDays } from "../utils/monthsDaysArray";
+import { getMonthTotalHours } from "../utils/getMonthTotalHours";
 
 export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
   const [statBoxOne, setStatBoxOne] = useState({});
@@ -8,23 +9,6 @@ export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
   const [statBoxThree, setStatBoxThree] = useState({});
 
   useEffect(() => {
-    function getTotalHoursInMonth() {
-      const currentDate = new Date();
-
-      if (months.indexOf(selectedMonth) === currentDate.getMonth()) {
-        const lastDayOfMonth = currentDate.getDate() - 1;
-        const totalHours = lastDayOfMonth * 24;
-        return totalHours;
-      } else {
-        const month = monthsDays.find(({ pt, en, days }) => {
-          if (selectedMonth === pt) {
-            return days;
-          }
-        });
-        return month.days * 24;
-      }
-    }
-
     if (efficiencies) {
       let hoursAvailable = 0;
       let glossHours = 0;
@@ -44,7 +28,7 @@ export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
         }
       });
 
-      const totalHoursInMonth = getTotalHoursInMonth();
+      const totalHoursInMonth = getMonthTotalHours(selectedMonth);
       //setInforOne(totalHoursInMonth);
 
       const efficiencyInMonth = (hoursAvailable * 100) / totalHoursInMonth;

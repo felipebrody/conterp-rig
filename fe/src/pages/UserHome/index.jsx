@@ -76,6 +76,7 @@ const UserHome = () => {
     setSelectedRig(event.target.value);
   };
 
+  //Retirar e usar o hook
   useEffect(() => {
     const loadRigEfficiencies = async () => {
       let efficienciesData = null;

@@ -12,7 +12,6 @@ export const useFormatEfficienciesLineChart = (
 
       const day = dateObj.getDate();
       const month = dateObj.getMonth();
-      const year = dateObj.getFullYear();
 
       if (
         months[dateObj.getMonth()] === selectedMonth &&

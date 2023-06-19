@@ -64,6 +64,7 @@ const Sidebar = ({
         },
         {
           text: "Admin",
+          navText: "admin",
           icon: <AdminPanelSettingsOutlined />,
         },
         {
