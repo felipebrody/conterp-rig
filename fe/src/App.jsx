@@ -18,6 +18,7 @@ import Efficiencies from "./pages/Efficiencies";
 import Rig from "./pages/Rig";
 import Admin from "./pages/Admin";
 import EfficiencyDetails from "./pages/EfficiencyDetails";
+import Dashboard from "./pages/Dashboard";
 
 //Hooks
 import { useAuth } from "./hooks/useAuth";
@@ -29,7 +30,6 @@ import ToastContainer from "./components/Toast/ToastContainer";
 
 function App() {
   const mode = useSelector((state) => state.mode);
-  const user = useSelector((state) => state.user);
 
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
@@ -58,7 +58,7 @@ function App() {
               element={auth ? <Layout /> : <Navigate to="/login" />}
             >
               {/* Inicio das rotas do Layout */}
-              <Route path="/user/home" element={<UserHome />} />
+              <Route path="/user/home" element={<Dashboard />} />
               <Route
                 path="/user/admin"
                 element={isUserAdm ? <Admin /> : <Navigate to="/user/home" />}

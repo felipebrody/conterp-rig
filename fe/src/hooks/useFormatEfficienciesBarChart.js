@@ -4,9 +4,11 @@ import { months } from "../utils/monthsArray";
 
 const useFormatEfficienciesBarChart = (
   efficiencies,
-  selectedMonth = "Junho"
+  selectedMonth,
+  selectedRig
 ) => {
   let data = [];
+
   if (efficiencies) {
     let mappedEfficiencies = [];
 
@@ -22,12 +24,9 @@ const useFormatEfficienciesBarChart = (
       }
     });
 
-    console.log("MappedEfficiencies", mappedEfficiencies);
-
     data = mappedEfficiencies.reduce((acc, efficiency, index) => {
       const rigName = efficiency.rig_name;
       const hours = parseFloat(efficiency.available_hours);
-      console.log("Hours", hours);
 
       const rigNameAlreadyExists = acc.find(
         (objects) => objects.rig === rigName
@@ -59,6 +58,10 @@ const useFormatEfficienciesBarChart = (
 
   return data.map(({ rig, availableHours }) => {
     const fixedAvailableHours = availableHours.toFixed(2);
+
+    if (selectedRig === rig) {
+      return { rig, availableHours: fixedAvailableHours, highlight: true };
+    }
     return { rig, availableHours: fixedAvailableHours };
   });
 };

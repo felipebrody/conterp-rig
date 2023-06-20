@@ -1,7 +1,7 @@
 import { ResponsiveBar } from "@nivo/bar";
 import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
 
-const BarChart = ({ data }) => {
+const BarChart = ({ data, selectedRig, isDashboard }) => {
   console.log("data prop", data);
 
   return (
@@ -9,11 +9,11 @@ const BarChart = ({ data }) => {
       data={data}
       keys={["availableHours"]}
       indexBy="rig"
-      margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+      margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
-      colors={"#1c7b7b"}
+      colors={({ id, data }) => (data.highlight ? "#38bcb2" : "#1c7b7b")}
       defs={[
         {
           id: "dots",
@@ -36,16 +36,8 @@ const BarChart = ({ data }) => {
       ]}
       fill={[
         {
-          match: {
-            id: "SPT 111",
-          },
-          id: "dots",
-        },
-        {
-          match: {
-            id: "sandwich",
-          },
-          id: "lines",
+          match: (bar) => bar.id === selectedRig, // Condição para a cor de destaque
+          id: "highlight-color", // ID para referenciar o estilo de cor de destaque
         },
       ]}
       borderColor={{
@@ -58,7 +50,7 @@ const BarChart = ({ data }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: "country",
+        legend: isDashboard ? "Horas" : "Horas Disponível",
         legendPosition: "middle",
         legendOffset: 32,
       }}
@@ -66,37 +58,41 @@ const BarChart = ({ data }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: "food",
+        legend: isDashboard ? "" : "food",
         legendPosition: "middle",
         legendOffset: -40,
       }}
       labelSkipWidth={12}
       labelSkipHeight={12}
       labelTextColor="#fff"
-      legends={[
-        {
-          dataFrom: "keys",
-          anchor: "bottom-right",
-          direction: "column",
-          justify: false,
-          translateX: 120,
-          translateY: 0,
-          itemsSpacing: 2,
-          itemWidth: 100,
-          itemHeight: 20,
-          itemDirection: "left-to-right",
-          itemOpacity: 0.85,
-          symbolSize: 20,
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemOpacity: 1,
+      legends={
+        isDashboard
+          ? undefined
+          : [
+              {
+                dataFrom: "keys",
+                anchor: "bottom-right",
+                direction: "column",
+                justify: false,
+                translateX: 120,
+                translateY: 0,
+                itemsSpacing: 2,
+                itemWidth: 100,
+                itemHeight: 20,
+                itemDirection: "left-to-right",
+                itemOpacity: 0.85,
+                symbolSize: 20,
+                effects: [
+                  {
+                    on: "hover",
+                    style: {
+                      itemOpacity: 1,
+                    },
+                  },
+                ],
               },
-            },
-          ],
-        },
-      ]}
+            ]
+      }
       role="application"
       ariaLabel="Nivo bar chart demo"
       ariaLabelTextColor="#000"

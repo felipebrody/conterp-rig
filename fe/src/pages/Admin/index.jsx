@@ -11,6 +11,8 @@ const Admin = () => {
   const [efficiencies, setEfficiencies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [rigs, setRigs] = useState([]);
+  const [selectedRig, setSelectedRig] = useState("SPT 54");
+  const [selectedMonth, setSelectedMonth] = useState("Junho");
 
   useEffect(() => {
     const loadRigEfficiencies = async () => {
@@ -33,7 +35,11 @@ const Admin = () => {
     loadRigEfficiencies();
   }, []);
 
-  const data = useFormatEfficienciesBarChart(efficiencies);
+  const data = useFormatEfficienciesBarChart(
+    efficiencies,
+    selectedMonth,
+    selectedRig
+  );
 
   console.log("===================Efficiencies=============================");
   console.log(efficiencies);
