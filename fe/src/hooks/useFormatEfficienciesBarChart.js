@@ -1,5 +1,7 @@
 import { months } from "../utils/monthsArray";
 
+//Hook para criar dados para o gráfico de Barras
+
 const useFormatEfficienciesBarChart = (
   efficiencies,
   selectedMonth = "Junho"
@@ -25,6 +27,7 @@ const useFormatEfficienciesBarChart = (
     data = mappedEfficiencies.reduce((acc, efficiency, index) => {
       const rigName = efficiency.rig_name;
       const hours = parseFloat(efficiency.available_hours);
+      console.log("Hours", hours);
 
       const rigNameAlreadyExists = acc.find(
         (objects) => objects.rig === rigName
@@ -54,7 +57,10 @@ const useFormatEfficienciesBarChart = (
     }, []);
   }
 
-  return data;
+  return data.map(({ rig, availableHours }) => {
+    const fixedAvailableHours = availableHours.toFixed(2);
+    return { rig, availableHours: fixedAvailableHours };
+  });
 };
 
 export default useFormatEfficienciesBarChart;
