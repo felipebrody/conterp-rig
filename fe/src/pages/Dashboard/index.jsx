@@ -212,14 +212,7 @@ const Dashboard = () => {
               progress={0}
             />
           </StatBoxContainer>
-          <StatBoxContainer
-            gridColumn="span 3"
-            gridRow="span 1"
-            backgroundColor={theme.palette.grey[400]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <StatBoxContainer theme={theme}>
             <StatBox
               icon={<DataThresholdingIcon />}
               title={`Movimentações: ${statBoxThree.totalDtms}`}

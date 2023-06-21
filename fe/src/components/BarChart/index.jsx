@@ -2,8 +2,6 @@ import { ResponsiveBar } from "@nivo/bar";
 import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
 
 const BarChart = ({ data, selectedRig, isDashboard }) => {
-  console.log("data prop", data);
-
   return (
     <ResponsiveBar
       data={data}
