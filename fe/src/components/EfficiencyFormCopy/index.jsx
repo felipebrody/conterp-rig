@@ -47,13 +47,16 @@ import { useNavigate } from "react-router-dom";
 
 import EfficiencyMapper from "../../services/mappers/EfficiencyMapper";
 
-const EfficiencyForm = () => {
+const EfficiencyForm = ({ pageType: type, id }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const theme = useTheme();
 
   //Estado da data
   const [date, setDate] = useState("");
+
+  //Estado do form
+  const [pageType, setPageType] = useState(type);
   //Estados das operações
   const [periods, setPeriods] = useState([
     {
@@ -82,6 +85,10 @@ const EfficiencyForm = () => {
     const loadRigs = async () => {
       setIsLoadingOilWells(true);
       try {
+        if (id) {
+          //Service to get id from database
+          console.log("tem ID");
+        }
         const response = await OilWellsServices.listOilWells();
         setOilWells(response);
       } catch (error) {
@@ -266,8 +273,6 @@ const EfficiencyForm = () => {
 
       minutesSelected += endHourInMinutes - startHourInMinutes;
     }
-
-    console.log("Minutes selected ==>", minutesSelected);
     setMinutes(minutesSelected);
   }, [periods]);
 
