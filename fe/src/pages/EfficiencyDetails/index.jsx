@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import EfficienciesServices from "../../services/EfficienciesServices";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import toast from "../../utils/toast";
 import { useEffect, useState } from "react";
 import { DataGridContainer } from "./styles";
-import { Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Header from "../../components/Header";
 import EfficiencyMapper from "../../services/mappers/EfficiencyMapper";
 import { useFormatDate } from "../../hooks/useFormatDate";
@@ -77,6 +77,19 @@ const EfficiencyDetails = () => {
         title="DETALHES DA OPERAÇÃO"
         subtitle={`${date} - ${efficiency?.rig_name}`}
       />
+      <Box
+        width="35%"
+        m="0 auto"
+        p="5px"
+        display="flex"
+        justifyContent="center"
+      >
+        <Link to={`/user/rig-form/${id}`}>
+          <Button variant="contained" color="success">
+            <Typography color="#fff"> Ver Mais</Typography>
+          </Button>
+        </Link>
+      </Box>
       <DataGridContainer>
         <DataGrid getRowId={(row) => row.id} rows={rows} columns={columns} />
       </DataGridContainer>

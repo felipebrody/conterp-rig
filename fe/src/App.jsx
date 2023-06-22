@@ -64,6 +64,7 @@ function App() {
                 element={isUserAdm ? <Admin /> : <Navigate to="/user/home" />}
               />
               <Route path="/user/rig-form" element={<Rig />} />
+              <Route path="/user/rig-form/:id" element={<Rig />} />
               <Route
                 path="/user/list-efficiencies"
                 element={<Efficiencies />}
