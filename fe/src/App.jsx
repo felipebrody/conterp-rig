@@ -78,9 +78,6 @@ function App() {
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
-      {/* Github test */}
-     {/* Github test 2 */}
-     {/* Github test 3 */}
     </div>
   );
 }
