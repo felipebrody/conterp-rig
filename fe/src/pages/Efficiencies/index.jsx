@@ -18,12 +18,34 @@ const Efficiencies = () => {
 
   const columns = [
     {
+      field: "user_name",
+      headerName: "Usuário",
+      flex: 0.5,
+      headerAlign: "center",
+      align: "center",
+
+      /* renderCell: ({ row: { user_name } }) => {
+        return (
+          <Box
+            width="100%"
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor="#1c7b7b"
+          >
+            <Typography> {user_name}</Typography>
+          </Box>
+        );
+      }, */
+    },
+    {
       field: "rig_name",
       headerName: "Sonda",
       flex: 0.5,
       headerAlign: "center",
       align: "center",
-      type: "number",
+
       renderCell: ({ row: { rig_name } }) => {
         return (
           <Box
