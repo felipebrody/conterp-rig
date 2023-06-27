@@ -6,6 +6,8 @@ import EfficienciesServices from "../../services/EfficienciesServices";
 import RigsServices from "../../services/RigsServices";
 import { useSelector } from "react-redux";
 import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
+import Loader from "../../components/Loader";
+
 const Admin = () => {
   const user = useSelector((state) => state.user);
   const [efficiencies, setEfficiencies] = useState([]);
@@ -41,16 +43,11 @@ const Admin = () => {
     selectedRig
   );
 
-  console.log("===================Efficiencies=============================");
-  console.log(efficiencies);
-
-  console.log("=============================================================");
-
   return (
     <>
       <Header title="ADMIN DASHBOARD" subtitle="Visão geral de Administrador" />
 
-      <BarChart data={data} />
+      <Loader size="100" />
     </>
   );
 };
