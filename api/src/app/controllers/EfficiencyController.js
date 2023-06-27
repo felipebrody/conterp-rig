@@ -9,11 +9,8 @@ const RepairPeriodsRepositories = require("../repositories/RepairPeriodsReposito
 const DtmDetailsRepositories = require("../repositories/DtmDetailsRepositories");
 const OilWellRepositories = require("../repositories/OilWellRepositories");
 const DtmPeriodsRepositories = require("../repositories/DtmPeriodsRepositories");
-
 const OperatingPeriodsDetailsRepositories = require("../repositories/OperatingPeriodsDetailsRepositories");
-
 const OperatingPeriodsRepositories = require("../repositories/OperatingPeriodsRepositories");
-
 const FluidRatioRepositories = require("../repositories/FluidRatioRepositories");
 const EquipmentRatioRepositories = require("../repositories/EquipmentRatioRepositories");
 

@@ -4,6 +4,7 @@ efficiencies.date,
 efficiencies.available_hours,
 efficiencies.efficiency,
 rigs.name AS rig_name,
+users.name AS user_name,
 ARRAY(
   SELECT
     json_build_object(
@@ -68,6 +69,7 @@ ARRAY(
   ORDER BY dtm_periods.start_hour
 ) AS dtm_periods
 FROM efficiencies
-LEFT JOIN rigs ON rigs.id = efficiencies.rig_id`;
+LEFT JOIN rigs ON rigs.id = efficiencies.rig_id
+LEFT JOIN users ON users.id = efficiencies.user_id`;
 
 module.exports = queryString;

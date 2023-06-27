@@ -18,31 +18,59 @@ const EfficiencyDetails = () => {
       field: "oil_well_name",
       headerName: "Poço",
       flex: 0.3,
+      headerAlign: "center",
+      align: "center",
+      renderCell: ({ row: { oil_well_name } }) => {
+        return (
+          <Box
+            width="100%"
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor="#1c7b7b"
+          >
+            <Typography> {oil_well_name}</Typography>
+          </Box>
+        );
+      },
     },
     {
       field: "start_hour",
+      type: "hour",
       headerName: "Início",
       flex: 0.3,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "end_hour",
+      type: "hour",
       headerName: "Fim",
       flex: 0.3,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "type",
       headerName: "Tipo",
       flex: 0.3,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "classification",
       headerName: "Classificação",
-      flex: 1,
+      flex: 0.3,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "description",
       headerName: "Descrição",
       flex: 1,
+      headerAlign: "center",
+      align: "center",
     },
   ];
 

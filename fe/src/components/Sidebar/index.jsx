@@ -1,6 +1,5 @@
 import {
   Box,
-  Divider,
   Drawer,
   IconButton,
   List,
@@ -13,28 +12,22 @@ import {
 } from "@mui/material";
 
 import {
-  SettingsOutlined,
   ChevronLeft,
   ChevronRightOutlined,
   HomeOutlined,
   FeedOutlined,
-  Groups2Outlined,
-  ReceiptLongOutlined,
-  PublicOutlined,
   PointOfSaleOutlined,
   TodayOutlined,
-  CalendarMonthOutlined,
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
-  PieChartOutlined,
   TableViewOutlined,
 } from "@mui/icons-material";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import logo from "../../assets/logo_dark.png";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import { useAuth } from "../../hooks/useAuth";
 

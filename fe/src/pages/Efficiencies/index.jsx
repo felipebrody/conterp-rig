@@ -27,7 +27,7 @@ const Efficiencies = () => {
       renderCell: ({ row: { rig_name } }) => {
         return (
           <Box
-            width="40%"
+            width="100%"
             m="0 auto"
             p="5px"
             display="flex"
@@ -71,8 +71,8 @@ const Efficiencies = () => {
     },
     {
       field: "hasRepairHours",
-      headerName: "Hora Reparo",
-      flex: 0.5,
+      headerName: "Reparo",
+      flex: 0.2,
       headerAlign: "center",
       align: "center",
       renderCell: ({ row: { hasRepairHours } }) => {
@@ -95,8 +95,8 @@ const Efficiencies = () => {
     },
     {
       field: "hasGlossHours",
-      headerName: "Hora Glosa",
-      flex: 0.5,
+      headerName: "Glosa",
+      flex: 0.2,
       headerAlign: "center",
       align: "center",
       renderCell: ({ row: { hasGlossHours } }) => {
@@ -121,11 +121,11 @@ const Efficiencies = () => {
       field: "efficiency",
       headerAlign: "center",
       headerName: "Eficiência",
-      flex: 1,
+      flex: 0.5,
       renderCell: ({ row: { efficiency } }) => {
         return (
           <Box
-            width="35%"
+            width="70%"
             m="0 auto"
             p="5px"
             display="flex"
@@ -165,6 +165,7 @@ const Efficiencies = () => {
   const user = useSelector((state) => state.user);
 
   const formattedItems = useFormatEfficienciesArray(efficiencies);
+  console.log("Efficiencies from Database: ", efficiencies);
 
   const [isLoading, setIsLoading] = useState(false);
 
