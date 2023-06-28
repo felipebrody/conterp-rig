@@ -99,6 +99,10 @@ const EfficiencyDetails = () => {
 
   const date = useFormatDate(efficiency?.date);
 
+  const handleDelete = (id) => {
+    console.log(`deleting ${id}`);
+  };
+
   return (
     <Box m="1.5rem 2.5rem">
       <Header
@@ -112,11 +116,13 @@ const EfficiencyDetails = () => {
         display="flex"
         justifyContent="center"
       >
-        <Link to={`/user/rig-form/${id}`}>
-          <Button variant="contained" color="success">
-            <Typography color="#fff"> Ver Mais</Typography>
-          </Button>
-        </Link>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => handleDelete(id)}
+        >
+          <Typography color="#fff"> Delete</Typography>
+        </Button>
       </Box>
       <DataGridContainer>
         <DataGrid getRowId={(row) => row.id} rows={rows} columns={columns} />
