@@ -14,7 +14,7 @@ CREATE TABLE users (
     password VARCHAR NOT NULL,
     access_level VARCHAR NOT NULL CHECK (access_level IN ('user', 'adm')), 
     rig_id UUID,
-    FOREIGN KEY(rig_id) REFERENCES rigs(id)
+    FOREIGN KEY(rig_id) REFERENCES rigs(id) ON DELETE CASCADE
 );
 
 
@@ -25,8 +25,8 @@ CREATE TABLE efficiencies (
     rig_id UUID,
     user_id UUID,
     efficiency NUMERIC(10,2) NOT NULL,
-    FOREIGN KEY(rig_id) REFERENCES rigs(id),
-    FOREIGN KEY(user_id) REFERENCES users(id)
+    FOREIGN KEY(rig_id) REFERENCES rigs(id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE oil_wells (
@@ -37,7 +37,7 @@ CREATE TABLE oil_wells (
 CREATE TABLE gloss_details (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     efficiency_id UUID,
-    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
+    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id) ON DELETE CASCADE
 );
 
 CREATE TABLE gloss_periods (
@@ -48,14 +48,14 @@ CREATE TABLE gloss_periods (
     description TEXT,
     gloss_detail_id UUID,
     oil_well_id UUID ,
-    FOREIGN KEY(oil_well_id) REFERENCES oil_wells(id),
-    FOREIGN KEY(gloss_detail_id) REFERENCES gloss_details(id)
+    FOREIGN KEY(oil_well_id) REFERENCES oil_wells(id) ON DELETE CASCADE,
+    FOREIGN KEY(gloss_detail_id) REFERENCES gloss_details(id) ON DELETE CASCADE
 );
 
 CREATE TABLE operating_periods_details (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     efficiency_id UUID,
-    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
+    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id) ON DELETE CASCADE
 );
 
 CREATE TABLE operating_periods (
@@ -65,15 +65,15 @@ CREATE TABLE operating_periods (
     description TEXT,
     oil_well_id UUID,
     operating_detail_id UUID,
-    FOREIGN KEY(operating_detail_id) REFERENCES operating_periods_details(id),
-    FOREIGN KEY(oil_well_id) REFERENCES oil_wells(id)
+    FOREIGN KEY(operating_detail_id) REFERENCES operating_periods_details(id) ON DELETE CASCADE,
+    FOREIGN KEY(oil_well_id) REFERENCES oil_wells(id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE repair_details (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     efficiency_id UUID,
-    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
+    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id) ON DELETE CASCADE
 );
 
 CREATE TABLE repair_periods (
@@ -84,14 +84,14 @@ CREATE TABLE repair_periods (
     description TEXT,
     repair_detail_id UUID,
     oil_well_id UUID,
-    FOREIGN KEY(oil_well_id) REFERENCES oil_wells(id),
-    FOREIGN KEY(repair_detail_id) REFERENCES repair_details(id)
+    FOREIGN KEY(oil_well_id) REFERENCES oil_wells(id) ON DELETE CASCADE,
+    FOREIGN KEY(repair_detail_id) REFERENCES repair_details(id) ON DELETE CASCADE
 );
 
 CREATE TABLE dtm_details (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     efficiency_id UUID,
-    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
+    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id) ON DELETE CASCADE
 );
 
 CREATE TABLE dtm_periods (
@@ -102,29 +102,20 @@ CREATE TABLE dtm_periods (
     dtm_detail_id UUID,
     description TEXT,
     oil_well_id UUID ,
-    FOREIGN KEY(oil_well_id) REFERENCES oil_wells(id),
-    FOREIGN KEY(dtm_detail_id) REFERENCES dtm_details(id)
+    FOREIGN KEY(oil_well_id) REFERENCES oil_wells(id) ON DELETE CASCADE,
+    FOREIGN KEY(dtm_detail_id) REFERENCES dtm_details(id) ON DELETE CASCADE
 );
 
 CREATE TABLE fluid_ratio (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     ratio VARCHAR,
     efficiency_id UUID,
-    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
+    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id) ON DELETE CASCADE
 );
 
 CREATE TABLE equipment_ratio (
     id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     ratio VARCHAR,
     efficiency_id UUID,
-    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id)
+    FOREIGN KEY(efficiency_id) REFERENCES efficiencies(id) ON DELETE CASCADE
 );
-
-
-
-
-
-
-
-
-

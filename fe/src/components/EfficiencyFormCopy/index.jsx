@@ -87,7 +87,9 @@ const EfficiencyForm = ({ pageType: type, id }) => {
       try {
         if (id) {
           //Service to get id from database
-          console.log("tem ID");
+          const efficiency = await EfficienciesServices.getEfficiencyById(id);
+          const mappedEfficiencyToUpdate =
+            EfficiencyMapper.toPersistenceUpdate(efficiency);
         }
         const response = await OilWellsServices.listOilWells();
         setOilWells(response);
