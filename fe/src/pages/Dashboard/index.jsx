@@ -242,7 +242,13 @@ const Dashboard = () => {
                   backgroundColor={theme.palette.grey[400]}
                   borderRadius=".25rem"
                 >
-                  <BarChart selectedRig={selectedRig} data={data} isDashboard />
+                  <BarChart
+                    selectedRig={selectedRig}
+                    data={data}
+                    chartKeys="availableHours"
+                    chartLegend="Horas Disponível"
+                    isDashboard
+                  />
                 </Box>
               ) : (
                 <Box

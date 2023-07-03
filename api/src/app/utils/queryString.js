@@ -67,7 +67,25 @@ ARRAY(
   JOIN oil_wells ON oil_wells.id = dtm_periods.oil_well_id
   WHERE dtm_details.efficiency_id = efficiencies.id
   ORDER BY dtm_periods.start_hour
-) AS dtm_periods
+) AS dtm_periods,
+ARRAY(
+  SELECT
+   json_build_object(
+    'id', equipment_ratio.id,
+    'ratio', equipment_ratio.ratio
+   )
+   FROM equipment_ratio
+   WHERE equipment_ratio.efficiency_id = efficiencies.id
+) AS equipment_ratio,
+ARRAY(
+  SELECT
+   json_build_object(
+    'id', fluid_ratio.id,
+    'ratio', fluid_ratio.ratio
+   )
+   FROM fluid_ratio
+   WHERE fluid_ratio.efficiency_id = efficiencies.id
+) AS fluid_ratio
 FROM efficiencies
 LEFT JOIN rigs ON rigs.id = efficiencies.rig_id
 LEFT JOIN users ON users.id = efficiencies.user_id`;

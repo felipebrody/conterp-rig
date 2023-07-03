@@ -290,7 +290,7 @@ class EfficiencyController {
     if (fluid_ratio) {
       for (const ratio of fluid_ratio) {
         await FluidRatioRepositories.create({
-          fluid_ratio: ratio.fluid_ratio,
+          fluid_ratio: ratio,
           efficiency_id: efficiencyObj.id,
         });
       }
@@ -299,7 +299,7 @@ class EfficiencyController {
     if (equipment_ratio) {
       for (const ratio of equipment_ratio) {
         await EquipmentRatioRepositories.create({
-          equipment_ratio: ratio.equipment_ratio,
+          equipment_ratio: ratio,
           efficiency_id: efficiencyObj.id,
         });
       }

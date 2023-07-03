@@ -187,7 +187,7 @@ const Efficiencies = () => {
   const user = useSelector((state) => state.user);
 
   const formattedItems = useFormatEfficienciesArray(efficiencies);
-  console.log("Efficiencies from Database: ", efficiencies);
+  console.log("Formatted Efficiencies : ", formattedItems);
 
   const [isLoading, setIsLoading] = useState(false);
 

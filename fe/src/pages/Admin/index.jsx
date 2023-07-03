@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import BarChart from "../../components/BarChart";
@@ -47,7 +47,34 @@ const Admin = () => {
     <>
       <Header title="ADMIN DASHBOARD" subtitle="Visão geral de Administrador" />
 
-      <Loader size="100" />
+      {/* <Loader size="100" /> */}
+      <Box
+        width="90%"
+        height="90%"
+        m="0 auto"
+        border="1px solid black"
+        //backgroundColor="#fff"
+      >
+        {/* Table Header */}
+        <Box p="1rem">
+          <Typography variant="h3" color="#1c7b7b">
+            Faturamento
+          </Typography>
+        </Box>
+        {/* End Table Header */}
+
+        {/* Table Container */}
+        <Box minWidth="900px">
+          {/*Collum Headers */}
+          <Box display="flex" justifyContent="space-between">
+            <Typography>SPT 111</Typography>
+            <Typography>SPT 111</Typography>
+            <Typography>SPT 111</Typography>
+          </Box>
+          {/*End Collum Headers */}
+        </Box>
+        {/* End Table Container */}
+      </Box>
     </>
   );
 };

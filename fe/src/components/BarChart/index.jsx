@@ -1,11 +1,17 @@
 import { ResponsiveBar } from "@nivo/bar";
 import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
 
-const BarChart = ({ data, selectedRig, isDashboard }) => {
+const BarChart = ({
+  data,
+  selectedRig,
+  isDashboard,
+  chartKeys,
+  chartLegend,
+}) => {
   return (
     <ResponsiveBar
       data={data}
-      keys={["availableHours"]}
+      keys={[chartKeys]}
       indexBy="rig"
       margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
       padding={0.3}
@@ -48,7 +54,7 @@ const BarChart = ({ data, selectedRig, isDashboard }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? "Horas" : "Horas Disponível",
+        legend: chartLegend,
         legendPosition: "middle",
         legendOffset: 32,
       }}

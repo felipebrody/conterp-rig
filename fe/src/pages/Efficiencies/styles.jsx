@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 export const DataGridContainer = styled(Box)(({ theme }) => ({
   margin: ".5rem",
   height: "75vh",
+  minWidth: "950px",
   "& .MuiDataGrid-root": {
     border: "none",
   },
