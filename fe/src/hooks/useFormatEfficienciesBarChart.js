@@ -31,22 +31,6 @@ const useFormatEfficienciesBarChart = (
 
     //Contando a quantidade de ocorrencias de acordo com o período selecionado (DTMS e Movimentações)
 
-    /* DTMs */
-    let dtmLessThanTwenty = 0;
-    let dtmBetweenTwentyAndFifty = 0;
-    let dtmGreaterThanFifty = 0;
-    let totalDtms = 0;
-
-    /* EQUIPMENT */
-    let equipmentLessThanTwenty = 0;
-    let equipmentBetweenTwentyAndFifty = 0;
-    let equipmentGreaterThanFifty = 0;
-
-    /* FLUID */
-    let fluidLessThanTwenty = 0;
-    let fluidBetweenTwentyAndFifty = 0;
-    let fluidGreaterThanFifty = 0;
-
     //Reduce para extrair as informações acima
     invoicingTest = mappedEfficiencies.reduce((acc, efficiency, index) => {
       const rigName = efficiency.rig_name;
@@ -56,44 +40,50 @@ const useFormatEfficienciesBarChart = (
         (objects) => objects.rig === rigName
       );
 
+      let existingIndex = null;
+
       if (!rigNameAlreadyExists) {
         acc.push({
           rig: rigName,
           availableHours: hours,
+          dtm_periods: efficiency.dtm_periods,
+          equipment_ratio: efficiency.equipment_ratio,
+          fluid_ratio: efficiency.fluid_ratio,
+          operating_periods: efficiency.operating_periods,
           dtmLessThanTwenty: 0,
           dtmBetweenTwentyAndFifty: 0,
           dtmGreaterThanFifty: 0,
+          equipmentLessThanTwenty: 0,
+          equipmentBetweenTwentyAndFifty: 0,
+          equipmentGreaterThanFift: 0,
+          fluidLessThanTwenty: 0,
+          fluidBetweenTwentyAndFifty: 0,
+          fluidGreaterThanFifty: 0,
         });
       } else {
-        let newArray = acc.map(({ rig, availableHours }) => {
-          if (rig === rigName) {
-            return {
-              rig: rigName,
-              availableHours: availableHours + hours,
-            };
-          }
+        existingIndex = acc.findIndex((object) => object.rig === rigName);
 
-          return { rig, availableHours };
-        });
-
-        acc = newArray;
+        acc[existingIndex].dtm_periods = acc[existingIndex].dtm_periods.concat(
+          efficiency.dtm_periods
+        );
+        acc[existingIndex].equipment_ratio = acc[
+          existingIndex
+        ].equipment_ratio.concat(efficiency.equipment_ratio);
+        acc[existingIndex].fluid_ratio = acc[existingIndex].fluid_ratio.concat(
+          efficiency.fluid_ratio
+        );
+        acc[existingIndex].operating_periods = acc[
+          existingIndex
+        ].operating_periods.concat(efficiency.operating_periods);
       }
+      /* console.log("Objeto sendo iterado:", efficiency);
+      console.log(`Accumulator na interação ${index}: `);
+      console.log(acc); */
+
+      /* Código Recortado */
 
       //Informações sobre DTM
-      totalDtms += efficiency.dtm_periods.length;
-
-      efficiency.dtm_periods.forEach(({ distance }) => {
-        if (distance === "less_than_20") {
-          dtmLessThanTwenty += 1;
-        }
-
-        if (distance === "between_20_and_50") {
-          dtmBetweenTwentyAndFifty += 1;
-        }
-        if (distance === "greater_than_50") {
-          dtmGreaterThanFifty += 1;
-        }
-      });
+      /* totalDtms += efficiency.dtm_periods.length;
 
       //Informações sobre movimentações de Equipamentos
       efficiency.equipment_ratio.forEach(({ ratio }) => {
@@ -121,15 +111,41 @@ const useFormatEfficienciesBarChart = (
         if (ratio === "greater_than_50") {
           fluidGreaterThanFifty += 1;
         }
-      });
+      }); */
 
       return acc;
     }, []);
 
-    console.log("DTM < 20: ", dtmLessThanTwenty);
-    console.log("20 < DTM <= 50: ", dtmBetweenTwentyAndFifty);
-    console.log("DTM > 50: ", dtmGreaterThanFifty);
-    console.log("Total de DTMs: ", totalDtms);
+    //************************************************************************/
+
+    const test = JSON.stringify(invoicingTest);
+    console.log("Reduce result =>", invoicingTest);
+
+    const dtmLessThanTwentyCount = {};
+    const dtmBetweenTwentyAndFiftyCount = {};
+    const dtmGreaterThanFiftyCount = {};
+
+    invoicingTest.forEach((item) => {
+      const rigName = item.rig;
+      console.log("Item Pai: ", item);
+
+      // Contagem de DTMs abaixo de 20
+      item.dtm_periods.forEach(({ distance }) => {
+        if (distance === "less_than_20") {
+          item.dtmLessThanTwenty++;
+        }
+
+        if (distance === "between_20_and_50") {
+          item.dtmBetweenTwentyAndFifty++;
+        }
+
+        if (distance === "greater_than_50") {
+          item.dtmGreaterThanFifty++;
+        }
+      });
+    });
+
+    console.log("After For Each =>", invoicingTest);
 
     data = mappedEfficiencies.reduce((acc, efficiency, index) => {
       const rigName = efficiency.rig_name;
