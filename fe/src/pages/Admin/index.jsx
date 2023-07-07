@@ -7,6 +7,7 @@ import RigsServices from "../../services/RigsServices";
 import { useSelector } from "react-redux";
 import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
 import Loader from "../../components/Loader";
+import BillingDashboard from "../BillingDashboard";
 
 const Admin = () => {
   const user = useSelector((state) => state.user);
@@ -47,34 +48,11 @@ const Admin = () => {
     <>
       <Header title="ADMIN DASHBOARD" subtitle="Visão geral de Administrador" />
 
-      {/* <Loader size="100" /> */}
-      <Box
-        width="90%"
-        height="90%"
-        m="0 auto"
-        border="1px solid black"
-        //backgroundColor="#fff"
-      >
-        {/* Table Header */}
-        <Box p="1rem">
-          <Typography variant="h3" color="#1c7b7b">
-            Faturamento
-          </Typography>
-        </Box>
-        {/* End Table Header */}
-
-        {/* Table Container */}
-        <Box minWidth="900px">
-          {/*Collum Headers */}
-          <Box display="flex" justifyContent="space-between">
-            <Typography>SPT 111</Typography>
-            <Typography>SPT 111</Typography>
-            <Typography>SPT 111</Typography>
-          </Box>
-          {/*End Collum Headers */}
-        </Box>
-        {/* End Table Container */}
-      </Box>
+      <BillingDashboard
+        dataType="invoicing"
+        chartKeys="totalValue"
+        barChartLegend="Faturamento"
+      />
     </>
   );
 };

@@ -29,7 +29,7 @@ import Header from "../../components/Header";
 import ListEfficiencies from "../../components/ListEfficiencies";
 import DailyEfficiencyLineChart from "../../components/DailyEfficiencyLineChart";
 
-import StatBox from "../../components/StatBox";
+import BillingDataGrid from "../../components/BillingDataGrid";
 import BarChart from "../../components/BarChart";
 
 //Services
@@ -181,45 +181,21 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
             </SelectContainer>
 
             <GridContainer isNonMobile={isNonMobile}>
-              <StatBoxContainer theme={theme}>
-                <StatBox
-                  red={false}
-                  icon={<EngineeringIcon />}
-                  title={`${statBoxOne.hours} Hrs`}
-                  subtitle="Horas Disponível"
-                  percentage={`${statBoxOne.percentage}%`}
-                  progress={statBoxOne.percentage / 100}
+              <Box
+                gridColumn="span 4"
+                gridRow="span 3"
+                backgroundColor={theme.palette.grey[400]}
+                borderRadius=".25rem"
+              >
+                <BarChart
+                  selectedRig={selectedRig}
+                  data={data}
+                  chartKeys={chartKeys}
+                  barChartLegend={barChartLegend}
+                  isDashboard
                 />
-              </StatBoxContainer>
-              <StatBoxContainer theme={theme}>
-                <StatBox
-                  red={true}
-                  color={theme.palette.red[500]}
-                  icon={<HighlightOffOutlinedIcon />}
-                  title={`${statBoxTwo.hours} Hrs`}
-                  subtitle="Horas Indisponível"
-                  percentage={`${statBoxTwo.percentage}%`}
-                  progress={statBoxTwo.percentage / 100}
-                />
-              </StatBoxContainer>
-              <StatBoxContainer theme={theme}>
-                <StatBox
-                  icon={<DataThresholdingIcon />}
-                  title={` DTMs: ${statBoxThree.totalDtms}`}
-                  subtitle="Quantidade de DTMs no mês"
-                  percentage=""
-                  progress={0}
-                />
-              </StatBoxContainer>
-              <StatBoxContainer theme={theme}>
-                <StatBox
-                  icon={<DataThresholdingIcon />}
-                  title={`Movimentações: ${statBoxThree.totalDtms}`}
-                  subtitle="Movimentações no mês"
-                  percentage=""
-                  progress={0}
-                />
-              </StatBoxContainer>
+              </Box>
+
               <Box
                 gridColumn="span 8"
                 gridRow="span 3"
@@ -234,36 +210,26 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                 />
               </Box>
 
-              {isUserAdm ? (
-                <Box
-                  gridColumn="span 4"
-                  gridRow="span 3"
-                  backgroundColor={theme.palette.grey[400]}
-                  borderRadius=".25rem"
-                >
-                  <BarChart
-                    selectedRig={selectedRig}
-                    data={data}
-                    chartKeys={chartKeys}
-                    barChartLegend={barChartLegend}
-                    isDashboard
-                  />
-                </Box>
-              ) : (
-                <Box
-                  gridColumn="span 4"
-                  gridRow="span 3"
-                  backgroundColor={theme.palette.grey[400]}
-                  borderRadius=".25rem"
-                  overflow="auto"
-                >
-                  <ListEfficiencies
-                    efficiencies={
-                      isUserAdm ? filteredEfficiencies : efficiencies
-                    }
-                  />
-                </Box>
-              )}
+              <Box
+                gridColumn="span 4"
+                gridRow="span 3"
+                backgroundColor={theme.palette.grey[400]}
+                borderRadius=".25rem"
+                overflow="auto"
+              >
+                <ListEfficiencies
+                  efficiencies={isUserAdm ? filteredEfficiencies : efficiencies}
+                />
+              </Box>
+              <Box
+                gridColumn="span 8"
+                gridRow="span 4"
+                backgroundColor={theme.palette.grey[400]}
+                borderRadius=".25rem"
+                overflow="auto"
+              >
+                <BillingDataGrid selectedMonth={selectedMonth} />
+              </Box>
             </GridContainer>
           </>
         )}

@@ -84,6 +84,8 @@ const EfficiencyDetails = () => {
 
         setRows(allPeriods);
 
+        console.log("All Periods", allPeriods);
+
         setEfficiency(efficiencyData);
       } catch (error) {
         console.log(error);

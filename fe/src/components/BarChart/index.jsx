@@ -6,7 +6,7 @@ const BarChart = ({
   selectedRig,
   isDashboard,
   chartKeys,
-  chartLegend,
+  barChartLegend,
 }) => {
   return (
     <ResponsiveBar
@@ -48,13 +48,18 @@ const BarChart = ({
         from: "color",
         modifiers: [["darker", 1.6]],
       }}
+      valueFormat={
+        chartKeys === "totalValue"
+          ? (value) => `R$ ${value}`
+          : (value) => `${value} Hrs`
+      }
       axisTop={null}
       axisRight={null}
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: chartLegend,
+        legend: barChartLegend,
         legendPosition: "middle",
         legendOffset: 32,
       }}

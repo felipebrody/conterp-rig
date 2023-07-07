@@ -1,10 +1,10 @@
 const { Client } = require("pg");
 
 const client = new Client({
-  host: "dpg-ciaphj98g3nden686mlg-a",
+  host: "localhost",
   port: 5432,
   user: "root",
-  password: "BkZou1LFOuWlkfQ7eCLZydMRuI8NOSxE",
+  password: "root",
   database: "conterp",
   timezone: "America/Sao_Paulo",
 });

@@ -2,7 +2,7 @@ import HttpClient from "./utils/HttpClient";
 
 class UsersServices {
   constructor() {
-    this.HttpClient = new HttpClient("https://conter-rig-backend.onrender.com");
+    this.HttpClient = new HttpClient("http://localhost:3001");
   }
 
   async listUsers(orderBy = "asc") {

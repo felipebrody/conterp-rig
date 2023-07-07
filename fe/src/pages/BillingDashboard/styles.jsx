@@ -2,31 +2,41 @@ import Switch from "@mui/material/Switch";
 import { Box, InputBase, FormControl } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 
-export const StyledSwitch = styled(Switch)(({ theme }) => ({
-  "& .MuiSwitch-switchBase.Mui-checked": {
-    color: theme.palette.primary[600],
-    "&:hover": {
-      backgroundColor: theme.palette.primary[700],
-    },
-  },
-  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-    backgroundColor: theme.palette.primary[200],
+export const SelectContainer = styled(Box)(({ isNonMobile }) => ({
+  width: "100%",
+  display: "flex",
+  marginBottom: "1rem",
+  justifyContent: isNonMobile ? "flex-end" : "space-between",
+  gap: "1rem",
+  alignItems: "center",
+}));
+
+export const SelectBox = styled(Box)(({ isNonMobile }) => ({
+  display: "flex",
+  justifyContent: isNonMobile ? "flex-end" : "center",
+  gap: "1rem",
+  alignItems: "center",
+  width: isNonMobile ? "25%" : "50%",
+}));
+
+export const GridContainer = styled(Box)(({ isNonMobile }) => ({
+  display: "grid",
+  gap: "15px",
+  gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
+  gridAutoRows: "120px",
+
+  "& div": {
+    gridColumn: isNonMobile ? undefined : "span 12",
   },
 }));
 
-export const DatePickerContainer = styled(Box)({
+export const StatBoxContainer = styled(Box)(({ theme }) => ({
+  gridColumn: "span 3",
+  gridRow: "span 1",
+  backgroundColor: theme.palette.grey[400],
   display: "flex",
+  alignItems: "center",
   justifyContent: "center",
-  gridColumn: "span 12",
-});
-
-export const TimerPickerContainer = styled(Box)(({ isNonMobile }) => ({
-  display: "flex",
-  alignItems: "flex-end",
-  justifyContent: "center",
-  gap: "1.5rem",
-
-  gridColumn: isNonMobile ? "span 6" : "span 12",
 }));
 
 export const GlossHoursContainer = styled(Box)(({ isNonMobile }) => ({
