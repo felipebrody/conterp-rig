@@ -232,6 +232,282 @@ export const billingFormatEfficiencies = (efficiencies) => {
         fluidGreaterThanFiftyBilling: fluidGreaterThanFiftyBilling,
       };
     }
+
+    if (efficiency.rig === "SPT 76") {
+      const availableHoursBilling = efficiency.availableHours * 919;
+      const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
+      const dtmBetweenTwentyAndFiftyBilling =
+        efficiency.dtmBetweenTwentyAndFifty * 7024;
+      const equipmentLessThanTwentyBilling =
+        efficiency.equipmentLessThanTwenty * 1756;
+      const equipmentBetweenTwentyAndFiftyBilling =
+        efficiency.equipmentBetweenTwentyAndFifty * 2634;
+      const equipmentGreaterThanFiftyBilling =
+        efficiency.equipmentGreaterThanFifty * 4390;
+      const fluidLessThanTwentyBilling = efficiency.fluidLessThanTwenty * 2195;
+      const fluidBetweenTwentyAndFiftyBilling =
+        efficiency.fluidBetweenTwentyAndFifty * 3512;
+      const fluidGreaterThanFiftyBilling =
+        efficiency.fluidGreaterThanFifty * 3947;
+      const readjustment = 1.5991;
+
+      const totalValue =
+        (availableHoursBilling +
+          dtmLessThanTwentyBilling +
+          dtmBetweenTwentyAndFiftyBilling +
+          equipmentLessThanTwentyBilling +
+          equipmentBetweenTwentyAndFiftyBilling +
+          equipmentGreaterThanFiftyBilling +
+          fluidLessThanTwentyBilling +
+          fluidBetweenTwentyAndFiftyBilling +
+          fluidGreaterThanFiftyBilling) *
+        readjustment;
+
+      return {
+        rig: efficiency.rig,
+        totalValue: parseFloat(totalValue.toFixed(2)),
+        availableHoursBilling: availableHoursBilling,
+        dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
+        dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
+        equipmentBetweenTwentyAndFiftyBilling:
+          equipmentBetweenTwentyAndFiftyBilling,
+        equipmentGreaterThanFiftyBilling: equipmentGreaterThanFiftyBilling,
+        fluidLessThanTwentyBilling: fluidLessThanTwentyBilling,
+        fluidBetweenTwentyAndFiftyBilling: fluidBetweenTwentyAndFiftyBilling,
+        fluidGreaterThanFiftyBilling: fluidGreaterThanFiftyBilling,
+      };
+    }
+
+    if (efficiency.rig === "SPT 151") {
+      const availableHoursBilling = efficiency.availableHours * 919;
+      const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
+      const dtmBetweenTwentyAndFiftyBilling =
+        efficiency.dtmBetweenTwentyAndFifty * 7024;
+      const equipmentLessThanTwentyBilling =
+        efficiency.equipmentLessThanTwenty * 1756;
+      const equipmentBetweenTwentyAndFiftyBilling =
+        efficiency.equipmentBetweenTwentyAndFifty * 2634;
+      const equipmentGreaterThanFiftyBilling =
+        efficiency.equipmentGreaterThanFifty * 4390;
+      const fluidLessThanTwentyBilling = efficiency.fluidLessThanTwenty * 2195;
+      const fluidBetweenTwentyAndFiftyBilling =
+        efficiency.fluidBetweenTwentyAndFifty * 3512;
+      const fluidGreaterThanFiftyBilling =
+        efficiency.fluidGreaterThanFifty * 3947;
+      const readjustment = 1.5991;
+
+      const totalValue =
+        (availableHoursBilling +
+          dtmLessThanTwentyBilling +
+          dtmBetweenTwentyAndFiftyBilling +
+          equipmentLessThanTwentyBilling +
+          equipmentBetweenTwentyAndFiftyBilling +
+          equipmentGreaterThanFiftyBilling +
+          fluidLessThanTwentyBilling +
+          fluidBetweenTwentyAndFiftyBilling +
+          fluidGreaterThanFiftyBilling) *
+        readjustment;
+
+      return {
+        rig: efficiency.rig,
+        totalValue: parseFloat(totalValue.toFixed(2)),
+        availableHoursBilling: availableHoursBilling,
+        dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
+        dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
+        equipmentBetweenTwentyAndFiftyBilling:
+          equipmentBetweenTwentyAndFiftyBilling,
+        equipmentGreaterThanFiftyBilling: equipmentGreaterThanFiftyBilling,
+        fluidLessThanTwentyBilling: fluidLessThanTwentyBilling,
+        fluidBetweenTwentyAndFiftyBilling: fluidBetweenTwentyAndFiftyBilling,
+        fluidGreaterThanFiftyBilling: fluidGreaterThanFiftyBilling,
+      };
+    }
+
+    if (efficiency.rig === "SPT 61") {
+      const availableHoursBilling = efficiency.availableHours * 919;
+      const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
+      const dtmBetweenTwentyAndFiftyBilling =
+        efficiency.dtmBetweenTwentyAndFifty * 7024;
+      const equipmentLessThanTwentyBilling =
+        efficiency.equipmentLessThanTwenty * 1756;
+      const equipmentBetweenTwentyAndFiftyBilling =
+        efficiency.equipmentBetweenTwentyAndFifty * 2634;
+      const equipmentGreaterThanFiftyBilling =
+        efficiency.equipmentGreaterThanFifty * 4390;
+      const fluidLessThanTwentyBilling = efficiency.fluidLessThanTwenty * 2195;
+      const fluidBetweenTwentyAndFiftyBilling =
+        efficiency.fluidBetweenTwentyAndFifty * 3512;
+      const fluidGreaterThanFiftyBilling =
+        efficiency.fluidGreaterThanFifty * 3947;
+      const readjustment = 1.5991;
+
+      const totalValue =
+        (availableHoursBilling +
+          dtmLessThanTwentyBilling +
+          dtmBetweenTwentyAndFiftyBilling +
+          equipmentLessThanTwentyBilling +
+          equipmentBetweenTwentyAndFiftyBilling +
+          equipmentGreaterThanFiftyBilling +
+          fluidLessThanTwentyBilling +
+          fluidBetweenTwentyAndFiftyBilling +
+          fluidGreaterThanFiftyBilling) *
+        readjustment;
+
+      return {
+        rig: efficiency.rig,
+        totalValue: parseFloat(totalValue.toFixed(2)),
+        availableHoursBilling: availableHoursBilling,
+        dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
+        dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
+        equipmentBetweenTwentyAndFiftyBilling:
+          equipmentBetweenTwentyAndFiftyBilling,
+        equipmentGreaterThanFiftyBilling: equipmentGreaterThanFiftyBilling,
+        fluidLessThanTwentyBilling: fluidLessThanTwentyBilling,
+        fluidBetweenTwentyAndFiftyBilling: fluidBetweenTwentyAndFiftyBilling,
+        fluidGreaterThanFiftyBilling: fluidGreaterThanFiftyBilling,
+      };
+    }
+
+    if (efficiency.rig === "SPT 116") {
+      const availableHoursBilling = efficiency.availableHours * 919;
+      const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
+      const dtmBetweenTwentyAndFiftyBilling =
+        efficiency.dtmBetweenTwentyAndFifty * 7024;
+      const equipmentLessThanTwentyBilling =
+        efficiency.equipmentLessThanTwenty * 1756;
+      const equipmentBetweenTwentyAndFiftyBilling =
+        efficiency.equipmentBetweenTwentyAndFifty * 2634;
+      const equipmentGreaterThanFiftyBilling =
+        efficiency.equipmentGreaterThanFifty * 4390;
+      const fluidLessThanTwentyBilling = efficiency.fluidLessThanTwenty * 2195;
+      const fluidBetweenTwentyAndFiftyBilling =
+        efficiency.fluidBetweenTwentyAndFifty * 3512;
+      const fluidGreaterThanFiftyBilling =
+        efficiency.fluidGreaterThanFifty * 3947;
+      const readjustment = 1.5991;
+
+      const totalValue =
+        (availableHoursBilling +
+          dtmLessThanTwentyBilling +
+          dtmBetweenTwentyAndFiftyBilling +
+          equipmentLessThanTwentyBilling +
+          equipmentBetweenTwentyAndFiftyBilling +
+          equipmentGreaterThanFiftyBilling +
+          fluidLessThanTwentyBilling +
+          fluidBetweenTwentyAndFiftyBilling +
+          fluidGreaterThanFiftyBilling) *
+        readjustment;
+
+      return {
+        rig: efficiency.rig,
+        totalValue: parseFloat(totalValue.toFixed(2)),
+        availableHoursBilling: availableHoursBilling,
+        dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
+        dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
+        equipmentBetweenTwentyAndFiftyBilling:
+          equipmentBetweenTwentyAndFiftyBilling,
+        equipmentGreaterThanFiftyBilling: equipmentGreaterThanFiftyBilling,
+        fluidLessThanTwentyBilling: fluidLessThanTwentyBilling,
+        fluidBetweenTwentyAndFiftyBilling: fluidBetweenTwentyAndFiftyBilling,
+        fluidGreaterThanFiftyBilling: fluidGreaterThanFiftyBilling,
+      };
+    }
+
+    if (efficiency.rig === "SPT 151") {
+      const availableHoursBilling = efficiency.availableHours * 919;
+      const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
+      const dtmBetweenTwentyAndFiftyBilling =
+        efficiency.dtmBetweenTwentyAndFifty * 7024;
+      const equipmentLessThanTwentyBilling =
+        efficiency.equipmentLessThanTwenty * 1756;
+      const equipmentBetweenTwentyAndFiftyBilling =
+        efficiency.equipmentBetweenTwentyAndFifty * 2634;
+      const equipmentGreaterThanFiftyBilling =
+        efficiency.equipmentGreaterThanFifty * 4390;
+      const fluidLessThanTwentyBilling = efficiency.fluidLessThanTwenty * 2195;
+      const fluidBetweenTwentyAndFiftyBilling =
+        efficiency.fluidBetweenTwentyAndFifty * 3512;
+      const fluidGreaterThanFiftyBilling =
+        efficiency.fluidGreaterThanFifty * 3947;
+      const readjustment = 1.5991;
+
+      const totalValue =
+        (availableHoursBilling +
+          dtmLessThanTwentyBilling +
+          dtmBetweenTwentyAndFiftyBilling +
+          equipmentLessThanTwentyBilling +
+          equipmentBetweenTwentyAndFiftyBilling +
+          equipmentGreaterThanFiftyBilling +
+          fluidLessThanTwentyBilling +
+          fluidBetweenTwentyAndFiftyBilling +
+          fluidGreaterThanFiftyBilling) *
+        readjustment;
+
+      return {
+        rig: efficiency.rig,
+        totalValue: parseFloat(totalValue.toFixed(2)),
+        availableHoursBilling: availableHoursBilling,
+        dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
+        dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
+        equipmentBetweenTwentyAndFiftyBilling:
+          equipmentBetweenTwentyAndFiftyBilling,
+        equipmentGreaterThanFiftyBilling: equipmentGreaterThanFiftyBilling,
+        fluidLessThanTwentyBilling: fluidLessThanTwentyBilling,
+        fluidBetweenTwentyAndFiftyBilling: fluidBetweenTwentyAndFiftyBilling,
+        fluidGreaterThanFiftyBilling: fluidGreaterThanFiftyBilling,
+      };
+    }
+
+    if (efficiency.rig === "SPT 60") {
+      const availableHoursBilling = efficiency.availableHours * 919;
+      const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
+      const dtmBetweenTwentyAndFiftyBilling =
+        efficiency.dtmBetweenTwentyAndFifty * 7024;
+      const equipmentLessThanTwentyBilling =
+        efficiency.equipmentLessThanTwenty * 1756;
+      const equipmentBetweenTwentyAndFiftyBilling =
+        efficiency.equipmentBetweenTwentyAndFifty * 2634;
+      const equipmentGreaterThanFiftyBilling =
+        efficiency.equipmentGreaterThanFifty * 4390;
+      const fluidLessThanTwentyBilling = efficiency.fluidLessThanTwenty * 2195;
+      const fluidBetweenTwentyAndFiftyBilling =
+        efficiency.fluidBetweenTwentyAndFifty * 3512;
+      const fluidGreaterThanFiftyBilling =
+        efficiency.fluidGreaterThanFifty * 3947;
+      const readjustment = 1.5991;
+
+      const totalValue =
+        (availableHoursBilling +
+          dtmLessThanTwentyBilling +
+          dtmBetweenTwentyAndFiftyBilling +
+          equipmentLessThanTwentyBilling +
+          equipmentBetweenTwentyAndFiftyBilling +
+          equipmentGreaterThanFiftyBilling +
+          fluidLessThanTwentyBilling +
+          fluidBetweenTwentyAndFiftyBilling +
+          fluidGreaterThanFiftyBilling) *
+        readjustment;
+
+      return {
+        rig: efficiency.rig,
+        totalValue: parseFloat(totalValue.toFixed(2)),
+        availableHoursBilling: availableHoursBilling,
+        dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
+        dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
+        equipmentBetweenTwentyAndFiftyBilling:
+          equipmentBetweenTwentyAndFiftyBilling,
+        equipmentGreaterThanFiftyBilling: equipmentGreaterThanFiftyBilling,
+        fluidLessThanTwentyBilling: fluidLessThanTwentyBilling,
+        fluidBetweenTwentyAndFiftyBilling: fluidBetweenTwentyAndFiftyBilling,
+        fluidGreaterThanFiftyBilling: fluidGreaterThanFiftyBilling,
+      };
+    }
   });
 
   return mappedInvoices;
