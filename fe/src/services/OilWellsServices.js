@@ -2,7 +2,7 @@ import HttpClient from "./utils/HttpClient";
 
 class OilWellsServices {
   constructor() {
-    this.HttpClient = new HttpClient("http://localhost:3001");
+    this.HttpClient = new HttpClient("https://conter-rig-backend.onrender.com");
   }
 
   async listOilWells() {
