@@ -16,7 +16,7 @@ export const DataGridContainer = styled(Box)(({ theme }) => ({
     borderBottom: "none",
   },
   "& .MuiDataGrid-virtualScroller": {
-    backgroundColor: theme.palette.primary[400],
+    backgroundColor: theme.palette.primary[300],
   },
   "& .MuiDataGrid-footerContainer": {
     backgroundColor: theme.palette.primary[500],

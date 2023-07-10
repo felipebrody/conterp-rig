@@ -23,7 +23,7 @@ export const GridContainer = styled(Box)(({ isNonMobile }) => ({
   display: "grid",
   gap: "15px",
   gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
-  gridAutoRows: "120px",
+  gridAutoRows: "100px",
 
   "& div": {
     gridColumn: isNonMobile ? undefined : "span 12",
@@ -31,7 +31,8 @@ export const GridContainer = styled(Box)(({ isNonMobile }) => ({
 }));
 
 export const StatBoxContainer = styled(Box)(({ theme }) => ({
-  gridColumn: "span 3",
+  gridColumn: "span 4",
+  borderRadius: ".25rem",
   gridRow: "span 1",
   backgroundColor: theme.palette.grey[400],
   display: "flex",

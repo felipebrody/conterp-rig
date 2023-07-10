@@ -189,6 +189,11 @@ const BillingDataGrid = ({ selectedMonth }) => {
     loadEfficiencies();
   }, [user?.rig_id]);
 
+  const defaultColumnOptions = {
+    width: 150, // Largura padrão das colunas
+    flex: 1, // Flex padrão das colunas
+  };
+
   return (
     <DataGridContainer theme={theme}>
       <DataGrid
@@ -197,6 +202,7 @@ const BillingDataGrid = ({ selectedMonth }) => {
         rows={transformedData}
         columns={columns}
         components={{ Toolbar: GridToolbar }}
+        density="compact"
       />
     </DataGridContainer>
   );

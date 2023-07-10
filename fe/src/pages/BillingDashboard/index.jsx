@@ -28,6 +28,7 @@ import EngineeringIcon from "@mui/icons-material/Engineering";
 import Header from "../../components/Header";
 import ListEfficiencies from "../../components/ListEfficiencies";
 import DailyEfficiencyLineChart from "../../components/DailyEfficiencyLineChart";
+import StatBox from "../../components/StatBox";
 
 import BillingDataGrid from "../../components/BillingDataGrid";
 import BarChart from "../../components/BarChart";
@@ -181,6 +182,26 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
             </SelectContainer>
 
             <GridContainer isNonMobile={isNonMobile}>
+              <StatBoxContainer theme={theme}>
+                <StatBox
+                  red={false}
+                  icon={<EngineeringIcon />}
+                  title={`PLACEHOL`}
+                  subtitle="Horas Disponível"
+                  percentage={`R$ 2000000`}
+                  progress={90 / 100}
+                />
+              </StatBoxContainer>
+
+              <Box
+                gridColumn="span 8"
+                gridRow="span 4"
+                backgroundColor={theme.palette.grey[400]}
+                borderRadius=".25rem"
+                overflow="auto"
+              >
+                <BillingDataGrid selectedMonth={selectedMonth} />
+              </Box>
               <Box
                 gridColumn="span 4"
                 gridRow="span 3"
@@ -194,41 +215,6 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                   barChartLegend={barChartLegend}
                   isDashboard
                 />
-              </Box>
-
-              <Box
-                gridColumn="span 8"
-                gridRow="span 3"
-                backgroundColor={theme.palette.grey[400]}
-                borderRadius=".25rem"
-              >
-                <DailyEfficiencyLineChart
-                  isDashboard
-                  efficiencies={efficiencies}
-                  selectedRig={selectedRig}
-                  selectedMonth={selectedMonth}
-                />
-              </Box>
-
-              <Box
-                gridColumn="span 4"
-                gridRow="span 3"
-                backgroundColor={theme.palette.grey[400]}
-                borderRadius=".25rem"
-                overflow="auto"
-              >
-                <ListEfficiencies
-                  efficiencies={isUserAdm ? filteredEfficiencies : efficiencies}
-                />
-              </Box>
-              <Box
-                gridColumn="span 8"
-                gridRow="span 4"
-                backgroundColor={theme.palette.grey[400]}
-                borderRadius=".25rem"
-                overflow="auto"
-              >
-                <BillingDataGrid selectedMonth={selectedMonth} />
               </Box>
             </GridContainer>
           </>
