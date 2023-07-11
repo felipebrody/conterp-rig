@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import EfficienciesServices from "../../services/EfficienciesServices";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
 import toast from "../../utils/toast";
 import { useEffect, useState } from "react";
 import { DataGridContainer } from "./styles";
@@ -8,10 +9,12 @@ import { Box, Button, Typography } from "@mui/material";
 import Header from "../../components/Header";
 import EfficiencyMapper from "../../services/mappers/EfficiencyMapper";
 import { useFormatDate } from "../../hooks/useFormatDate";
+import Modal from "../../components/Modal";
 const EfficiencyDetails = () => {
   const { id } = useParams();
   const [efficiency, setEfficiency] = useState(null);
   const [rows, setRows] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const columns = [
     {
@@ -74,6 +77,8 @@ const EfficiencyDetails = () => {
     },
   ];
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     let efficiencyData;
     const loadEfficiency = async () => {
@@ -98,8 +103,29 @@ const EfficiencyDetails = () => {
 
   const date = useFormatDate(efficiency?.date);
 
-  const handleDelete = (id) => {
-    console.log(`deleting ${id}`);
+  const handleDelete = async (id) => {
+    try {
+      await EfficienciesServices.deleteEfficiency(id);
+
+      toast({
+        type: "sucess",
+        text: "Registro deletado com sucesso!",
+      });
+
+      navigate(`/user/list-efficiencies`);
+    } catch (error) {
+      console.log(error);
+      toast({
+        type: "error",
+        text: "Ocorreu um erro ao deletar o registro!",
+      });
+    }
+
+    setIsModalVisible((prevState) => !prevState);
+  };
+
+  const handleModalVisibility = () => {
+    setIsModalVisible((prevState) => !prevState);
   };
 
   return (
@@ -118,7 +144,7 @@ const EfficiencyDetails = () => {
         <Button
           variant="contained"
           color="error"
-          onClick={() => handleDelete(id)}
+          onClick={() => handleModalVisibility()}
         >
           <Typography color="#fff"> Delete</Typography>
         </Button>
@@ -126,6 +152,16 @@ const EfficiencyDetails = () => {
       <DataGridContainer>
         <DataGrid getRowId={(row) => row.id} rows={rows} columns={columns} />
       </DataGridContainer>
+
+      {isModalVisible && (
+        <Modal
+          title="Excluir o registro?"
+          subtitle="Essa ação irá deletar o registro e não poderá ser desfeita."
+          handleDelete={handleDelete}
+          handleModalVisibility={handleModalVisibility}
+          id={id}
+        />
+      )}
     </Box>
   );
 };
