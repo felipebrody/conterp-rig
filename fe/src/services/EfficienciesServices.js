@@ -22,6 +22,11 @@ class EfficienciesServices {
     return efficiencies;
   }
 
+  async deleteEfficiency(id) {
+    const deleteOp = await this.HttpClient.delete(`/efficiencies/${id}`);
+    return deleteOp;
+  }
+
   async createEfficiency({
     date,
     available_hours,
