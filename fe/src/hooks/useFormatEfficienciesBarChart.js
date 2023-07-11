@@ -57,7 +57,7 @@ const useFormatEfficienciesBarChart = (
       }, []);
 
       //Retornando o array de Horas caso a informação de hora seja pedida
-      return hoursData.map(({ rig, availableHours }) => {
+      const data = hoursData.map(({ rig, availableHours }) => {
         const fixedAvailableHours = availableHours.toFixed(2);
 
         if (selectedRig === rig) {
@@ -66,11 +66,22 @@ const useFormatEfficienciesBarChart = (
 
         return { rig, availableHours: fixedAvailableHours };
       });
+
+      return { data };
     }
 
     if (dataType === "invoicing") {
       //Inicio da logica de faturamento
-      return billingFormatEfficiencies(mappedEfficiencies);
+      const data = billingFormatEfficiencies(mappedEfficiencies);
+
+      console.log("Data", data);
+
+      const totalValue = data.reduce((acc, { totalValue }) => {
+        acc += totalValue;
+        return acc;
+      }, 0);
+
+      return { data, totalValue };
     }
     //Fim da lógica de faturamento
   }

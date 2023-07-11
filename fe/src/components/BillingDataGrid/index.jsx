@@ -13,9 +13,27 @@ import { useFormatEfficienciesArray } from "../../hooks/useFormatEfficienciesArr
 import { DataGridContainer } from "./styles";
 import { Link } from "react-router-dom";
 import useBillingDataGrid from "../../hooks/useBillingDataGrid";
+import RigsServices from "../../services/RigsServices";
 
 const BillingDataGrid = ({ selectedMonth }) => {
   const [efficiencies, setEfficiencies] = useState([]);
+  const [rigs, setRigs] = useState([]);
+
+  //Retirar e usar o hook
+  useEffect(() => {
+    const loadRigEfficiencies = async () => {
+      try {
+        const rigs = await RigsServices.listRigs();
+        setRigs(rigs);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadRigEfficiencies();
+  }, []);
 
   const columns = [
     {
@@ -25,76 +43,36 @@ const BillingDataGrid = ({ selectedMonth }) => {
       headerAlign: "center",
       align: "center",
     },
-    {
-      field: "SPT 111",
-      headerName: "SPT 111",
-      flex: 0.5,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (item) => {
-        return (
-          <Box
-            width="70%"
-            m="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            backgroundColor="#1c7b7b"
-          >
-            <Typography> R$ {item.value}</Typography>
-          </Box>
-        );
-      },
-    },
-    {
-      field: "SPT 54",
-      headerName: "SPT 54",
-      flex: 0.5,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (item) => {
-        return (
-          <Box
-            width="70%"
-            m="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            backgroundColor="#1c7b7b"
-          >
-            <Typography> R$ {item.value}</Typography>
-          </Box>
-        );
-      },
-    },
-    {
-      field: "SPT 88",
-      headerName: "SPT 88",
-      flex: 0.5,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (item) => {
-        return (
-          <Box
-            width="70%"
-            m="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            backgroundColor="#1c7b7b"
-          >
-            <Typography> R$ {item.value}</Typography>
-          </Box>
-        );
-      },
-    },
   ];
+
+  rigs.forEach(({ name }) => {
+    columns.push({
+      field: name,
+      headerName: name,
+      flex: 0.6,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (item) => {
+        return (
+          <Box
+            borderRadius=".25rem"
+            width="100%"
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor="#1c7b7b"
+          >
+            <Typography> R$ {item.value?.toLocaleString()}</Typography>
+          </Box>
+        );
+      },
+    });
+  });
 
   const user = useSelector((state) => state.user);
 
   const formattedItems = useBillingDataGrid(efficiencies, selectedMonth);
-
-  console.log("Formatted Items", formattedItems);
 
   const transformedData = [];
 
@@ -159,10 +137,6 @@ const BillingDataGrid = ({ selectedMonth }) => {
       tax[item.rig] = item[tax.taxName];
     });
   });
-
-  console.log(transformedData);
-
-  console.log("transformed data magicaly", transformedData);
 
   const [isLoading, setIsLoading] = useState(false);
 

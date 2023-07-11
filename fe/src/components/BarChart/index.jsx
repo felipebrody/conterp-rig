@@ -50,7 +50,7 @@ const BarChart = ({
       }}
       valueFormat={
         chartKeys === "totalValue"
-          ? (value) => `R$ ${value}`
+          ? (value) => `R$ ${value.toLocaleString()}`
           : (value) => `${value} Hrs`
       }
       axisTop={null}
@@ -103,11 +103,7 @@ const BarChart = ({
             ]
       }
       role="application"
-      ariaLabel="Nivo bar chart demo"
       ariaLabelTextColor="#000"
-      barAriaLabel={(e) =>
-        e.id + ": " + e.formattedValue + " in country: " + e.indexValue
-      }
     />
   );
 };

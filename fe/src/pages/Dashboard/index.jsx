@@ -102,7 +102,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
     loadRigEfficiencies();
   }, [selectedRig, user?.rig_id]);
 
-  const data = useFormatEfficienciesBarChart(
+  const { data } = useFormatEfficienciesBarChart(
     efficiencies,
     selectedMonth,
     selectedRig,

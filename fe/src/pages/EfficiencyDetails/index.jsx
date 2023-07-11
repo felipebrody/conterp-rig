@@ -83,9 +83,6 @@ const EfficiencyDetails = () => {
         const allPeriods = EfficiencyMapper.toDataGrid(efficiencyData);
 
         setRows(allPeriods);
-
-        console.log("All Periods", allPeriods);
-
         setEfficiency(efficiencyData);
       } catch (error) {
         console.log(error);

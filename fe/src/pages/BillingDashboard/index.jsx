@@ -20,9 +20,9 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import DataThresholdingIcon from "@mui/icons-material/DataThresholding";
-import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+
 import EngineeringIcon from "@mui/icons-material/Engineering";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 //Components
 import Header from "../../components/Header";
@@ -103,7 +103,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
     loadRigEfficiencies();
   }, [selectedRig, user?.rig_id]);
 
-  const data = useFormatEfficienciesBarChart(
+  const { data, totalValue } = useFormatEfficienciesBarChart(
     efficiencies,
     selectedMonth,
     selectedRig,
@@ -185,6 +185,27 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
               <StatBoxContainer theme={theme}>
                 <StatBox
                   red={false}
+                  icon={<AttachMoneyIcon />}
+                  title={`TOTAL`}
+                  subtitle="Faturamento Total"
+                  percentage={`R$ ${totalValue.toLocaleString()}`}
+                  //progress={90 / 100}
+                />
+              </StatBoxContainer>
+
+              <StatBoxContainer theme={theme}>
+                <StatBox
+                  red={false}
+                  icon={<EngineeringIcon />}
+                  title={`PLACEHOL`}
+                  subtitle="Horas Disponível"
+                  percentage={`R$ 2000000`}
+                  progress={90 / 100}
+                />
+              </StatBoxContainer>
+              <StatBoxContainer theme={theme}>
+                <StatBox
+                  red={false}
                   icon={<EngineeringIcon />}
                   title={`PLACEHOL`}
                   subtitle="Horas Disponível"
@@ -194,7 +215,22 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
               </StatBoxContainer>
 
               <Box
-                gridColumn="span 8"
+                gridColumn="span 12"
+                gridRow="span 5"
+                backgroundColor={theme.palette.grey[400]}
+                borderRadius=".25rem"
+              >
+                <BarChart
+                  selectedRig={selectedRig}
+                  data={data}
+                  chartKeys={chartKeys}
+                  barChartLegend={barChartLegend}
+                  isDashboard
+                />
+              </Box>
+
+              <Box
+                gridColumn="span 12"
                 gridRow="span 4"
                 backgroundColor={theme.palette.grey[400]}
                 borderRadius=".25rem"
