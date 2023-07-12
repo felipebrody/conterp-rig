@@ -8,7 +8,7 @@ const ListEfficiencies = ({ efficiencies }) => {
   const formattedEfficiencies = useFormatEfficienciesArray(efficiencies);
 
   return (
-    <>
+    <Box padding="1.25rem">
       <Box
         display="flex"
         justifyContent="space-between"
@@ -61,7 +61,7 @@ const ListEfficiencies = ({ efficiencies }) => {
           </Box>
         </Box>
       ))}
-    </>
+    </Box>
   );
 };
 

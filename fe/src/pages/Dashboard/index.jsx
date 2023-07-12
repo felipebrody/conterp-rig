@@ -9,6 +9,7 @@ import {
   SelectBox,
   GridContainer,
   StatBoxContainer,
+  GridFiller,
 } from "./styles";
 
 //MUI
@@ -220,9 +221,12 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                   progress={0}
                 />
               </StatBoxContainer>
+
+              {isNonMobile && <GridFiller />}
+
               <Box
-                gridColumn={isUserAdm ? "span 6" : "span 8"}
-                gridRow={isUserAdm ? "span 2" : "span 3"}
+                gridColumn="span 10"
+                gridRow="span 3"
                 backgroundColor={theme.palette.grey[400]}
                 borderRadius=".25rem"
               >
@@ -234,9 +238,13 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                 />
               </Box>
 
+              {isNonMobile && <GridFiller />}
+
+              {isNonMobile && <GridFiller />}
+
               {isUserAdm ? (
                 <Box
-                  gridColumn="span 6"
+                  gridColumn="span 10"
                   gridRow="span 3"
                   backgroundColor={theme.palette.grey[400]}
                   borderRadius=".25rem"
@@ -251,7 +259,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                 </Box>
               ) : (
                 <Box
-                  gridColumn="span 4"
+                  gridColumn="span 10"
                   gridRow="span 3"
                   backgroundColor={theme.palette.grey[400]}
                   borderRadius=".25rem"
@@ -264,6 +272,8 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                   />
                 </Box>
               )}
+
+              {isNonMobile && <GridFiller />}
             </GridContainer>
           </>
         )}

@@ -10,6 +10,11 @@ export const SelectContainer = styled(Box)(({ isNonMobile }) => ({
   gap: "1rem",
   alignItems: "center",
 }));
+export const GridFiller = styled(Box)({
+  gridColumn: "span 1",
+  gridRow: "span 3",
+  //border: "1px solid red",
+});
 
 export const SelectBox = styled(Box)(({ isNonMobile }) => ({
   display: "flex",
