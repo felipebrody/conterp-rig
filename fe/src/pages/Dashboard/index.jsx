@@ -221,8 +221,8 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                 />
               </StatBoxContainer>
               <Box
-                gridColumn="span 8"
-                gridRow="span 3"
+                gridColumn={isUserAdm ? "span 6" : "span 8"}
+                gridRow={isUserAdm ? "span 2" : "span 3"}
                 backgroundColor={theme.palette.grey[400]}
                 borderRadius=".25rem"
               >
@@ -236,7 +236,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
 
               {isUserAdm ? (
                 <Box
-                  gridColumn="span 4"
+                  gridColumn="span 6"
                   gridRow="span 3"
                   backgroundColor={theme.palette.grey[400]}
                   borderRadius=".25rem"

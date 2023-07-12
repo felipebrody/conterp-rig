@@ -61,11 +61,7 @@ const Sidebar = ({
           icon: <AdminPanelSettingsOutlined />,
         },
         {
-          text: "Performance",
-          icon: <TrendingUpOutlined />,
-        },
-        {
-          text: "MENU SONDA",
+          text: "Sonda",
           icon: null,
         },
         {
@@ -77,18 +73,6 @@ const Sidebar = ({
           text: "Listar Ocorrências",
           navText: "list-efficiencies",
           icon: <TableViewOutlined />,
-        },
-        {
-          text: "Sub Menu 2",
-          icon: null,
-        },
-        {
-          text: "Overview",
-          icon: <PointOfSaleOutlined />,
-        },
-        {
-          text: "Daily",
-          icon: <TodayOutlined />,
         },
       ]
     : [
@@ -98,7 +82,7 @@ const Sidebar = ({
           icon: <HomeOutlined />,
         },
         {
-          text: "MENU SONDA",
+          text: "Sonda",
           icon: null,
         },
         {
@@ -110,18 +94,6 @@ const Sidebar = ({
           text: "Listar Ocorrências",
           navText: "list-efficiencies",
           icon: <TableViewOutlined />,
-        },
-        {
-          text: "Sub Menu 2",
-          icon: null,
-        },
-        {
-          text: "Overview",
-          icon: <PointOfSaleOutlined />,
-        },
-        {
-          text: "Daily",
-          icon: <TodayOutlined />,
         },
       ];
 

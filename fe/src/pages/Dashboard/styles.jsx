@@ -37,6 +37,7 @@ export const StatBoxContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  boxShadow: "8px 4px 18px rgba(0,0,0, 0.14)",
 }));
 
 export const GlossHoursContainer = styled(Box)(({ isNonMobile }) => ({

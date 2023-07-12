@@ -124,7 +124,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
         ) : (
           <>
             <SelectContainer isNonMobile={isNonMobile}>
-              {isUserAdm && (
+              {/* {isUserAdm && (
                 <SelectBox isNonMobile={isNonMobile}>
                   <InputLabel id="month" sx={{ color: "#000" }}>
                     SPT:
@@ -151,7 +151,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                     ))}
                   </Select>
                 </SelectBox>
-              )}
+              )} */}
 
               <SelectBox isNonMobile={isNonMobile}>
                 <InputLabel id="month" sx={{ color: "#000" }}>
@@ -187,13 +187,13 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                   red={false}
                   icon={<AttachMoneyIcon />}
                   title={`TOTAL`}
-                  subtitle="Faturamento Total"
+                  subtitle="Faturamento Total no mês"
                   percentage={`R$ ${totalValue.toLocaleString()}`}
                   //progress={90 / 100}
                 />
               </StatBoxContainer>
 
-              <StatBoxContainer theme={theme}>
+              {/* <StatBoxContainer theme={theme}>
                 <StatBox
                   red={false}
                   icon={<EngineeringIcon />}
@@ -212,22 +212,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                   percentage={`R$ 2000000`}
                   progress={90 / 100}
                 />
-              </StatBoxContainer>
-
-              <Box
-                gridColumn="span 12"
-                gridRow="span 5"
-                backgroundColor={theme.palette.grey[400]}
-                borderRadius=".25rem"
-              >
-                <BarChart
-                  selectedRig={selectedRig}
-                  data={data}
-                  chartKeys={chartKeys}
-                  barChartLegend={barChartLegend}
-                  isDashboard
-                />
-              </Box>
+              </StatBoxContainer> */}
 
               <Box
                 gridColumn="span 12"
@@ -238,9 +223,10 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
               >
                 <BillingDataGrid selectedMonth={selectedMonth} />
               </Box>
+
               <Box
-                gridColumn="span 4"
-                gridRow="span 3"
+                gridColumn="span 12"
+                gridRow="span 5"
                 backgroundColor={theme.palette.grey[400]}
                 borderRadius=".25rem"
               >
