@@ -2,6 +2,11 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+//DatePicker
+import ReactDatePicker, { registerLocale } from "react-datepicker";
+import ptBR from "date-fns/locale/pt-BR";
+import "react-datepicker/dist/react-datepicker.css";
+
 //Styles
 import {
   StyledInputBase,
@@ -68,6 +73,9 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
   const [rigs, setRigs] = useState([]);
   const [selectedRig, setSelectedRig] = useState(getRig());
   const [isLoading, setIsLoading] = useState(true);
+  const [startDate, setStartDate] = useState(new Date("2023-06-02"));
+  const [endDate, setEndDate] = useState(new Date("2023-07-01"));
+  const [currentDate] = useState(new Date());
 
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
@@ -107,6 +115,8 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
     efficiencies,
     selectedMonth,
     selectedRig,
+    startDate,
+    endDate,
     dataType
   );
 
@@ -115,6 +125,8 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
     selectedMonth,
     selectedRig
   );
+
+  registerLocale("ptBR", ptBR);
 
   return (
     <>
@@ -153,32 +165,28 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                 </SelectBox>
               )} */}
 
-              <SelectBox isNonMobile={isNonMobile}>
-                <InputLabel id="month" sx={{ color: "#000" }}>
-                  Mês :
-                </InputLabel>
-                <Select
-                  labelId="month"
-                  label="Mês :"
-                  input={<StyledInputBase />}
-                  onChange={(event) => handleMonthChange(event)}
-                  value={selectedMonth}
-                  size="small"
-                  sx={{
-                    margin: "auto 0",
-                    borderRadius: "1rem",
-                    outline: "none",
-                    backgroundColor: theme.palette.primary[500],
-                    width: "50%",
-                  }}
-                >
-                  {months.map((month) => (
-                    <MenuItem value={month} key={month}>
-                      {month}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </SelectBox>
+              <Box>
+                <ReactDatePicker
+                  locale="ptBR"
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  selectsStart
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              </Box>
+              <Box>
+                <ReactDatePicker
+                  locale="ptBR"
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
+                  maxDate={currentDate}
+                />
+              </Box>
             </SelectContainer>
 
             <GridContainer isNonMobile={isNonMobile}>
@@ -221,7 +229,11 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                 borderRadius=".25rem"
                 overflow="auto"
               >
-                <BillingDataGrid selectedMonth={selectedMonth} />
+                <BillingDataGrid
+                  selectedMonth={selectedMonth}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
               </Box>
 
               <Box

@@ -5,9 +5,9 @@ import { months } from "../utils/monthsArray";
 
 export const useBillingDataGrid = (
   efficiencies,
-  selectedMonth,
-  selectedRig,
-  dataType
+
+  startDate,
+  endDate
 ) => {
   let mappedEfficiencies = [];
 
@@ -17,7 +17,7 @@ export const useBillingDataGrid = (
       const dateObj = new Date(efficiency.date);
       dateObj.setHours(dateObj.getHours() + 12);
 
-      if (months[dateObj.getMonth()] === selectedMonth) {
+      if (dateObj >= startDate && dateObj <= endDate) {
         mappedEfficiencies.push(efficiency);
       }
     });

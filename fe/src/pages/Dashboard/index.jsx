@@ -3,10 +3,9 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 //DatePicker
-import DatePicker, { registerLocale } from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-
+import ReactDatePicker, { registerLocale } from "react-datepicker";
 import ptBR from "date-fns/locale/pt-BR";
+import "react-datepicker/dist/react-datepicker.css";
 
 //Styles
 import {
@@ -76,6 +75,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [startDate, setStartDate] = useState(new Date("2023-06-02"));
   const [endDate, setEndDate] = useState(new Date("2023-07-01"));
+  const [currentDate] = useState(new Date());
 
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
@@ -129,8 +129,8 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
     endDate
   );
 
-  // Registrar o locale 'pt-BR' no pacote de internacionalização
   registerLocale("ptBR", ptBR);
+
   return (
     <>
       <Box height="90%" width="100%" padding="0 2rem">
@@ -139,28 +139,6 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
         ) : (
           <>
             <SelectContainer isNonMobile={isNonMobile}>
-              <Box>
-                <DatePicker
-                  locale="ptBR"
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                  selectsStart
-                  startDate={startDate}
-                  endDate={endDate}
-                />
-              </Box>
-              <Box>
-                <DatePicker
-                  locale="ptBR"
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
-                  selectsEnd
-                  startDate={startDate}
-                  endDate={endDate}
-                  minDate={startDate}
-                />
-              </Box>
-
               {isUserAdm && (
                 <SelectBox isNonMobile={isNonMobile}>
                   <InputLabel id="month" sx={{ color: "#000" }}>
@@ -189,33 +167,28 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                   </Select>
                 </SelectBox>
               )}
-
-              <SelectBox isNonMobile={isNonMobile}>
-                <InputLabel id="month" sx={{ color: "#000" }}>
-                  Mês :
-                </InputLabel>
-                <Select
-                  labelId="month"
-                  label="Mês :"
-                  input={<StyledInputBase />}
-                  onChange={(event) => handleMonthChange(event)}
-                  value={selectedMonth}
-                  size="small"
-                  sx={{
-                    margin: "auto 0",
-                    borderRadius: "1rem",
-                    outline: "none",
-                    backgroundColor: theme.palette.primary[500],
-                    width: "50%",
-                  }}
-                >
-                  {months.map((month) => (
-                    <MenuItem value={month} key={month}>
-                      {month}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </SelectBox>
+              <Box>
+                <ReactDatePicker
+                  locale="ptBR"
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  selectsStart
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              </Box>
+              <Box>
+                <ReactDatePicker
+                  locale="ptBR"
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
+                  maxDate={currentDate}
+                />
+              </Box>
             </SelectContainer>
 
             <GridContainer isNonMobile={isNonMobile}>

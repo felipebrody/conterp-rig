@@ -27,9 +27,6 @@ const useFormatEfficienciesBarChart = (
       }
 
       if (dateObj >= startDate && dateObj <= endDate) {
-        console.log("Eficciency Date: ", efficiency.date);
-        console.log("Start Date: ", startDate);
-        console.log("End Date: ", endDate);
         mappedEfficiencies.push(efficiency);
       }
     });
@@ -83,8 +80,6 @@ const useFormatEfficienciesBarChart = (
     if (dataType === "invoicing") {
       //Inicio da logica de faturamento
       const data = billingFormatEfficiencies(mappedEfficiencies);
-
-      console.log("Data", data);
 
       const totalValue = data.reduce((acc, { totalValue }) => {
         acc += totalValue;

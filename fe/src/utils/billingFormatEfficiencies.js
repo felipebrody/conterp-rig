@@ -50,6 +50,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
   //************************************************************************/
 
   //Contando os tipos de periodo
+
   invoicingTest.forEach((item) => {
     item.dtm_periods.forEach(({ distance }) => {
       if (distance === "less_than_20") {
@@ -99,7 +100,8 @@ export const billingFormatEfficiencies = (efficiencies) => {
       const availableHoursBilling = efficiency.availableHours * 919;
       const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
       const dtmBetweenTwentyAndFiftyBilling =
-        efficiency.dtmBetweenTwentyAndFifty * 7024;
+        efficiency.dtmBetweenTwentyAndFifty * 5268;
+      const dtmGreaterThanFiftyBilling = efficiency.dtmGreaterThanFifty * 7024;
       const equipmentLessThanTwentyBilling =
         efficiency.equipmentLessThanTwenty * 1756;
       const equipmentBetweenTwentyAndFiftyBilling =
@@ -117,6 +119,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         (availableHoursBilling +
           dtmLessThanTwentyBilling +
           dtmBetweenTwentyAndFiftyBilling +
+          dtmGreaterThanFiftyBilling +
           equipmentLessThanTwentyBilling +
           equipmentBetweenTwentyAndFiftyBilling +
           equipmentGreaterThanFiftyBilling +
@@ -131,6 +134,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         availableHoursBilling: availableHoursBilling,
         dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
         dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        dtmGreaterThanFiftyBilling: dtmGreaterThanFiftyBilling,
         equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
         equipmentBetweenTwentyAndFiftyBilling:
           equipmentBetweenTwentyAndFiftyBilling,
@@ -145,7 +149,8 @@ export const billingFormatEfficiencies = (efficiencies) => {
       const availableHoursBilling = efficiency.availableHours * 919;
       const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
       const dtmBetweenTwentyAndFiftyBilling =
-        efficiency.dtmBetweenTwentyAndFifty * 7024;
+        efficiency.dtmBetweenTwentyAndFifty * 5268;
+      const dtmGreaterThanFiftyBilling = efficiency.dtmGreaterThanFifty * 7024;
       const equipmentLessThanTwentyBilling =
         efficiency.equipmentLessThanTwenty * 1756;
       const equipmentBetweenTwentyAndFiftyBilling =
@@ -163,6 +168,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         (availableHoursBilling +
           dtmLessThanTwentyBilling +
           dtmBetweenTwentyAndFiftyBilling +
+          dtmGreaterThanFiftyBilling +
           equipmentLessThanTwentyBilling +
           equipmentBetweenTwentyAndFiftyBilling +
           equipmentGreaterThanFiftyBilling +
@@ -177,6 +183,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         availableHoursBilling: availableHoursBilling,
         dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
         dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        dtmGreaterThanFiftyBilling: dtmGreaterThanFiftyBilling,
         equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
         equipmentBetweenTwentyAndFiftyBilling:
           equipmentBetweenTwentyAndFiftyBilling,
@@ -191,7 +198,8 @@ export const billingFormatEfficiencies = (efficiencies) => {
       const availableHoursBilling = efficiency.availableHours * 919;
       const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
       const dtmBetweenTwentyAndFiftyBilling =
-        efficiency.dtmBetweenTwentyAndFifty * 7024;
+        efficiency.dtmBetweenTwentyAndFifty * 5268;
+      const dtmGreaterThanFiftyBilling = efficiency.dtmGreaterThanFifty * 7024;
       const equipmentLessThanTwentyBilling =
         efficiency.equipmentLessThanTwenty * 1756;
       const equipmentBetweenTwentyAndFiftyBilling =
@@ -209,6 +217,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         (availableHoursBilling +
           dtmLessThanTwentyBilling +
           dtmBetweenTwentyAndFiftyBilling +
+          dtmGreaterThanFiftyBilling +
           equipmentLessThanTwentyBilling +
           equipmentBetweenTwentyAndFiftyBilling +
           equipmentGreaterThanFiftyBilling +
@@ -223,6 +232,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         availableHoursBilling: availableHoursBilling,
         dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
         dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        dtmGreaterThanFiftyBilling: dtmGreaterThanFiftyBilling,
         equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
         equipmentBetweenTwentyAndFiftyBilling:
           equipmentBetweenTwentyAndFiftyBilling,
@@ -237,7 +247,8 @@ export const billingFormatEfficiencies = (efficiencies) => {
       const availableHoursBilling = efficiency.availableHours * 919;
       const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
       const dtmBetweenTwentyAndFiftyBilling =
-        efficiency.dtmBetweenTwentyAndFifty * 7024;
+        efficiency.dtmBetweenTwentyAndFifty * 5268;
+      const dtmGreaterThanFiftyBilling = efficiency.dtmGreaterThanFifty * 7024;
       const equipmentLessThanTwentyBilling =
         efficiency.equipmentLessThanTwenty * 1756;
       const equipmentBetweenTwentyAndFiftyBilling =
@@ -255,6 +266,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         (availableHoursBilling +
           dtmLessThanTwentyBilling +
           dtmBetweenTwentyAndFiftyBilling +
+          dtmGreaterThanFiftyBilling +
           equipmentLessThanTwentyBilling +
           equipmentBetweenTwentyAndFiftyBilling +
           equipmentGreaterThanFiftyBilling +
@@ -269,6 +281,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         availableHoursBilling: availableHoursBilling,
         dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
         dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        dtmGreaterThanFiftyBilling: dtmGreaterThanFiftyBilling,
         equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
         equipmentBetweenTwentyAndFiftyBilling:
           equipmentBetweenTwentyAndFiftyBilling,
@@ -283,7 +296,8 @@ export const billingFormatEfficiencies = (efficiencies) => {
       const availableHoursBilling = efficiency.availableHours * 919;
       const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
       const dtmBetweenTwentyAndFiftyBilling =
-        efficiency.dtmBetweenTwentyAndFifty * 7024;
+        efficiency.dtmBetweenTwentyAndFifty * 5268;
+      const dtmGreaterThanFiftyBilling = efficiency.dtmGreaterThanFifty * 7024;
       const equipmentLessThanTwentyBilling =
         efficiency.equipmentLessThanTwenty * 1756;
       const equipmentBetweenTwentyAndFiftyBilling =
@@ -301,6 +315,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         (availableHoursBilling +
           dtmLessThanTwentyBilling +
           dtmBetweenTwentyAndFiftyBilling +
+          dtmGreaterThanFiftyBilling +
           equipmentLessThanTwentyBilling +
           equipmentBetweenTwentyAndFiftyBilling +
           equipmentGreaterThanFiftyBilling +
@@ -315,6 +330,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         availableHoursBilling: availableHoursBilling,
         dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
         dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        dtmGreaterThanFiftyBilling: dtmGreaterThanFiftyBilling,
         equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
         equipmentBetweenTwentyAndFiftyBilling:
           equipmentBetweenTwentyAndFiftyBilling,
@@ -329,7 +345,8 @@ export const billingFormatEfficiencies = (efficiencies) => {
       const availableHoursBilling = efficiency.availableHours * 919;
       const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
       const dtmBetweenTwentyAndFiftyBilling =
-        efficiency.dtmBetweenTwentyAndFifty * 7024;
+        efficiency.dtmBetweenTwentyAndFifty * 5268;
+      const dtmGreaterThanFiftyBilling = efficiency.dtmGreaterThanFifty * 7024;
       const equipmentLessThanTwentyBilling =
         efficiency.equipmentLessThanTwenty * 1756;
       const equipmentBetweenTwentyAndFiftyBilling =
@@ -347,6 +364,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         (availableHoursBilling +
           dtmLessThanTwentyBilling +
           dtmBetweenTwentyAndFiftyBilling +
+          dtmGreaterThanFiftyBilling +
           equipmentLessThanTwentyBilling +
           equipmentBetweenTwentyAndFiftyBilling +
           equipmentGreaterThanFiftyBilling +
@@ -361,6 +379,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         availableHoursBilling: availableHoursBilling,
         dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
         dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        dtmGreaterThanFiftyBilling: dtmGreaterThanFiftyBilling,
         equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
         equipmentBetweenTwentyAndFiftyBilling:
           equipmentBetweenTwentyAndFiftyBilling,
@@ -375,7 +394,8 @@ export const billingFormatEfficiencies = (efficiencies) => {
       const availableHoursBilling = efficiency.availableHours * 919;
       const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
       const dtmBetweenTwentyAndFiftyBilling =
-        efficiency.dtmBetweenTwentyAndFifty * 7024;
+        efficiency.dtmBetweenTwentyAndFifty * 5268;
+      const dtmGreaterThanFiftyBilling = efficiency.dtmGreaterThanFifty * 7024;
       const equipmentLessThanTwentyBilling =
         efficiency.equipmentLessThanTwenty * 1756;
       const equipmentBetweenTwentyAndFiftyBilling =
@@ -393,6 +413,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         (availableHoursBilling +
           dtmLessThanTwentyBilling +
           dtmBetweenTwentyAndFiftyBilling +
+          dtmGreaterThanFiftyBilling +
           equipmentLessThanTwentyBilling +
           equipmentBetweenTwentyAndFiftyBilling +
           equipmentGreaterThanFiftyBilling +
@@ -407,6 +428,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         availableHoursBilling: availableHoursBilling,
         dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
         dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        dtmGreaterThanFiftyBilling: dtmGreaterThanFiftyBilling,
         equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
         equipmentBetweenTwentyAndFiftyBilling:
           equipmentBetweenTwentyAndFiftyBilling,
@@ -421,7 +443,8 @@ export const billingFormatEfficiencies = (efficiencies) => {
       const availableHoursBilling = efficiency.availableHours * 919;
       const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
       const dtmBetweenTwentyAndFiftyBilling =
-        efficiency.dtmBetweenTwentyAndFifty * 7024;
+        efficiency.dtmBetweenTwentyAndFifty * 5268;
+      const dtmGreaterThanFiftyBilling = efficiency.dtmGreaterThanFifty * 7024;
       const equipmentLessThanTwentyBilling =
         efficiency.equipmentLessThanTwenty * 1756;
       const equipmentBetweenTwentyAndFiftyBilling =
@@ -439,6 +462,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         (availableHoursBilling +
           dtmLessThanTwentyBilling +
           dtmBetweenTwentyAndFiftyBilling +
+          dtmGreaterThanFiftyBilling +
           equipmentLessThanTwentyBilling +
           equipmentBetweenTwentyAndFiftyBilling +
           equipmentGreaterThanFiftyBilling +
@@ -453,6 +477,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         availableHoursBilling: availableHoursBilling,
         dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
         dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        dtmGreaterThanFiftyBilling: dtmGreaterThanFiftyBilling,
         equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
         equipmentBetweenTwentyAndFiftyBilling:
           equipmentBetweenTwentyAndFiftyBilling,
@@ -467,7 +492,8 @@ export const billingFormatEfficiencies = (efficiencies) => {
       const availableHoursBilling = efficiency.availableHours * 919;
       const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;
       const dtmBetweenTwentyAndFiftyBilling =
-        efficiency.dtmBetweenTwentyAndFifty * 7024;
+        efficiency.dtmBetweenTwentyAndFifty * 5268;
+      const dtmGreaterThanFiftyBilling = efficiency.dtmGreaterThanFifty * 7024;
       const equipmentLessThanTwentyBilling =
         efficiency.equipmentLessThanTwenty * 1756;
       const equipmentBetweenTwentyAndFiftyBilling =
@@ -485,6 +511,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         (availableHoursBilling +
           dtmLessThanTwentyBilling +
           dtmBetweenTwentyAndFiftyBilling +
+          dtmGreaterThanFiftyBilling +
           equipmentLessThanTwentyBilling +
           equipmentBetweenTwentyAndFiftyBilling +
           equipmentGreaterThanFiftyBilling +
@@ -499,6 +526,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
         availableHoursBilling: availableHoursBilling,
         dtmLessThanTwentyBilling: dtmLessThanTwentyBilling,
         dtmBetweenTwentyAndFiftyBilling: dtmBetweenTwentyAndFiftyBilling,
+        dtmGreaterThanFiftyBilling: dtmGreaterThanFiftyBilling,
         equipmentLessThanTwentyBilling: equipmentLessThanTwentyBilling,
         equipmentBetweenTwentyAndFiftyBilling:
           equipmentBetweenTwentyAndFiftyBilling,

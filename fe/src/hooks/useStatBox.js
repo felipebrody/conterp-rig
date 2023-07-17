@@ -22,6 +22,7 @@ export const useStatBox = (
 
       efficiencies.map(({ available_hours, date, rig_name, dtm_periods }) => {
         const dateObj = new Date(date);
+        dateObj.setHours(dateObj.getHours() + 12);
 
         if (
           dateObj >= startDate &&
@@ -35,11 +36,11 @@ export const useStatBox = (
         }
       });
 
-      const totalHoursInMonth = getMonthTotalHours(selectedMonth);
-      //setInforOne(totalHoursInMonth);
+      const totalHoursSelected = getMonthTotalHours(startDate, endDate);
+      //setInforOne(totalHoursSelected);
 
-      const efficiencyInMonth = (hoursAvailable * 100) / totalHoursInMonth;
-      const glossInMonth = (glossHours * 100) / totalHoursInMonth;
+      const efficiencyInMonth = (hoursAvailable * 100) / totalHoursSelected;
+      const glossInMonth = (glossHours * 100) / totalHoursSelected;
 
       setStatBoxOne({
         percentage: efficiencyInMonth.toFixed(0),
@@ -53,7 +54,7 @@ export const useStatBox = (
         totalDtms: totalDtms,
       });
     }
-  }, [selectedMonth, efficiencies, selectedRig]);
+  }, [selectedMonth, efficiencies, selectedRig, startDate, endDate]);
 
   return {
     statBoxOne,

@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import useBillingDataGrid from "../../hooks/useBillingDataGrid";
 import RigsServices from "../../services/RigsServices";
 
-const BillingDataGrid = ({ selectedMonth }) => {
+const BillingDataGrid = ({ selectedMonth, startDate, endDate }) => {
   const [efficiencies, setEfficiencies] = useState([]);
   const [rigs, setRigs] = useState([]);
 
@@ -72,7 +72,7 @@ const BillingDataGrid = ({ selectedMonth }) => {
 
   const user = useSelector((state) => state.user);
 
-  const formattedItems = useBillingDataGrid(efficiencies, selectedMonth);
+  const formattedItems = useBillingDataGrid(efficiencies, startDate, endDate);
 
   const transformedData = [];
 
@@ -96,6 +96,11 @@ const BillingDataGrid = ({ selectedMonth }) => {
     id: 4,
     taxName: "dtmBetweenTwentyAndFiftyBilling",
     lineName: "20 < DTM <= 50",
+  });
+  transformedData.push({
+    id: 15,
+    taxName: "dtmGreaterThanFiftyBilling",
+    lineName: "DTM > 50",
   });
   transformedData.push({
     id: 5,
@@ -129,6 +134,7 @@ const BillingDataGrid = ({ selectedMonth }) => {
   });
 
   // Itera sobre os dados originais e adiciona as informações correspondentes ao objeto transformado
+  //console.log("Formatted Itens", formattedItems);
   formattedItems.forEach((item) => {
     transformedData.forEach((tax) => {
       if (!tax.hasOwnProperty(item.rig)) {
