@@ -3,7 +3,13 @@ import { months } from "../utils/monthsArray";
 import { monthsDays } from "../utils/monthsDaysArray";
 import { getMonthTotalHours } from "../utils/getMonthTotalHours";
 
-export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
+export const useStatBox = (
+  efficiencies,
+  selectedMonth,
+  selectedRig,
+  startDate,
+  endDate
+) => {
   const [statBoxOne, setStatBoxOne] = useState({});
   const [statBoxTwo, setStatBoxTwo] = useState({});
   const [statBoxThree, setStatBoxThree] = useState({});
@@ -18,7 +24,8 @@ export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
         const dateObj = new Date(date);
 
         if (
-          dateObj.getUTCMonth() === months.indexOf(selectedMonth) &&
+          dateObj >= startDate &&
+          dateObj <= endDate &&
           selectedRig === rig_name
         ) {
           totalDtms += dtm_periods.length;

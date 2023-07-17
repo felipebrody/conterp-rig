@@ -2,6 +2,12 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+//DatePicker
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import ptBR from "date-fns/locale/pt-BR";
+
 //Styles
 import {
   StyledInputBase,
@@ -68,6 +74,8 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
   const [rigs, setRigs] = useState([]);
   const [selectedRig, setSelectedRig] = useState(getRig());
   const [isLoading, setIsLoading] = useState(true);
+  const [startDate, setStartDate] = useState(new Date("2023-06-02"));
+  const [endDate, setEndDate] = useState(new Date("2023-07-01"));
 
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
@@ -93,6 +101,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
 
         const rigs = await RigsServices.listRigs();
         setRigs(rigs);
+        setSelectedRig(rigs[0].name);
       } catch (error) {
         console.log(error);
       } finally {
@@ -101,21 +110,27 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
     };
 
     loadRigEfficiencies();
-  }, [selectedRig, user?.rig_id]);
+  }, [selectedMonth, user?.rig_id]);
 
   const { data } = useFormatEfficienciesBarChart(
     efficiencies,
     selectedMonth,
     selectedRig,
+    startDate,
+    endDate,
     dataType
   );
 
   const { statBoxOne, statBoxTwo, statBoxThree } = useStatBox(
     efficiencies,
     selectedMonth,
-    selectedRig
+    selectedRig,
+    startDate,
+    endDate
   );
 
+  // Registrar o locale 'pt-BR' no pacote de internacionalização
+  registerLocale("ptBR", ptBR);
   return (
     <>
       <Box height="90%" width="100%" padding="0 2rem">
@@ -124,6 +139,28 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
         ) : (
           <>
             <SelectContainer isNonMobile={isNonMobile}>
+              <Box>
+                <DatePicker
+                  locale="ptBR"
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  selectsStart
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              </Box>
+              <Box>
+                <DatePicker
+                  locale="ptBR"
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
+                />
+              </Box>
+
               {isUserAdm && (
                 <SelectBox isNonMobile={isNonMobile}>
                   <InputLabel id="month" sx={{ color: "#000" }}>
@@ -235,6 +272,8 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                   efficiencies={efficiencies}
                   selectedRig={selectedRig}
                   selectedMonth={selectedMonth}
+                  startDate={startDate}
+                  endDate={endDate}
                 />
               </Box>
 

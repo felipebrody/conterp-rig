@@ -10,6 +10,8 @@ const DailyEfficiencyLineChart = ({
   efficiencies,
   selectedRig = "SPT",
   selectedMonth,
+  startDate,
+  endDate,
 }) => {
   const theme = useTheme();
   const user = useSelector((state) => state.user);
@@ -17,7 +19,9 @@ const DailyEfficiencyLineChart = ({
   const mappedEfficiencies = useFormatEfficienciesLineChart(
     efficiencies,
     selectedMonth,
-    selectedRig
+    selectedRig,
+    startDate,
+    endDate
   );
 
   const data = [

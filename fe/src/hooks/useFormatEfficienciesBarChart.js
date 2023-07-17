@@ -7,6 +7,8 @@ const useFormatEfficienciesBarChart = (
   efficiencies,
   selectedMonth,
   selectedRig,
+  startDate,
+  endDate,
   dataType
 ) => {
   let hoursData = [];
@@ -17,9 +19,17 @@ const useFormatEfficienciesBarChart = (
     // Filrando as efficiencias pelo mês selecionado
     efficiencies.map((efficiency) => {
       const dateObj = new Date(efficiency.date);
+
       dateObj.setHours(dateObj.getHours() + 12);
 
       if (months[dateObj.getMonth()] === selectedMonth) {
+        // mappedEfficiencies.push(efficiency);
+      }
+
+      if (dateObj >= startDate && dateObj <= endDate) {
+        console.log("Eficciency Date: ", efficiency.date);
+        console.log("Start Date: ", startDate);
+        console.log("End Date: ", endDate);
         mappedEfficiencies.push(efficiency);
       }
     });
