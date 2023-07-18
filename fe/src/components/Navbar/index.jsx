@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogOut } from "../../state/index";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
-import logo_dark from "../../assets/logo_dark.png";
+import logo_dark from "../../assets/images/logo_dark.png";
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);

@@ -25,7 +25,7 @@ import {
 
 import { useState } from "react";
 
-import logo from "../../assets/logo_dark.png";
+import logo from "../../assets/images/logo_dark.png";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";

@@ -12,9 +12,17 @@ import { useAuth } from "../../hooks/useAuth";
 import { useFormatEfficienciesArray } from "../../hooks/useFormatEfficienciesArray";
 import { DataGridContainer } from "./styles";
 import { Link } from "react-router-dom";
+import ReactDatePickerComponents from "../../components/ReactDatePickerComponents";
+import EmptyList from "../../components/EmptyList";
+import { Spinner } from "../../components/Spinner";
+import Loader from "../../components/Loader";
 
 const Efficiencies = () => {
-  const [efficiencies, setEfficiencies] = useState([]);
+  const [efficiencies, setEfficiencies] = useState([{}]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [startDate, setStartDate] = useState(new Date("2023-06-02"));
+  const [endDate, setEndDate] = useState(new Date("2023-07-01"));
+  const [currentDate] = useState(new Date());
 
   const columns = [
     {
@@ -186,9 +194,11 @@ const Efficiencies = () => {
 
   const user = useSelector((state) => state.user);
 
-  const formattedItems = useFormatEfficienciesArray(efficiencies);
-
-  const [isLoading, setIsLoading] = useState(false);
+  const formattedItems = useFormatEfficienciesArray(
+    efficiencies,
+    startDate,
+    endDate
+  );
 
   const theme = useTheme();
 
@@ -217,15 +227,35 @@ const Efficiencies = () => {
     <Box m="1.5rem 2.5rem">
       <Header title="LISTAGEM DE EFICIÊNCIA" />
 
-      <DataGridContainer theme={theme}>
-        <DataGrid
-          loading={isLoading}
-          getRowId={(row) => row.efficiency_id}
-          rows={formattedItems}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-        />
-      </DataGridContainer>
+      {isLoading ? (
+        <Box height="70vh" width="100%" padding="0 2rem">
+          <Loader size="100" />
+        </Box>
+      ) : (
+        <>
+          <ReactDatePickerComponents
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            currentDate={currentDate}
+          />
+
+          {formattedItems.length > 0 ? (
+            <DataGridContainer theme={theme}>
+              <DataGrid
+                loading={isLoading}
+                getRowId={(row) => row.efficiency_id}
+                rows={formattedItems}
+                columns={columns}
+                components={{ Toolbar: GridToolbar }}
+              />
+            </DataGridContainer>
+          ) : (
+            <EmptyList />
+          )}
+        </>
+      )}
     </Box>
   );
 };

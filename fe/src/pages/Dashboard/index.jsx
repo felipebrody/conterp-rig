@@ -34,6 +34,7 @@ import EngineeringIcon from "@mui/icons-material/Engineering";
 import Header from "../../components/Header";
 import ListEfficiencies from "../../components/ListEfficiencies";
 import DailyEfficiencyLineChart from "../../components/DailyEfficiencyLineChart";
+import ReactDatePickerComponents from "../../components/ReactDatePickerComponents";
 
 import StatBox from "../../components/StatBox";
 import BarChart from "../../components/BarChart";
@@ -167,28 +168,13 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                   </Select>
                 </SelectBox>
               )}
-              <Box>
-                <ReactDatePicker
-                  locale="ptBR"
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                  selectsStart
-                  startDate={startDate}
-                  endDate={endDate}
-                />
-              </Box>
-              <Box>
-                <ReactDatePicker
-                  locale="ptBR"
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
-                  selectsEnd
-                  startDate={startDate}
-                  endDate={endDate}
-                  minDate={startDate}
-                  maxDate={currentDate}
-                />
-              </Box>
+              <ReactDatePickerComponents
+                startDate={startDate}
+                endDate={endDate}
+                setStartDate={setStartDate}
+                setEndDate={setEndDate}
+                currentDate={currentDate}
+              />
             </SelectContainer>
 
             <GridContainer isNonMobile={isNonMobile}>
