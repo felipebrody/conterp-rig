@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 //DatePicker
 import ReactDatePicker, { registerLocale } from "react-datepicker";
-import ptBR from "date-fns/locale/pt-BR";
+
 import "react-datepicker/dist/react-datepicker.css";
 
 //Styles
@@ -261,11 +261,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                   borderRadius=".25rem"
                   overflow="auto"
                 >
-                  <ListEfficiencies
-                    efficiencies={
-                      isUserAdm ? filteredEfficiencies : efficiencies
-                    }
-                  />
+                  <ListEfficiencies efficiencies={efficiencies} />
                 </Box>
               )}
 
