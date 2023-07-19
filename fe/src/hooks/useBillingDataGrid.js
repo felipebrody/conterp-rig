@@ -15,7 +15,7 @@ export const useBillingDataGrid = (
     // Filrando as efficiencias pelo mês selecionado
     efficiencies.map((efficiency) => {
       const dateObj = new Date(efficiency.date);
-      dateObj.setHours(dateObj.getHours() + 12);
+      dateObj.setHours(dateObj.getHours() + 24);
 
       if (dateObj >= startDate && dateObj <= endDate) {
         mappedEfficiencies.push(efficiency);

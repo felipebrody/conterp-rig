@@ -8,7 +8,7 @@ export const useFormatEfficienciesArray = (
 
   const formatedItems = efficiencies.map((item) => {
     const dateObj = new Date(item?.date);
-    dateObj.setHours(dateObj.getHours() + 12);
+    dateObj.setHours(dateObj.getHours() + 24);
 
     if (dateObj >= startDate && dateObj <= endDate) {
       const availableHours = item.available_hours;

@@ -20,7 +20,7 @@ const useFormatEfficienciesBarChart = (
     efficiencies.map((efficiency) => {
       const dateObj = new Date(efficiency.date);
 
-      dateObj.setHours(dateObj.getHours() + 12);
+      dateObj.setHours(dateObj.getHours() + 24);
 
       if (months[dateObj.getMonth()] === selectedMonth) {
         // mappedEfficiencies.push(efficiency);
