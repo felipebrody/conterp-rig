@@ -1,3 +1,9 @@
+import {
+  distanceClassification,
+  glossClassification,
+  repairClassification,
+} from "../../utils/glossClassifications";
+
 class EfficiencyMapper {
   toPersitence(domainEfficiency) {}
 
@@ -130,15 +136,58 @@ class EfficiencyMapper {
 
     // Função para adicionar períodos ao array
     const addPeriodsToArray = (periods, type) => {
+      //Função para traduzir as classificações
+      const translate = (type, text) => {
+        let name = null;
+
+        if (type === "repair") {
+          const res = repairClassification.find(({ name, value }) => {
+            if (value === text) {
+              return name;
+            }
+          });
+
+          name = res.name;
+        }
+
+        if (type === "gloss") {
+          const res = glossClassification.find(({ name, value }) => {
+            if (value === text) {
+              return name;
+            }
+          });
+
+          name = res.name;
+        }
+
+        if (type === "DTM") {
+          const res = distanceClassification.find(({ name, value }) => {
+            if (value === text) {
+              return name;
+            }
+          });
+
+          name = res.name;
+        }
+
+        return name;
+      };
+      //Fim da tradução
+
+      //Função para mudar o horário de 23:55 para 23:59
+      const changeEndHour = (hour) => {
+        return hour === "23:55" ? "23:59" : hour;
+      };
       periods.forEach((period) => {
         let formattedPeriod = null;
         if (type === "repair") {
+          console.log(typeof period.end_hour);
           formattedPeriod = {
             id: period.id,
-            start_hour: period.start_hour,
-            end_hour: period.end_hour,
+            start_hour: period.start_hour.slice(0, 5),
+            end_hour: changeEndHour(period.end_hour.slice(0, 5)),
             description: period.description,
-            classification: period.classification,
+            classification: translate(type, period.classification),
             oil_well_name: period.oil_well_name,
             type: "Reparo",
           };
@@ -147,10 +196,10 @@ class EfficiencyMapper {
         if (type === "gloss") {
           formattedPeriod = {
             id: period.id,
-            start_hour: period.start_hour,
-            end_hour: period.end_hour,
+            start_hour: period.start_hour.slice(0, 5),
+            end_hour: changeEndHour(period.end_hour.slice(0, 5)),
             description: period.description,
-            classification: period.type,
+            classification: translate(type, period.type),
             oil_well_name: period.oil_well_name,
             type: "Glosa",
           };
@@ -159,8 +208,8 @@ class EfficiencyMapper {
         if (type === "working") {
           formattedPeriod = {
             id: period.id,
-            start_hour: period.start_hour,
-            end_hour: period.end_hour,
+            start_hour: period.start_hour.slice(0, 5),
+            end_hour: changeEndHour(period.end_hour.slice(0, 5)),
             description: period.description,
             oil_well_name: period.oil_well_name,
             type: "Operando",
@@ -170,10 +219,10 @@ class EfficiencyMapper {
         if (type === "DTM") {
           formattedPeriod = {
             id: period.id,
-            start_hour: period.start_hour,
-            end_hour: period.end_hour,
+            start_hour: period.start_hour.slice(0, 5),
+            end_hour: changeEndHour(period.end_hour.slice(0, 5)),
             description: period.description,
-            classification: period.distance,
+            classification: translate(type, period.distance),
             oil_well_name: period.oil_well_name,
             type: "DTM",
           };
