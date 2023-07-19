@@ -134,24 +134,20 @@ const EfficiencyDetails = () => {
         title="DETALHES DA OPERAÇÃO"
         subtitle={`${date} - ${efficiency?.rig_name}`}
       />
-      <Box
-        width="35%"
-        m="0 auto"
-        p="5px"
-        display="flex"
-        justifyContent="center"
-      >
+
+      <DataGridContainer>
+        <DataGrid getRowId={(row) => row.id} rows={rows} columns={columns} />
+      </DataGridContainer>
+
+      <Box m="3rem auto" p="5px" display="flex" justifyContent="flex-end">
         <Button
           variant="contained"
           color="error"
           onClick={() => handleModalVisibility()}
         >
-          <Typography color="#fff"> Delete</Typography>
+          <Typography color="#fff"> Deletar registro</Typography>
         </Button>
       </Box>
-      <DataGridContainer>
-        <DataGrid getRowId={(row) => row.id} rows={rows} columns={columns} />
-      </DataGridContainer>
 
       {isModalVisible && (
         <Modal

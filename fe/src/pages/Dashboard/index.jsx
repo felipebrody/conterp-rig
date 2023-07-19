@@ -130,8 +130,6 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
     endDate
   );
 
-  registerLocale("ptBR", ptBR);
-
   return (
     <>
       <Box height="90%" width="100%" padding="0 2rem">

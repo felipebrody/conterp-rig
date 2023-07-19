@@ -148,7 +148,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
     setPeriods(newPeriods);
   };
 
-  const handleEndHourChange = (id, value) => {
+  const handleEndHourChange = (id, value, index) => {
     const newPeriods = periods.map((period) => {
       return period.id === id ? { ...period, endHour: value } : period;
     });
@@ -334,6 +334,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
                       <TimePicker
                         label="Início"
                         ampm={false}
+                        readOnly={index >= 1}
                         minutesStep={1}
                         onChange={(value) =>
                           handleStartHourChange(period.id, value)
