@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import EfficienciesServices from "../../services/EfficienciesServices";
 import { useFormatEfficienciesLineChart } from "../../hooks/useFormatEfficienciesLineChart";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const DailyEfficiencyLineChart = ({
   isDashboard,
@@ -15,6 +17,8 @@ const DailyEfficiencyLineChart = ({
 }) => {
   const theme = useTheme();
   const user = useSelector((state) => state.user);
+
+  const navigate = useNavigate();
 
   const mappedEfficiencies = useFormatEfficienciesLineChart(
     efficiencies,
@@ -69,6 +73,9 @@ const DailyEfficiencyLineChart = ({
             },
           },
         }}
+        onClick={(e) =>
+          navigate(`/user/list-efficiencies/details/${e.data.id}`)
+        }
         margin={{ top: 50, right: 50, bottom: 30, left: 60 }}
         colors={{ datum: "color" }}
         xScale={{ type: "point" }}

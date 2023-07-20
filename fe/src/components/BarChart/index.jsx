@@ -1,6 +1,6 @@
 import { ResponsiveBar } from "@nivo/bar";
 import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
-
+import { useTheme } from "@mui/material";
 const BarChart = ({
   data,
   selectedRig,
@@ -8,10 +8,44 @@ const BarChart = ({
   chartKeys,
   barChartLegend,
 }) => {
+  const theme = useTheme();
   return (
     <ResponsiveBar
       data={data}
       keys={[chartKeys]}
+      theme={{
+        axis: {
+          domain: {
+            line: {
+              stroke: theme.palette.primary[900],
+            },
+          },
+          legend: {
+            text: {
+              fill: theme.palette.primary[900],
+            },
+          },
+          ticks: {
+            line: {
+              stroke: theme.palette.primary[900],
+              strokeWidth: 1,
+            },
+            text: {
+              fill: theme.palette.primary[900],
+            },
+          },
+        },
+        legends: {
+          text: {
+            fill: theme.palette.primary[900],
+          },
+        },
+        tooltip: {
+          container: {
+            color: theme.palette.primary.main,
+          },
+        },
+      }}
       indexBy="rig"
       margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
       padding={0.3}
@@ -74,6 +108,7 @@ const BarChart = ({
       labelSkipWidth={12}
       labelSkipHeight={12}
       labelTextColor="#fff"
+      onClick={(e) => console.log(e)}
       legends={
         isDashboard
           ? undefined
@@ -104,6 +139,9 @@ const BarChart = ({
       }
       role="application"
       ariaLabelTextColor="#000"
+      barAriaLabel={(e) =>
+        e.id + ": " + e.formattedValue + " in country: " + e.indexValue
+      }
     />
   );
 };

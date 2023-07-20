@@ -302,11 +302,6 @@ const EfficiencyForm = ({ pageType: type, id }) => {
               display="grid"
               gap="30px"
               gridTemplateColumns="repeat(12, minmax(0, 1fr))"
-              sx={
-                {
-                  // "& div": { gridColumn: isNonMobile ? undefined : "span 12" },
-                }
-              }
             >
               <DatePickerContainer>
                 <LocalizationProvider

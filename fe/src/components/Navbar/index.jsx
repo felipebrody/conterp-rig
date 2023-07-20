@@ -30,6 +30,7 @@ import { setMode, setLogOut } from "../../state/index";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import logo_dark from "../../assets/images/logo_dark.png";
+import { useAuth } from "../../hooks/useAuth";
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -40,6 +41,10 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+
+  const { isUserAdm } = useAuth();
+
+  console.log("is User ADM", isUserAdm);
 
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 

@@ -21,6 +21,7 @@ export const useFormatEfficienciesLineChart = (
         selectedRig === efficiency.rig_name
       ) {
         mappedEfficiencies.push({
+          id: efficiency.efficiency_id,
           x: `${day}/${month + 1}`,
           y: efficiency.efficiency,
         });
