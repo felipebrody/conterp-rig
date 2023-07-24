@@ -1,9 +1,11 @@
 import APIError from "../errors/APIError";
 import HttpClient from "./utils/HttpClient";
 
+import { localHostEndPoint, renderHostEndPoint } from "../utils/endPoints";
+
 class EfficienciesServices {
   constructor() {
-    this.HttpClient = new HttpClient("https://conter-rig-backend.onrender.com");
+    this.HttpClient = new HttpClient(renderHostEndPoint);
   }
 
   async listEfficiencies() {
