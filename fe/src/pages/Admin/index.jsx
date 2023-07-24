@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import BarChart from "../../components/BarChart";
@@ -6,6 +6,9 @@ import EfficienciesServices from "../../services/EfficienciesServices";
 import RigsServices from "../../services/RigsServices";
 import { useSelector } from "react-redux";
 import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
+import Loader from "../../components/Loader";
+import BillingDashboard from "../BillingDashboard";
+
 const Admin = () => {
   const user = useSelector((state) => state.user);
   const [efficiencies, setEfficiencies] = useState([]);
@@ -41,16 +44,15 @@ const Admin = () => {
     selectedRig
   );
 
-  console.log("===================Efficiencies=============================");
-  console.log(efficiencies);
-
-  console.log("=============================================================");
-
   return (
     <>
       <Header title="ADMIN DASHBOARD" subtitle="Visão geral de Administrador" />
 
-      <BarChart data={data} />
+      <BillingDashboard
+        dataType="invoicing"
+        chartKeys="totalValue"
+        barChartLegend="Faturamento"
+      />
     </>
   );
 };

@@ -3,7 +3,13 @@ import { months } from "../utils/monthsArray";
 import { monthsDays } from "../utils/monthsDaysArray";
 import { getMonthTotalHours } from "../utils/getMonthTotalHours";
 
-export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
+export const useStatBox = (
+  efficiencies,
+  selectedMonth,
+  selectedRig,
+  startDate,
+  endDate
+) => {
   const [statBoxOne, setStatBoxOne] = useState({});
   const [statBoxTwo, setStatBoxTwo] = useState({});
   const [statBoxThree, setStatBoxThree] = useState({});
@@ -16,9 +22,11 @@ export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
 
       efficiencies.map(({ available_hours, date, rig_name, dtm_periods }) => {
         const dateObj = new Date(date);
+        dateObj.setHours(dateObj.getHours() + 12);
 
         if (
-          dateObj.getUTCMonth() === months.indexOf(selectedMonth) &&
+          dateObj >= startDate &&
+          dateObj <= endDate &&
           selectedRig === rig_name
         ) {
           totalDtms += dtm_periods.length;
@@ -28,11 +36,11 @@ export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
         }
       });
 
-      const totalHoursInMonth = getMonthTotalHours(selectedMonth);
-      //setInforOne(totalHoursInMonth);
+      const totalHoursSelected = getMonthTotalHours(startDate, endDate);
+      //setInforOne(totalHoursSelected);
 
-      const efficiencyInMonth = (hoursAvailable * 100) / totalHoursInMonth;
-      const glossInMonth = (glossHours * 100) / totalHoursInMonth;
+      const efficiencyInMonth = (hoursAvailable * 100) / totalHoursSelected;
+      const glossInMonth = (glossHours * 100) / totalHoursSelected;
 
       setStatBoxOne({
         percentage: efficiencyInMonth.toFixed(0),
@@ -46,7 +54,7 @@ export const useStatBox = (efficiencies, selectedMonth, selectedRig) => {
         totalDtms: totalDtms,
       });
     }
-  }, [selectedMonth, efficiencies, selectedRig]);
+  }, [selectedMonth, efficiencies, selectedRig, startDate, endDate]);
 
   return {
     statBoxOne,

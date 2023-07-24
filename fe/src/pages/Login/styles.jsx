@@ -2,9 +2,9 @@ import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
 //Assets
-import sonda from "../../assets/spt60.png";
-import sondaMar from "../../assets/sonda_mar.png";
-import logo from "../../assets/logo.png";
+import sonda from "../../assets/images/spt60.png";
+import sondaMar from "../../assets/images/sonda_mar.png";
+import logo from "../../assets/images/logo.png";
 
 export const Container = styled(Box)({
   width: "100%",

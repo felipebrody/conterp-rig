@@ -2,22 +2,26 @@ import { months } from "../utils/monthsArray";
 export const useFormatEfficienciesLineChart = (
   efficiencies,
   selectedMonth,
-  selectedRig
+  selectedRig,
+  startDate,
+  endDate
 ) => {
   if (efficiencies) {
     let mappedEfficiencies = [];
     efficiencies.map((efficiency) => {
       const dateObj = new Date(efficiency.date);
-      dateObj.setHours(dateObj.getHours() + 12);
+      dateObj.setHours(dateObj.getHours() + 24);
 
       const day = dateObj.getDate();
       const month = dateObj.getMonth();
 
       if (
-        months[dateObj.getMonth()] === selectedMonth &&
+        dateObj >= startDate &&
+        dateObj <= endDate &&
         selectedRig === efficiency.rig_name
       ) {
         mappedEfficiencies.push({
+          id: efficiency.efficiency_id,
           x: `${day}/${month + 1}`,
           y: efficiency.efficiency,
         });
@@ -25,10 +29,14 @@ export const useFormatEfficienciesLineChart = (
     });
 
     mappedEfficiencies.sort((a, b) => {
-      const dayA = parseInt(a.x.split("/")[0]);
-      const dayB = parseInt(b.x.split("/")[0]);
+      const [dayA, monthA] = a.x.split("/").map(Number);
+      const [dayB, monthB] = b.x.split("/").map(Number);
 
-      return dayA - dayB;
+      if (monthA !== monthB) {
+        return monthA - monthB; // Ordenar por mês primeiro
+      }
+
+      return dayA - dayB; // Em caso de empate no mês, ordenar por dia
     });
 
     return mappedEfficiencies;

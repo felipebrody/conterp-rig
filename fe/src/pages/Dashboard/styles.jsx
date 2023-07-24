@@ -10,6 +10,11 @@ export const SelectContainer = styled(Box)(({ isNonMobile }) => ({
   gap: "1rem",
   alignItems: "center",
 }));
+export const GridFiller = styled(Box)({
+  gridColumn: "span 1",
+  gridRow: "span 3",
+  //border: "1px solid red",
+});
 
 export const SelectBox = styled(Box)(({ isNonMobile }) => ({
   display: "flex",
@@ -37,6 +42,7 @@ export const StatBoxContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  boxShadow: "8px 4px 18px rgba(0,0,0, 0.14)",
 }));
 
 export const GlossHoursContainer = styled(Box)(({ isNonMobile }) => ({

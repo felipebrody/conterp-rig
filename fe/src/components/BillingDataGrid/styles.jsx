@@ -3,7 +3,8 @@ import { styled } from "@mui/material/styles";
 
 export const DataGridContainer = styled(Box)(({ theme }) => ({
   margin: ".5rem",
-  height: "55vh",
+  height: "100%",
+  minWidth: "1100px",
   "& .MuiDataGrid-root": {
     border: "none",
   },
@@ -16,7 +17,7 @@ export const DataGridContainer = styled(Box)(({ theme }) => ({
     borderBottom: "none",
   },
   "& .MuiDataGrid-virtualScroller": {
-    backgroundColor: theme.palette.primary[400],
+    backgroundColor: theme.palette.primary[300],
   },
   "& .MuiDataGrid-footerContainer": {
     backgroundColor: theme.palette.primary[500],

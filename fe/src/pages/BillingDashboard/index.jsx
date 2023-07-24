@@ -14,7 +14,6 @@ import {
   SelectBox,
   GridContainer,
   StatBoxContainer,
-  GridFiller,
 } from "./styles";
 
 //MUI
@@ -26,17 +25,17 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import DataThresholdingIcon from "@mui/icons-material/DataThresholding";
-import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+
 import EngineeringIcon from "@mui/icons-material/Engineering";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 //Components
 import Header from "../../components/Header";
 import ListEfficiencies from "../../components/ListEfficiencies";
 import DailyEfficiencyLineChart from "../../components/DailyEfficiencyLineChart";
-import ReactDatePickerComponents from "../../components/ReactDatePickerComponents";
-
 import StatBox from "../../components/StatBox";
+
+import BillingDataGrid from "../../components/BillingDataGrid";
 import BarChart from "../../components/BarChart";
 
 //Services
@@ -52,6 +51,7 @@ import { useAuth } from "../../hooks/useAuth";
 import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
 
 import Loader from "../../components/Loader";
+import ReactDatePickerComponents from "../../components/ReactDatePickerComponents";
 
 const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
   const user = useSelector((state) => state.user);
@@ -102,7 +102,6 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
 
         const rigs = await RigsServices.listRigs();
         setRigs(rigs);
-        setSelectedRig(rigs[0].name);
       } catch (error) {
         console.log(error);
       } finally {
@@ -111,9 +110,9 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
     };
 
     loadRigEfficiencies();
-  }, [selectedMonth, user?.rig_id]);
+  }, [selectedRig, user?.rig_id]);
 
-  const { data } = useFormatEfficienciesBarChart(
+  const { data, totalValue } = useFormatEfficienciesBarChart(
     efficiencies,
     selectedMonth,
     selectedRig,
@@ -125,9 +124,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
   const { statBoxOne, statBoxTwo, statBoxThree } = useStatBox(
     efficiencies,
     selectedMonth,
-    selectedRig,
-    startDate,
-    endDate
+    selectedRig
   );
 
   return (
@@ -138,7 +135,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
         ) : (
           <>
             <SelectContainer isNonMobile={isNonMobile}>
-              {isUserAdm && (
+              {/* {isUserAdm && (
                 <SelectBox isNonMobile={isNonMobile}>
                   <InputLabel id="month" sx={{ color: "#000" }}>
                     SPT:
@@ -165,7 +162,8 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                     ))}
                   </Select>
                 </SelectBox>
-              )}
+              )} */}
+
               <ReactDatePickerComponents
                 startDate={startDate}
                 endDate={endDate}
@@ -179,93 +177,63 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
               <StatBoxContainer theme={theme}>
                 <StatBox
                   red={false}
-                  icon={<EngineeringIcon />}
-                  title={`${statBoxOne.hours} Hrs`}
-                  subtitle="Horas Disponível"
-                  percentage={`${statBoxOne.percentage}%`}
-                  progress={statBoxOne.percentage / 100}
-                />
-              </StatBoxContainer>
-              <StatBoxContainer theme={theme}>
-                <StatBox
-                  red={true}
-                  color={theme.palette.red[500]}
-                  icon={<HighlightOffOutlinedIcon />}
-                  title={`${statBoxTwo.hours} Hrs`}
-                  subtitle="Horas Indisponível"
-                  percentage={`${statBoxTwo.percentage}%`}
-                  progress={statBoxTwo.percentage / 100}
-                />
-              </StatBoxContainer>
-              <StatBoxContainer theme={theme}>
-                <StatBox
-                  icon={<DataThresholdingIcon />}
-                  title={` DTMs: ${statBoxThree.totalDtms}`}
-                  subtitle="Quantidade de DTMs no mês"
-                  percentage=""
-                  progress={0}
-                />
-              </StatBoxContainer>
-              <StatBoxContainer theme={theme}>
-                <StatBox
-                  icon={<DataThresholdingIcon />}
-                  title={`Movimentações: ${statBoxThree.totalDtms}`}
-                  subtitle="Movimentações no mês"
-                  percentage=""
-                  progress={0}
+                  icon={<AttachMoneyIcon />}
+                  title={`TOTAL`}
+                  subtitle="Faturamento Total no mês"
+                  percentage={`R$ ${totalValue.toLocaleString()}`}
+                  //progress={90 / 100}
                 />
               </StatBoxContainer>
 
-              {isNonMobile && <GridFiller />}
+              {/* <StatBoxContainer theme={theme}>
+                <StatBox
+                  red={false}
+                  icon={<EngineeringIcon />}
+                  title={`PLACEHOL`}
+                  subtitle="Horas Disponível"
+                  percentage={`R$ 2000000`}
+                  progress={90 / 100}
+                />
+              </StatBoxContainer>
+              <StatBoxContainer theme={theme}>
+                <StatBox
+                  red={false}
+                  icon={<EngineeringIcon />}
+                  title={`PLACEHOL`}
+                  subtitle="Horas Disponível"
+                  percentage={`R$ 2000000`}
+                  progress={90 / 100}
+                />
+              </StatBoxContainer> */}
 
               <Box
-                gridColumn="span 10"
-                gridRow="span 3"
+                gridColumn="span 12"
+                gridRow="span 4"
                 backgroundColor={theme.palette.grey[400]}
                 borderRadius=".25rem"
+                overflow="auto"
               >
-                <DailyEfficiencyLineChart
-                  isDashboard
-                  efficiencies={efficiencies}
-                  selectedRig={selectedRig}
+                <BillingDataGrid
                   selectedMonth={selectedMonth}
                   startDate={startDate}
                   endDate={endDate}
                 />
               </Box>
 
-              {isNonMobile && <GridFiller />}
-
-              {isNonMobile && <GridFiller />}
-
-              {isUserAdm ? (
-                <Box
-                  gridColumn="span 10"
-                  gridRow="span 3"
-                  backgroundColor={theme.palette.grey[400]}
-                  borderRadius=".25rem"
-                >
-                  <BarChart
-                    selectedRig={selectedRig}
-                    data={data}
-                    chartKeys={chartKeys}
-                    barChartLegend={barChartLegend}
-                    isDashboard
-                  />
-                </Box>
-              ) : (
-                <Box
-                  gridColumn="span 10"
-                  gridRow="span 3"
-                  backgroundColor={theme.palette.grey[400]}
-                  borderRadius=".25rem"
-                  overflow="auto"
-                >
-                  <ListEfficiencies efficiencies={efficiencies} />
-                </Box>
-              )}
-
-              {isNonMobile && <GridFiller />}
+              <Box
+                gridColumn="span 12"
+                gridRow="span 5"
+                backgroundColor={theme.palette.grey[400]}
+                borderRadius=".25rem"
+              >
+                <BarChart
+                  selectedRig={selectedRig}
+                  data={data}
+                  chartKeys={chartKeys}
+                  barChartLegend={barChartLegend}
+                  isDashboard
+                />
+              </Box>
             </GridContainer>
           </>
         )}

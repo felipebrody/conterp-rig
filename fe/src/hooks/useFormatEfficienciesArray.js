@@ -1,30 +1,38 @@
 import { months } from "../utils/monthsArray";
-export const useFormatEfficienciesArray = (efficiencies) => {
+export const useFormatEfficienciesArray = (
+  efficiencies,
+  startDate,
+  endDate
+) => {
+  let mappedEfficiencies = [];
+
   const formatedItems = efficiencies.map((item) => {
-    const dataObj = new Date(item?.date);
-    dataObj.setHours(dataObj.getHours() + 12);
+    const dateObj = new Date(item?.date);
+    dateObj.setHours(dateObj.getHours() + 24);
 
-    const availableHours = item.available_hours;
-    const dtmHours = item.dtm_hours ? item.dtm_hours : 0;
+    if (dateObj >= startDate && dateObj <= endDate) {
+      const availableHours = item.available_hours;
+      const dtmHours = item.dtm_hours ? item.dtm_hours : 0;
 
-    const hasDtm = item.dtm_periods.length != 0 ? true : false;
-    const hasGlossHours = item.gloss_periods.length != 0 ? true : false;
-    const hasRepairHours = item.repair_periods.length != 0 ? true : false;
-    const day = dataObj.getDate();
-    const month = months[dataObj.getMonth()];
-    const year = dataObj.getFullYear();
-    const dateString = `${day} de ${month} ${year}`;
+      const hasDtm = item.dtm_periods.length != 0 ? true : false;
+      const hasGlossHours = item.gloss_periods.length != 0 ? true : false;
+      const hasRepairHours = item.repair_periods.length != 0 ? true : false;
+      const day = dateObj.getDate();
+      const month = months[dateObj.getMonth()];
+      const year = dateObj.getFullYear();
+      const dateString = `${day} de ${month} ${year}`;
 
-    return {
-      ...item,
-      date: dataObj,
-      dateString,
-      hasDtm,
-      hasGlossHours,
-      hasRepairHours,
-      efficiency: parseFloat(item.efficiency),
-    };
+      mappedEfficiencies.push({
+        ...item,
+        date: dateObj,
+        dateString,
+        hasDtm,
+        hasGlossHours,
+        hasRepairHours,
+        efficiency: parseFloat(item.efficiency),
+      });
+    }
   });
 
-  return formatedItems;
+  return mappedEfficiencies;
 };

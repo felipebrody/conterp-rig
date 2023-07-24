@@ -1,9 +1,11 @@
 import APIError from "../errors/APIError";
 import HttpClient from "./utils/HttpClient";
 
+import { localHostEndPoint, renderHostEndPoint } from "../utils/endPoints";
+
 class EfficienciesServices {
   constructor() {
-    this.HttpClient = new HttpClient("http://localhost:3001");
+    this.HttpClient = new HttpClient(renderHostEndPoint);
   }
 
   async listEfficiencies() {
@@ -20,6 +22,11 @@ class EfficienciesServices {
   async listEfficienciesByRigId(id) {
     const efficiencies = await this.HttpClient.get(`/efficiencies-rig/${id}`);
     return efficiencies;
+  }
+
+  async deleteEfficiency(id) {
+    const deleteOp = await this.HttpClient.delete(`/efficiencies/${id}`);
+    return deleteOp;
   }
 
   async createEfficiency({

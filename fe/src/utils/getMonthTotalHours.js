@@ -1,18 +1,9 @@
 import { monthsDays } from "./monthsDaysArray";
 import { months } from "./monthsArray";
-export function getMonthTotalHours(selectedMonth) {
+export function getMonthTotalHours(startDate, endDate) {
   const currentDate = new Date();
 
-  if (months.indexOf(selectedMonth) === currentDate.getMonth()) {
-    const lastDayOfMonth = currentDate.getDate() - 1;
-    const totalHours = lastDayOfMonth * 24;
-    return totalHours;
-  } else {
-    const month = monthsDays.find(({ pt, en, days }) => {
-      if (selectedMonth === pt) {
-        return days;
-      }
-    });
-    return month.days * 24;
-  }
+  const diffInMilliseconds = Math.abs(endDate - startDate);
+  const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
+  return diffInHours;
 }

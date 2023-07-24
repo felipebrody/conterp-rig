@@ -1,8 +1,10 @@
 import HttpClient from "./utils/HttpClient";
 
+import { localHostEndPoint, renderHostEndPoint } from "../utils/endPoints";
+
 class RigsServices {
   constructor() {
-    this.HttpClient = new HttpClient("http://localhost:3001");
+    this.HttpClient = new HttpClient(renderHostEndPoint);
   }
 
   async listRigs() {

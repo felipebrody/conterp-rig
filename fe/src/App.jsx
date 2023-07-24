@@ -58,13 +58,31 @@ function App() {
               element={auth ? <Layout /> : <Navigate to="/login" />}
             >
               {/* Inicio das rotas do Layout */}
-              <Route path="/user/home" element={<Dashboard />} />
+              <Route path="/user/home" element={<UserHome />} />
               <Route
                 path="/user/admin"
                 element={isUserAdm ? <Admin /> : <Navigate to="/user/home" />}
               />
-              <Route path="/user/rig-form" element={<Rig />} />
-              <Route path="/user/rig-form/:id" element={<Rig />} />
+              <Route
+                path="/user/rig-form"
+                element={
+                  !isUserAdm ? (
+                    <Rig />
+                  ) : (
+                    <Navigate to="/user/list-efficiencies" />
+                  )
+                }
+              />
+              <Route
+                path="/user/rig-form/:id"
+                element={
+                  !isUserAdm ? (
+                    <Rig />
+                  ) : (
+                    <Navigate to="/user/list-efficiencies" />
+                  )
+                }
+              />
               <Route
                 path="/user/list-efficiencies"
                 element={<Efficiencies />}
