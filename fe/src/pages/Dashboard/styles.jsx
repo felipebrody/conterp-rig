@@ -1,6 +1,5 @@
-import Switch from "@mui/material/Switch";
-import { Box, InputBase, FormControl } from "@mui/material";
-import { alpha, styled } from "@mui/material/styles";
+import { Box, InputBase } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 export const SelectContainer = styled(Box)(({ isNonMobile }) => ({
   width: "100%",

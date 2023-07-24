@@ -52,6 +52,7 @@ import { useAuth } from "../../hooks/useAuth";
 import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
 
 import Loader from "../../components/Loader";
+import FiltersContainer from "../../components/FiltersContainer";
 
 const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
   const user = useSelector((state) => state.user);
@@ -74,13 +75,13 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
   const [rigs, setRigs] = useState([]);
   const [selectedRig, setSelectedRig] = useState(getRig());
   const [isLoading, setIsLoading] = useState(true);
-  const [startDate, setStartDate] = useState(new Date("2023-06-02"));
-  const [endDate, setEndDate] = useState(new Date("2023-07-01"));
-  const [currentDate] = useState(new Date());
-
-  const handleMonthChange = (event) => {
-    setSelectedMonth(event.target.value);
-  };
+  const currentDate = new Date();
+  const [startDate, setStartDate] = useState(
+    new Date(`2023-${currentDate.getUTCMonth() + 1}-01`)
+  );
+  const [endDate, setEndDate] = useState(
+    new Date(`2023-${currentDate.getUTCMonth() + 1}-30`)
+  );
 
   const handleRigChange = (event) => {
     const newEfficiencies = efficiencies.filter((efficiency) => {
@@ -102,7 +103,9 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
 
         const rigs = await RigsServices.listRigs();
         setRigs(rigs);
-        setSelectedRig(rigs[0].name);
+        if (isUserAdm) {
+          setSelectedRig(rigs[0].name);
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -137,43 +140,17 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
           <Loader size="100" />
         ) : (
           <>
-            <SelectContainer isNonMobile={isNonMobile}>
-              {isUserAdm && (
-                <SelectBox isNonMobile={isNonMobile}>
-                  <InputLabel id="month" sx={{ color: "#000" }}>
-                    SPT:
-                  </InputLabel>
-                  <Select
-                    labelId="month"
-                    label=" SPT:"
-                    input={<StyledInputBase />}
-                    onChange={(event) => handleRigChange(event)}
-                    value={selectedRig}
-                    size="small"
-                    sx={{
-                      margin: "auto 0",
-                      borderRadius: "1rem",
-                      outline: "none",
-                      backgroundColor: theme.palette.primary[500],
-                      width: "50%",
-                    }}
-                  >
-                    {rigs.map(({ id, name }) => (
-                      <MenuItem value={name} key={id}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </SelectBox>
-              )}
-              <ReactDatePickerComponents
-                startDate={startDate}
-                endDate={endDate}
-                setStartDate={setStartDate}
-                setEndDate={setEndDate}
-                currentDate={currentDate}
-              />
-            </SelectContainer>
+            <FiltersContainer
+              startDate={startDate}
+              endDate={endDate}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+              currentDate={currentDate}
+              rigs={rigs}
+              handleRigChange={handleRigChange}
+              selectedRig={selectedRig}
+              isUserAdm={isUserAdm}
+            />
 
             <GridContainer isNonMobile={isNonMobile}>
               <StatBoxContainer theme={theme}>

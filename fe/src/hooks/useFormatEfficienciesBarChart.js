@@ -13,14 +13,13 @@ const useFormatEfficienciesBarChart = (
 ) => {
   let hoursData = [];
   let mappedEfficiencies = [];
-  let invoicingTest = [];
 
   if (efficiencies) {
     // Filrando as efficiencias pelo mês selecionado
     efficiencies.map((efficiency) => {
       const dateObj = new Date(efficiency.date);
 
-      dateObj.setHours(dateObj.getHours() + 24);
+      dateObj.setHours(dateObj.getHours() + 3);
 
       if (months[dateObj.getMonth()] === selectedMonth) {
         // mappedEfficiencies.push(efficiency);

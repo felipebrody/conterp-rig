@@ -16,6 +16,8 @@ Este readme contém uma lista de comandos úteis para trabalhar com Docker, Post
 - docker exec -it <nome_do_container> bash - Executa um container
 ```
 
+*docker run --name pg -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -p 5432:5432 -d postgres
+
 <h1>Comandos Postgres</h1>
 - psql -U <usuario> - Loga no banco de dados utilizando o usuário criado
 - \l - Lista as bases de dados
