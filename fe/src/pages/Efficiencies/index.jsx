@@ -16,13 +16,21 @@ import ReactDatePickerComponents from "../../components/ReactDatePickerComponent
 import EmptyList from "../../components/EmptyList";
 import { Spinner } from "../../components/Spinner";
 import Loader from "../../components/Loader";
+import FiltersContainer from "../../components/FiltersContainer";
+import RigsServices from "../../services/RigsServices";
 
 const Efficiencies = () => {
   const [efficiencies, setEfficiencies] = useState([{}]);
   const [isLoading, setIsLoading] = useState(false);
-  const [startDate, setStartDate] = useState(new Date("2023-06-02"));
-  const [endDate, setEndDate] = useState(new Date("2023-07-01"));
-  const [currentDate] = useState(new Date());
+  const currentDate = new Date();
+  const [startDate, setStartDate] = useState(
+    new Date(`2023-${currentDate.getUTCMonth() + 1}-01`)
+  );
+  const [endDate, setEndDate] = useState(
+    new Date(`2023-${currentDate.getUTCMonth() + 1}-30`)
+  );
+
+  const { isUserAdm } = useAuth();
 
   const columns = [
     {
@@ -194,11 +202,35 @@ const Efficiencies = () => {
 
   const user = useSelector((state) => state.user);
 
+  const getRig = () => {
+    if (isUserAdm) {
+      return "";
+    }
+
+    return user?.rig_name;
+  };
+
+  const [rigs, setRigs] = useState([]);
+  const [selectedRig, setSelectedRig] = useState(getRig());
+  const [filteredEfficiencies, setFilteredEfficiencies] = useState([]);
+
+  console.log("rigs", rigs);
+
   const formattedItems = useFormatEfficienciesArray(
     efficiencies,
     startDate,
-    endDate
+    endDate,
+    selectedRig
   );
+
+  const handleRigChange = (event) => {
+    const newEfficiencies = efficiencies.filter((efficiency) => {
+      return efficiency.rig_name === event.target.value;
+    });
+
+    setFilteredEfficiencies(newEfficiencies);
+    setSelectedRig(event.target.value);
+  };
 
   const theme = useTheme();
 
@@ -210,7 +242,14 @@ const Efficiencies = () => {
         efficienciesData = user?.rig_id
           ? await EfficienciesServices.listEfficienciesByRigId(user?.rig_id)
           : await EfficienciesServices.listEfficiencies();
+
         setEfficiencies(efficienciesData);
+
+        const rigs = await RigsServices.listRigs();
+        setRigs(rigs);
+        if (isUserAdm) {
+          setSelectedRig(rigs[0].name);
+        }
       } catch (error) {
         toast({
           type: "error",
@@ -233,14 +272,17 @@ const Efficiencies = () => {
         </Box>
       ) : (
         <>
-          <ReactDatePickerComponents
+          <FiltersContainer
             startDate={startDate}
             endDate={endDate}
             setStartDate={setStartDate}
             setEndDate={setEndDate}
             currentDate={currentDate}
+            rigs={rigs}
+            handleRigChange={handleRigChange}
+            selectedRig={selectedRig}
+            isUserAdm={isUserAdm}
           />
-
           {formattedItems.length > 0 ? (
             <DataGridContainer theme={theme}>
               <DataGrid

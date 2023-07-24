@@ -74,64 +74,46 @@ const BillingDataGrid = ({ selectedMonth, startDate, endDate }) => {
 
   const formattedItems = useBillingDataGrid(efficiencies, startDate, endDate);
 
-  const transformedData = [];
-
-  // Cria o objeto para cada taxa
-  /* transformedData.push({
-    id: 1,
-    taxName: "totalValue",
-    lineName: "Valor Total",
-  }); */
-  transformedData.push({
-    id: 2,
-    taxName: "availableHoursBilling",
-    lineName: "Horas Disponível",
-  });
-  transformedData.push({
-    id: 3,
-    taxName: "dtmLessThanTwentyBilling",
-    lineName: "DTM <= 20",
-  });
-  transformedData.push({
-    id: 4,
-    taxName: "dtmBetweenTwentyAndFiftyBilling",
-    lineName: "20 < DTM <= 50",
-  });
-  transformedData.push({
-    id: 15,
-    taxName: "dtmGreaterThanFiftyBilling",
-    lineName: "DTM > 50",
-  });
-  transformedData.push({
-    id: 5,
-    taxName: "equipmentLessThanTwentyBilling",
-    lineName: "Taxa Equipamento < 20",
-  });
-  transformedData.push({
-    id: 6,
-    taxName: "equipmentBetweenTwentyAndFiftyBilling",
-    lineName: "20 < Taxa Equipamento <= 50 ",
-  });
-  transformedData.push({
-    id: 7,
-    taxName: "equipmentGreaterThanFiftyBilling",
-    lineName: "Taxa Equipamento > 50",
-  });
-  transformedData.push({
-    id: 8,
-    taxName: "fluidLessThanTwentyBilling",
-    lineName: "Taxa Flúido < 20",
-  });
-  transformedData.push({
-    id: 9,
-    taxName: "fluidBetweenTwentyAndFiftyBilling",
-    lineName: "20 < Taxa Flúido <= 50 ",
-  });
-  transformedData.push({
-    id: 10,
-    taxName: "fluidGreaterThanFiftyBilling",
-    lineName: "Taxa Flúdio > 50",
-  });
+  const transformedData = [
+    { id: 2, taxName: "availableHoursBilling", lineName: "Horas Disponível" },
+    { id: 3, taxName: "dtmLessThanTwentyBilling", lineName: "DTM <= 20" },
+    {
+      id: 4,
+      taxName: "dtmBetweenTwentyAndFiftyBilling",
+      lineName: "20 < DTM <= 50",
+    },
+    { id: 15, taxName: "dtmGreaterThanFiftyBilling", lineName: "DTM > 50" },
+    {
+      id: 5,
+      taxName: "equipmentLessThanTwentyBilling",
+      lineName: "Taxa Equipamento < 20",
+    },
+    {
+      id: 6,
+      taxName: "equipmentBetweenTwentyAndFiftyBilling",
+      lineName: "20 < Taxa Equipamento <= 50 ",
+    },
+    {
+      id: 7,
+      taxName: "equipmentGreaterThanFiftyBilling",
+      lineName: "Taxa Equipamento > 50",
+    },
+    {
+      id: 8,
+      taxName: "fluidLessThanTwentyBilling",
+      lineName: "Taxa Flúido < 20",
+    },
+    {
+      id: 9,
+      taxName: "fluidBetweenTwentyAndFiftyBilling",
+      lineName: "20 < Taxa Flúido <= 50 ",
+    },
+    {
+      id: 10,
+      taxName: "fluidGreaterThanFiftyBilling",
+      lineName: "Taxa Flúdio > 50",
+    },
+  ];
 
   // Itera sobre os dados originais e adiciona as informações correspondentes ao objeto transformado
   //console.log("Formatted Itens", formattedItems);

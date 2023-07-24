@@ -10,7 +10,7 @@ export const useFormatEfficienciesLineChart = (
     let mappedEfficiencies = [];
     efficiencies.map((efficiency) => {
       const dateObj = new Date(efficiency.date);
-      dateObj.setHours(dateObj.getHours() + 24);
+      dateObj.setHours(dateObj.getHours() + 3);
 
       const day = dateObj.getDate();
       const month = dateObj.getMonth();

@@ -2,18 +2,21 @@ import { months } from "../utils/monthsArray";
 export const useFormatEfficienciesArray = (
   efficiencies,
   startDate,
-  endDate
+  endDate,
+  selectedRig
 ) => {
   let mappedEfficiencies = [];
 
-  const formatedItems = efficiencies.map((item) => {
+  console.log("rig Name", selectedRig);
+  efficiencies.map((item) => {
     const dateObj = new Date(item?.date);
-    dateObj.setHours(dateObj.getHours() + 24);
+    dateObj.setHours(dateObj.getHours() + 3);
 
-    if (dateObj >= startDate && dateObj <= endDate) {
-      const availableHours = item.available_hours;
-      const dtmHours = item.dtm_hours ? item.dtm_hours : 0;
-
+    if (
+      dateObj >= startDate &&
+      dateObj <= endDate &&
+      selectedRig === item.rig_name
+    ) {
       const hasDtm = item.dtm_periods.length != 0 ? true : false;
       const hasGlossHours = item.gloss_periods.length != 0 ? true : false;
       const hasRepairHours = item.repair_periods.length != 0 ? true : false;

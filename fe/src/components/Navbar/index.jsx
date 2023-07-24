@@ -44,8 +44,6 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   const { isUserAdm } = useAuth();
 
-  console.log("is User ADM", isUserAdm);
-
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const theme = useTheme();

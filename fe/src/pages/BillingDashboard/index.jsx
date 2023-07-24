@@ -74,9 +74,9 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
   const [rigs, setRigs] = useState([]);
   const [selectedRig, setSelectedRig] = useState(getRig());
   const [isLoading, setIsLoading] = useState(true);
-  const [startDate, setStartDate] = useState(new Date("2023-06-02"));
-  const [endDate, setEndDate] = useState(new Date("2023-07-01"));
-  const [currentDate] = useState(new Date());
+  const currentDate = new Date()
+  const [startDate, setStartDate] = useState(new Date(`2023-${currentDate.getUTCMonth() +1}-01`));
+  const [endDate, setEndDate] = useState(new Date(`2023-${currentDate.getUTCMonth() +1}-30`));
 
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
