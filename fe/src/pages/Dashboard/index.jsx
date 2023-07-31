@@ -238,7 +238,12 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
                   borderRadius=".25rem"
                   overflow="auto"
                 >
-                  <ListEfficiencies efficiencies={efficiencies} />
+                  <ListEfficiencies
+                    efficiencies={efficiencies}
+                    selectedRig={selectedRig}
+                    startDate={startDate}
+                    endDate={endDate}
+                  />
                 </Box>
               )}
 

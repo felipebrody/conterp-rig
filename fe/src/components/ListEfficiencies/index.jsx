@@ -3,9 +3,22 @@ import { Link } from "react-router-dom";
 import { useFormatDate } from "../../hooks/useFormatDate";
 import { useFormatEfficienciesArray } from "../../hooks/useFormatEfficienciesArray";
 
-const ListEfficiencies = ({ efficiencies }) => {
+const ListEfficiencies = ({
+  efficiencies,
+  selectedRig,
+  startDate,
+  endDate,
+}) => {
   const theme = useTheme();
-  const formattedEfficiencies = useFormatEfficienciesArray(efficiencies);
+
+  const formattedEfficiencies = useFormatEfficienciesArray(
+    efficiencies,
+    selectedRig,
+    startDate,
+    endDate
+  );
+
+  console.log("Efficiencies: " + formattedEfficiencies);
 
   return (
     <Box padding="1.25rem">
