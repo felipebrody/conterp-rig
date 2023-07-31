@@ -181,7 +181,6 @@ class EfficiencyMapper {
       periods.forEach((period) => {
         let formattedPeriod = null;
         if (type === "repair") {
-          console.log(typeof period.end_hour);
           formattedPeriod = {
             id: period.id,
             start_hour: period.start_hour.slice(0, 5),

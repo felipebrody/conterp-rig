@@ -20,6 +20,17 @@ export const DatePickerContainer = styled(Box)({
   gridColumn: "span 12",
 });
 
+export const MinutesRemainingContainer = styled(Box)(({ isPending ,theme}) => ({
+  position:"fixed",
+  top:"6rem", 
+  right:"10px" ,
+  zIndex:"9999", 
+  backgroundColor:isPending ? theme.palette.red[500]: theme.palette.primary[500], 
+  padding:"10px",
+  borderRadius:"8px",
+  boxShadow:"0 2px 5px rgba(0, 0, 0, 0.1)",
+}));
+
 export const TimerPickerContainer = styled(Box)(({ isNonMobile }) => ({
   display: "flex",
   alignItems: "flex-end",

@@ -214,8 +214,6 @@ const Efficiencies = () => {
   const [selectedRig, setSelectedRig] = useState(getRig());
   const [filteredEfficiencies, setFilteredEfficiencies] = useState([]);
 
-  console.log("rigs", rigs);
-
   const formattedItems = useFormatEfficienciesArray(
     efficiencies,
     startDate,
