@@ -1,9 +1,9 @@
 //React / Redux / Router
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
 
 //DatePicker
-import ReactDatePicker, { registerLocale } from "react-datepicker";
+import ReactDatePicker, {registerLocale} from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -44,19 +44,19 @@ import EfficienciesServices from "../../services/EfficienciesServices";
 import RigsServices from "../../services/RigsServices";
 
 //Utils
-import { months } from "../../utils/monthsArray";
+import {months} from "../../utils/monthsArray";
 
 //Hooks
-import { useStatBox } from "../../hooks/useStatBox";
-import { useAuth } from "../../hooks/useAuth";
+import {useStatBox} from "../../hooks/useStatBox";
+import {useAuth} from "../../hooks/useAuth";
 import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
 
 import Loader from "../../components/Loader";
 import FiltersContainer from "../../components/FiltersContainer";
 
-const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
+const Dashboard = ({dataType = "hours", chartKeys, barChartLegend}) => {
   const user = useSelector((state) => state.user);
-  const { isUserAdm } = useAuth();
+  const {isUserAdm} = useAuth();
   const theme = useTheme();
 
   const getRig = () => {
@@ -116,7 +116,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
     loadRigEfficiencies();
   }, [selectedMonth, user?.rig_id]);
 
-  const { data } = useFormatEfficienciesBarChart(
+  const {data} = useFormatEfficienciesBarChart(
     efficiencies,
     selectedMonth,
     selectedRig,
@@ -125,7 +125,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
     dataType
   );
 
-  const { statBoxOne, statBoxTwo, statBoxThree } = useStatBox(
+  const {statBoxOne, statBoxTwo, statBoxThree, statBoxFour} = useStatBox(
     efficiencies,
     selectedMonth,
     selectedRig,
@@ -186,7 +186,7 @@ const Dashboard = ({ dataType = "hours", chartKeys, barChartLegend }) => {
               <StatBoxContainer theme={theme}>
                 <StatBox
                   icon={<DataThresholdingIcon />}
-                  title={`Movimentações: ${statBoxThree.totalDtms}`}
+                  title={`Movimentações: ${statBoxFour.totalMovimentations}`}
                   subtitle="Movimentações no mês"
                   percentage=""
                   progress={0}

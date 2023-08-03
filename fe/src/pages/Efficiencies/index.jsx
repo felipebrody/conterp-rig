@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
-import { CheckCircleOutlineTwoTone } from "@mui/icons-material";
+import {useEffect, useState} from "react";
+import {Box, Button, Typography} from "@mui/material";
+import {CheckCircleOutlineTwoTone} from "@mui/icons-material";
 //import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
 import toast from "../../utils/toast";
 import EfficienciesServices from "../../services/EfficienciesServices";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 import Header from "../../components/Header";
-import { useTheme } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useAuth } from "../../hooks/useAuth";
-import { useFormatEfficienciesArray } from "../../hooks/useFormatEfficienciesArray";
-import { DataGridContainer } from "./styles";
-import { Link } from "react-router-dom";
+import {useTheme} from "@mui/material";
+import {useSelector} from "react-redux";
+import {useAuth} from "../../hooks/useAuth";
+import {useFormatEfficienciesArray} from "../../hooks/useFormatEfficienciesArray";
+import {DataGridContainer} from "./styles";
+import {Link} from "react-router-dom";
 import ReactDatePickerComponents from "../../components/ReactDatePickerComponents";
 import EmptyList from "../../components/EmptyList";
-import { Spinner } from "../../components/Spinner";
+import {Spinner} from "../../components/Spinner";
 import Loader from "../../components/Loader";
 import FiltersContainer from "../../components/FiltersContainer";
 import RigsServices from "../../services/RigsServices";
@@ -30,7 +30,7 @@ const Efficiencies = () => {
     new Date(`2023-${currentDate.getUTCMonth() + 1}-30`)
   );
 
-  const { isUserAdm } = useAuth();
+  const {isUserAdm} = useAuth();
 
   const columns = [
     {
@@ -62,7 +62,7 @@ const Efficiencies = () => {
       headerAlign: "center",
       align: "center",
 
-      renderCell: ({ row: { rig_name } }) => {
+      renderCell: ({row: {rig_name}}) => {
         return (
           <Box
             width="100%"
@@ -92,7 +92,7 @@ const Efficiencies = () => {
       headerAlign: "center",
       align: "center",
       type: "number",
-      renderCell: ({ row: { available_hours } }) => {
+      renderCell: ({row: {available_hours}}) => {
         return (
           <Box
             width="100%"
@@ -113,7 +113,7 @@ const Efficiencies = () => {
       flex: 0.2,
       headerAlign: "center",
       align: "center",
-      renderCell: ({ row: { hasRepairHours } }) => {
+      renderCell: ({row: {hasRepairHours}}) => {
         return (
           <Box
             width="35%"
@@ -137,7 +137,7 @@ const Efficiencies = () => {
       flex: 0.2,
       headerAlign: "center",
       align: "center",
-      renderCell: ({ row: { hasGlossHours } }) => {
+      renderCell: ({row: {hasGlossHours}}) => {
         return (
           <Box
             width="35%"
@@ -160,7 +160,7 @@ const Efficiencies = () => {
       headerAlign: "center",
       headerName: "Eficiência",
       flex: 0.5,
-      renderCell: ({ row: { efficiency } }) => {
+      renderCell: ({row: {efficiency}}) => {
         return (
           <Box
             width="70%"
@@ -180,7 +180,7 @@ const Efficiencies = () => {
       headerAlign: "center",
       headerName: "Detalhes",
       flex: 0.5,
-      renderCell: ({ row: { efficiency_id } }) => {
+      renderCell: ({row: {efficiency_id}}) => {
         return (
           <Box
             width="35%"
@@ -216,9 +216,9 @@ const Efficiencies = () => {
 
   const formattedItems = useFormatEfficienciesArray(
     efficiencies,
+    selectedRig,
     startDate,
-    endDate,
-    selectedRig
+    endDate
   );
 
   const handleRigChange = (event) => {
@@ -288,7 +288,7 @@ const Efficiencies = () => {
                 getRowId={(row) => row.efficiency_id}
                 rows={formattedItems}
                 columns={columns}
-                components={{ Toolbar: GridToolbar }}
+                components={{Toolbar: GridToolbar}}
               />
             </DataGridContainer>
           ) : (

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { months } from "../utils/monthsArray";
-import { monthsDays } from "../utils/monthsDaysArray";
-import { getMonthTotalHours } from "../utils/getMonthTotalHours";
+import {useEffect, useState} from "react";
+import {months} from "../utils/monthsArray";
+import {monthsDays} from "../utils/monthsDaysArray";
+import {getMonthTotalHours} from "../utils/getMonthTotalHours";
 
 export const useStatBox = (
   efficiencies,
@@ -13,28 +13,41 @@ export const useStatBox = (
   const [statBoxOne, setStatBoxOne] = useState({});
   const [statBoxTwo, setStatBoxTwo] = useState({});
   const [statBoxThree, setStatBoxThree] = useState({});
+  const [statBoxFour, setStatBoxFour] = useState({});
 
   useEffect(() => {
     if (efficiencies) {
       let hoursAvailable = 0;
       let glossHours = 0;
       let totalDtms = 0;
+      let totalMovimentations = 0;
 
-      efficiencies.map(({ available_hours, date, rig_name, dtm_periods }) => {
-        const dateObj = new Date(date);
-        dateObj.setHours(dateObj.getHours() + 12);
+      efficiencies.map(
+        ({
+          available_hours,
+          date,
+          rig_name,
+          dtm_periods,
+          equipment_ratio,
+          fluid_ratio,
+        }) => {
+          const dateObj = new Date(date);
+          dateObj.setHours(dateObj.getHours() + 12);
 
-        if (
-          dateObj >= startDate &&
-          dateObj <= endDate &&
-          selectedRig === rig_name
-        ) {
-          totalDtms += dtm_periods.length;
-          hoursAvailable += parseFloat(available_hours);
-          glossHours += parseFloat(24 - available_hours);
-          return { available_hours, date };
+          if (
+            dateObj >= startDate &&
+            dateObj <= endDate &&
+            selectedRig === rig_name
+          ) {
+            console.log(equipment_ratio.length);
+            totalMovimentations += equipment_ratio.length + fluid_ratio.length;
+            totalDtms += dtm_periods.length;
+            hoursAvailable += parseFloat(available_hours);
+            glossHours += parseFloat(24 - available_hours);
+            return {available_hours, date};
+          }
         }
-      });
+      );
 
       const totalHoursSelected = getMonthTotalHours(startDate, endDate);
       //setInforOne(totalHoursSelected);
@@ -53,6 +66,10 @@ export const useStatBox = (
       setStatBoxThree({
         totalDtms: totalDtms,
       });
+
+      setStatBoxFour({
+        totalMovimentations: totalMovimentations,
+      });
     }
   }, [selectedMonth, efficiencies, selectedRig, startDate, endDate]);
 
@@ -60,5 +77,6 @@ export const useStatBox = (
     statBoxOne,
     statBoxTwo,
     statBoxThree,
+    statBoxFour,
   };
 };

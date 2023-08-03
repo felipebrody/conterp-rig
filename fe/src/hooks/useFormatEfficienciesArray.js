@@ -1,4 +1,4 @@
-import { months } from "../utils/monthsArray";
+import {months} from "../utils/monthsArray";
 export const useFormatEfficienciesArray = (
   efficiencies,
   selectedRig,
@@ -10,9 +10,6 @@ export const useFormatEfficienciesArray = (
   efficiencies.map((item) => {
     const dateObj = new Date(item?.date);
     dateObj.setHours(dateObj.getHours() + 3);
-
-    console.log("selected Rig no listEfficiencies", selectedRig);
-
     if (
       dateObj >= startDate &&
       dateObj <= endDate &&

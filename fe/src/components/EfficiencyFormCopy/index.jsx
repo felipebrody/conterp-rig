@@ -1,7 +1,7 @@
 //React / Redux / Router
-import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, {useEffect, useMemo, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 //MUI
 import {
@@ -13,15 +13,15 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import {TimePicker} from "@mui/x-date-pickers/TimePicker";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 //Utils
-import { v4 as uuidv4 } from "uuid";
+import {stringify, v4 as uuidv4} from "uuid";
 import toast from "../../utils/toast";
 import {
   glossClassification,
@@ -36,9 +36,9 @@ import {
   TimerPickerContainer,
   StyledInputBase,
   StyledFormControl,
-  MinutesRemainingContainer
+  MinutesRemainingContainer,
 } from "./styles";
-import { StyledTextField } from "../StyledTextField";
+import {StyledTextField} from "../StyledTextField";
 
 //Services
 import OilWellsServices from "../../services/OilWellsServices";
@@ -48,7 +48,7 @@ import EfficiencyMapper from "../../services/mappers/EfficiencyMapper";
 //Components
 import Loader from "../Loader";
 
-const EfficiencyForm = ({ pageType: type, id }) => {
+const EfficiencyForm = ({pageType: type, id}) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const theme = useTheme();
@@ -144,7 +144,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
 
   const handleStartHourChange = (id, value) => {
     const newPeriods = periods.map((period) => {
-      return period.id === id ? { ...period, startHour: value } : period;
+      return period.id === id ? {...period, startHour: value} : period;
     });
 
     setPeriods(newPeriods);
@@ -152,7 +152,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
 
   const handleEndHourChange = (id, value, index) => {
     const newPeriods = periods.map((period) => {
-      return period.id === id ? { ...period, endHour: value } : period;
+      return period.id === id ? {...period, endHour: value} : period;
     });
 
     setPeriods(newPeriods);
@@ -160,9 +160,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
 
   const handleTypeChange = (id, event) => {
     const newPeriods = periods.map((period) => {
-      return period.id === id
-        ? { ...period, type: event.target.value }
-        : period;
+      return period.id === id ? {...period, type: event.target.value} : period;
     });
 
     setPeriods(newPeriods);
@@ -171,7 +169,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
   const handleOilWellChange = (id, event) => {
     const newPeriods = periods.map((period) => {
       return period.id === id
-        ? { ...period, oilWell: event.target.value }
+        ? {...period, oilWell: event.target.value}
         : period;
     });
 
@@ -181,7 +179,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
   const handleChangeDescription = (id, event) => {
     const newPeriods = periods.map((period) => {
       return period.id === id
-        ? { ...period, description: event.target.value }
+        ? {...period, description: event.target.value}
         : period;
     });
 
@@ -191,7 +189,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
   const handleGlossClassificationChange = (id, event) => {
     const newPeriods = periods.map((period) => {
       return period.id === id
-        ? { ...period, glossClassification: event.target.value }
+        ? {...period, glossClassification: event.target.value}
         : period;
     });
 
@@ -201,7 +199,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
   const handleDTMDistanceChange = (id, event) => {
     const newPeriods = periods.map((period) => {
       return period.id === id
-        ? { ...period, DTMDistance: event.target.value }
+        ? {...period, DTMDistance: event.target.value}
         : period;
     });
 
@@ -211,7 +209,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
   const handleRepairClassificationChange = (id, event) => {
     const newPeriods = periods.map((period) => {
       return period.id === id
-        ? { ...period, repairClassification: event.target.value }
+        ? {...period, repairClassification: event.target.value}
         : period;
     });
 
@@ -221,7 +219,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
   const handleEquipmentRatioChange = (id, event) => {
     const newPeriods = periods.map((period) => {
       return period.id === id
-        ? { ...period, equipmentRatio: event.target.value }
+        ? {...period, equipmentRatio: event.target.value}
         : period;
     });
 
@@ -231,7 +229,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
   const handleFluidRatioChange = (id, event) => {
     const newPeriods = periods.map((period) => {
       return period.id === id
-        ? { ...period, fluidRatio: event.target.value }
+        ? {...period, fluidRatio: event.target.value}
         : period;
     });
 
@@ -268,19 +266,22 @@ const EfficiencyForm = ({ pageType: type, id }) => {
     return remainingMinutes > 0 ? remainingMinutes : 0;
   };
 
-  const remainingMinutes = useMemo(() => calculateRemainingMinutes(), [minutes]
-  )
-
-
+  const remainingMinutes = useMemo(
+    () => calculateRemainingMinutes(),
+    [minutes]
+  );
 
   useEffect(() => {
-
     let minutesSelected = 0;
-    
-    const calculateRemainingMinutes = ({endHour, startHour ,minutesSelected}) => {
-       console.log("minutes selected: " + minutesSelected)
+
+    const calculateRemainingMinutes = ({
+      endHour,
+      startHour,
+      minutesSelected,
+    }) => {
+      console.log("minutes selected: " + minutesSelected);
       if (!endHour) {
-        return minutesSelected
+        return minutesSelected;
       }
       let startHourInMinutes = startHour?.$H * 60 + startHour?.$m;
       let endHourInMinutes = 0;
@@ -291,21 +292,25 @@ const EfficiencyForm = ({ pageType: type, id }) => {
         endHourInMinutes = endHour?.$H * 60 + endHour?.$m;
       }
 
-
-
       minutesSelected += endHourInMinutes - startHourInMinutes;
 
       return minutesSelected;
-    }
-    for (const { endHour, startHour } of periods) {
-    
-      minutesSelected = calculateRemainingMinutes({endHour, startHour,minutesSelected})
-      console.log("teste")
+    };
+    for (const {endHour, startHour} of periods) {
+      minutesSelected = calculateRemainingMinutes({
+        endHour,
+        startHour,
+        minutesSelected,
+      });
+      console.log("teste");
     }
     setMinutes(minutesSelected);
 
     //setRemainingMinutes(1440 - minutes);
   }, [periods]);
+
+  console.log(JSON.stringify(periods[0].startHour));
+  console.log(periods[0].startHour);
 
   return (
     <>
@@ -324,10 +329,15 @@ const EfficiencyForm = ({ pageType: type, id }) => {
             borderRadius={isNonMobile ? "1rem" : "0"}
             position="relative"
           >
-            <MinutesRemainingContainer isPending={remainingMinutes} theme={theme}>
-             
-                {remainingMinutes ? (<p>Faltam {remainingMinutes} Minutos</p>) : (<p>Horários Preenchidos!</p>)}
-
+            <MinutesRemainingContainer
+              isPending={remainingMinutes}
+              theme={theme}
+            >
+              {remainingMinutes ? (
+                <p>Faltam {remainingMinutes} Minutos</p>
+              ) : (
+                <p>Horários Preenchidos!</p>
+              )}
             </MinutesRemainingContainer>
             <Box display="flex" justifyContent="center" marginBottom="1rem">
               <h1>Boletim Diário de Ocorrência</h1>
@@ -345,7 +355,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
                     adapterLocale="pt-br"
                   >
                     <DatePicker
-                      sx={{ width: "50%" }}
+                      sx={{width: "50%"}}
                       disableFuture
                       label="Data"
                       name="date"
@@ -358,7 +368,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
                   <React.Fragment key={period.id}>
                     <Box
                       border="1px solid #fff"
-                      sx={{ gridColumn: "span 12" }}
+                      sx={{gridColumn: "span 12"}}
                     ></Box>
                     <TimerPickerContainer isNonMobile={isNonMobile}>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -370,6 +380,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
                           onChange={(value) =>
                             handleStartHourChange(period.id, value)
                           }
+                          minTime={periods[index - 1]?.endHour || null}
                           value={period.startHour}
                         />
 
@@ -381,6 +392,11 @@ const EfficiencyForm = ({ pageType: type, id }) => {
                             handleEndHourChange(period.id, value)
                           }
                           value={period.endHour}
+                          minTime={
+                            periods[index].startHour
+                              ? periods[index].startHour
+                              : null
+                          }
                         />
                       </LocalizationProvider>
                     </TimerPickerContainer>
@@ -509,7 +525,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
                     <Box
                       display="flex"
                       alignItems="flex-end"
-                      sx={{ gridColumn: "span 9" }}
+                      sx={{gridColumn: "span 9"}}
                     >
                       <StyledTextField
                         fullWidth
@@ -552,7 +568,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
 
                     <StyledFormControl
                       isNonMobile={isNonMobile}
-                      sx={{ gridColumn: "span 6" }}
+                      sx={{gridColumn: "span 6"}}
                     >
                       <InputLabel id="equipment-ratio">
                         Movimentação de Equipamento
@@ -586,7 +602,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
 
                     <StyledFormControl
                       isNonMobile={isNonMobile}
-                      sx={{ gridColumn: "span 6" }}
+                      sx={{gridColumn: "span 6"}}
                     >
                       <InputLabel id="fluid-ratio">
                         Movimentação de Flúido
@@ -620,7 +636,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
 
                     {periods.length > 1 && (
                       <Box
-                        sx={{ gridColumn: "span 12" }}
+                        sx={{gridColumn: "span 12"}}
                         display="flex"
                         justifyContent="end"
                         mt=".5rem"
@@ -638,7 +654,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
                     )}
                     <Box
                       border="1px solid #fff"
-                      sx={{ gridColumn: "span 12" }}
+                      sx={{gridColumn: "span 12"}}
                     ></Box>
                   </React.Fragment>
                 ))}
@@ -647,7 +663,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
               <Button
                 startIcon={<AddIcon />}
                 variant="contained"
-                sx={{ mt: "1rem" }}
+                sx={{mt: "1rem"}}
                 color="secondary"
                 onClick={addPeriod}
               >
@@ -665,7 +681,7 @@ const EfficiencyForm = ({ pageType: type, id }) => {
                   color="secondary"
                   variant="contained"
                   size="large"
-                  sx={{ width: "50%" }}
+                  sx={{width: "50%"}}
                   disabled={!isFormValid || isLoading}
                 >
                   {isLoading ? "Enviando..." : "Enviar"}
