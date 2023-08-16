@@ -1,11 +1,8 @@
-import { useAuth } from "../../hooks/useAuth";
-
-import { SelectBox, SelectContainer, StyledInputBase } from "./styles";
+import {SelectBox, SelectContainer, StyledInputBase} from "./styles";
 
 import ReactDatePickerComponents from "../ReactDatePickerComponents";
 
 import {
-  Box,
   useMediaQuery,
   useTheme,
   InputLabel,
@@ -14,14 +11,15 @@ import {
 } from "@mui/material";
 const FiltersContainer = ({
   startDate,
-  setStartDate,
-  setEndDate,
+  handleStartDateChange,
+  handleEndDateChange,
   endDate,
   currentDate,
   handleRigChange,
   selectedRig,
   rigs,
   isUserAdm,
+  isSelectVisible,
 }) => {
   const theme = useTheme();
 
@@ -29,9 +27,9 @@ const FiltersContainer = ({
 
   return (
     <SelectContainer isNonMobile={isNonMobile}>
-      {isUserAdm && (
+      {isUserAdm && isSelectVisible && (
         <SelectBox isNonMobile={isNonMobile}>
-          <InputLabel id="month" sx={{ color: "#000" }}>
+          <InputLabel id="month" sx={{color: "#000"}}>
             SPT:
           </InputLabel>
           <Select
@@ -49,8 +47,8 @@ const FiltersContainer = ({
               width: "50%",
             }}
           >
-            {rigs.map(({ id, name }) => (
-              <MenuItem value={name} key={id}>
+            {rigs.map(({id, name}) => (
+              <MenuItem value={id} key={id}>
                 {name}
               </MenuItem>
             ))}
@@ -60,8 +58,8 @@ const FiltersContainer = ({
       <ReactDatePickerComponents
         startDate={startDate}
         endDate={endDate}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
+        handleStartDateChange={handleStartDateChange}
+        handleEndDateChange={handleEndDateChange}
         currentDate={currentDate}
       />
     </SelectContainer>

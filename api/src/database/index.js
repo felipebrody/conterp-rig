@@ -1,4 +1,4 @@
-const { Client } = require("pg");
+const {Client} = require("pg");
 
 const localHost = "localhost";
 const renderHost = "dpg-ciaphj98g3nden686mlg-a";
@@ -7,10 +7,10 @@ const localHostPassoword = "root";
 const renderHostPassword = "BkZou1LFOuWlkfQ7eCLZydMRuI8NOSxE";
 
 const client = new Client({
-  host: renderHost,
+  host: localHost,
   port: 5432,
   user: "root",
-  password: renderHostPassword,
+  password: localHostPassoword,
   database: "conterp",
   timezone: "America/Sao_Paulo",
 });
@@ -18,7 +18,7 @@ const client = new Client({
 client.connect();
 
 exports.query = async (query, values) => {
-  const { rows } = await client.query(query, values);
+  const {rows} = await client.query(query, values);
 
   return rows;
 };

@@ -1,4 +1,4 @@
-import {Typography, Box, useTheme, Button} from "@mui/material";
+/* import {Typography, Box, useTheme, Button} from "@mui/material";
 import {Link} from "react-router-dom";
 import {useFormatDate} from "../../hooks/useFormatDate";
 import {useFormatEfficienciesArray} from "../../hooks/useFormatEfficienciesArray";
@@ -72,3 +72,4 @@ const ListEfficiencies = ({efficiencies, selectedRig, startDate, endDate}) => {
 };
 
 export default ListEfficiencies;
+ */

@@ -1,15 +1,7 @@
 import {useEffect, useState} from "react";
-import {months} from "../utils/monthsArray";
-import {monthsDays} from "../utils/monthsDaysArray";
 import {getMonthTotalHours} from "../utils/getMonthTotalHours";
 
-export const useStatBox = (
-  efficiencies,
-  selectedMonth,
-  selectedRig,
-  startDate,
-  endDate
-) => {
+export const useStatBox = (efficiencies, selectedRig, startDate, endDate) => {
   const [statBoxOne, setStatBoxOne] = useState({});
   const [statBoxTwo, setStatBoxTwo] = useState({});
   const [statBoxThree, setStatBoxThree] = useState({});
@@ -39,7 +31,6 @@ export const useStatBox = (
             dateObj <= endDate &&
             selectedRig === rig_name
           ) {
-            console.log(equipment_ratio.length);
             totalMovimentations += equipment_ratio.length + fluid_ratio.length;
             totalDtms += dtm_periods.length;
             hoursAvailable += parseFloat(available_hours);
@@ -71,7 +62,7 @@ export const useStatBox = (
         totalMovimentations: totalMovimentations,
       });
     }
-  }, [selectedMonth, efficiencies, selectedRig, startDate, endDate]);
+  }, [efficiencies, selectedRig, startDate, endDate]);
 
   return {
     statBoxOne,

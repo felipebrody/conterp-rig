@@ -5,7 +5,7 @@ import { localHostEndPoint, renderHostEndPoint } from "../utils/endPoints";
 
 class EfficienciesServices {
   constructor() {
-    this.HttpClient = new HttpClient(renderHostEndPoint);
+    this.HttpClient = new HttpClient(localHostEndPoint);
   }
 
   async listEfficiencies() {

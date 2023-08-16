@@ -1,14 +1,14 @@
 //DatePicker
-import ReactDatePicker, { registerLocale } from "react-datepicker";
+import ReactDatePicker, {registerLocale} from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-import { Box, Typography } from "@mui/material";
+import {Box, Typography} from "@mui/material";
 
 const ReactDatePickerComponents = ({
   startDate,
-  setStartDate,
-  setEndDate,
+  handleStartDateChange,
+  handleEndDateChange,
   endDate,
   currentDate,
 }) => {
@@ -18,7 +18,7 @@ const ReactDatePickerComponents = ({
       <Box>
         <ReactDatePicker
           selected={startDate}
-          onChange={(date) => setStartDate(date)}
+          onChange={(date) => handleStartDateChange(date)}
           selectsStart
           startDate={startDate}
           endDate={endDate}
@@ -30,7 +30,7 @@ const ReactDatePickerComponents = ({
       <Box>
         <ReactDatePicker
           selected={endDate}
-          onChange={(date) => setEndDate(date)}
+          onChange={(date) => handleEndDateChange(date)}
           selectsEnd
           startDate={startDate}
           endDate={endDate}

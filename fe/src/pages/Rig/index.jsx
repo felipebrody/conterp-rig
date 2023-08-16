@@ -1,12 +1,12 @@
-import { Box } from "@mui/material";
-import EfficiencyForm from "../../components/EfficiencyFormCopy";
+import {Box} from "@mui/material";
+import EfficiencyForm from "../../components/EfficiencyForm";
 import Header from "../../components/Header";
-import { useParams } from "react-router-dom";
+import {useParams} from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
 
 const Rig = () => {
-  const { id } = useParams();
+  const {id} = useParams();
 
   const user = useSelector((state) => state.user);
   return (

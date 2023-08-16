@@ -1,6 +1,5 @@
-import { ResponsiveBar } from "@nivo/bar";
-import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
-import { useTheme } from "@mui/material";
+import {ResponsiveBar} from "@nivo/bar";
+import {useTheme} from "@mui/material";
 const BarChart = ({
   data,
   selectedRig,
@@ -47,11 +46,11 @@ const BarChart = ({
         },
       }}
       indexBy="rig"
-      margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
+      margin={{top: 50, right: 50, bottom: 50, left: 60}}
       padding={0.3}
-      valueScale={{ type: "linear" }}
-      indexScale={{ type: "band", round: true }}
-      colors={({ id, data }) => (data.highlight ? "#38bcb2" : "#1c7b7b")}
+      valueScale={{type: "linear"}}
+      indexScale={{type: "band", round: true}}
+      colors={({id, data}) => (data.highlight ? "#38bcb2" : "#1c7b7b")}
       defs={[
         {
           id: "dots",

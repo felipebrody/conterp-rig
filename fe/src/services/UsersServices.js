@@ -1,10 +1,10 @@
 import HttpClient from "./utils/HttpClient";
 
-import { localHostEndPoint, renderHostEndPoint } from "../utils/endPoints";
+import {localHostEndPoint, renderHostEndPoint} from "../utils/endPoints";
 
 class UsersServices {
   constructor() {
-    this.HttpClient = new HttpClient(renderHostEndPoint);
+    this.HttpClient = new HttpClient(localHostEndPoint);
   }
 
   async listUsers(orderBy = "asc") {
