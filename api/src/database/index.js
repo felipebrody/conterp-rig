@@ -7,10 +7,10 @@ const localHostPassoword = "root";
 const renderHostPassword = "BkZou1LFOuWlkfQ7eCLZydMRuI8NOSxE";
 
 const client = new Client({
-  host: localHost,
+  host: renderHost,
   port: 5432,
   user: "root",
-  password: localHostPassoword,
+  password: renderHostPassword,
   database: "conterp",
   timezone: "America/Sao_Paulo",
 });
