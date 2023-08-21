@@ -1,10 +1,13 @@
+//React
 import {createContext, useState, useEffect, useCallback, useRef} from "react";
+
+//Hooks
 import {useGetEfficiencies} from "../../../hooks/useGetEfficiencies";
 import {useGetRigs} from "../../../hooks/useGetRigs";
-import {useAuth} from "../../../hooks/useAuth";
-import {useSelector} from "react-redux";
-import {useStatBox} from "../../../components/StatBox/useStateBox";
 import {useDatesContext} from "../../../contexts/DatesContext";
+
+//Components
+import {useBarChart} from "../components/BarChart/useBarChart";
 
 export const BillingDashboardContext = createContext({});
 
@@ -40,6 +43,8 @@ export const BillingDashboardProvider = ({children}) => {
     isFetching: isFetchingRigs,
   } = useGetRigs();
 
+  const {totalValue} = useBarChart(efficiencies, "invoicing");
+
   useEffect(() => {
     if (
       prevFiltersRef.current.start_date !== filters.start_date ||
@@ -51,34 +56,44 @@ export const BillingDashboardProvider = ({children}) => {
     // Atualiza as referências dos filtros anteriores
     prevFiltersRef.current.start_date = filters.start_date;
     prevFiltersRef.current.end_date = filters.end_date;
-  }, [filters]);
+  }, [filters, refetchEfficiencies]);
 
   useEffect(() => {
     refetchEfficiencies();
-  }, []);
+  }, [refetchEfficiencies]);
 
-  const handleStartDateFiltersChange = useCallback((startDate) => {
-    handleStartDateChange(startDate);
-    setFilters((prevState) => ({
-      ...prevState,
-      start_date: startDate.toISOString().split("T")[0],
-    }));
-  }, []);
+  const handleStartDateFiltersChange = useCallback(
+    (startDate) => {
+      handleStartDateChange(startDate);
+      setFilters((prevState) => ({
+        ...prevState,
+        start_date: startDate.toISOString().split("T")[0],
+      }));
+    },
+    [handleStartDateChange]
+  );
 
-  const handleEndDateFiltersChange = useCallback((endDate) => {
-    handleEndDateChange(endDate);
-    setFilters((prevState) => ({
-      ...prevState,
-      end_date: endDate.toISOString().split("T")[0],
-    }));
-  }, []);
+  const handleEndDateFiltersChange = useCallback(
+    (endDate) => {
+      handleEndDateChange(endDate);
+      setFilters((prevState) => ({
+        ...prevState,
+        end_date: endDate.toISOString().split("T")[0],
+      }));
+    },
+    [handleEndDateChange]
+  );
 
   return (
     <BillingDashboardContext.Provider
       value={{
         efficiencies,
         rigs,
-        isLoading: isFetchingEfficiencies,
+        isLoading:
+          isFetchingEfficiencies ||
+          isFetchingRigs ||
+          isLoadingEfficiencies ||
+          isLoadingRigs,
         handleEndDateChange,
         handleStartDateChange,
         startDate,
@@ -86,6 +101,7 @@ export const BillingDashboardProvider = ({children}) => {
         currentDate,
         handleStartDateFiltersChange,
         handleEndDateFiltersChange,
+        totalValue,
       }}
     >
       {children}

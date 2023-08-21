@@ -1,16 +1,18 @@
+//MUI
 import {Box, useMediaQuery} from "@mui/material";
-//import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
 
+//Components
 import Header from "../../components/Header";
-import {useSelector} from "react-redux";
-import {useAuth} from "../../hooks/useAuth";
-
 import Loader from "../../components/Loader";
 import FiltersContainer from "../../components/FiltersContainer";
-import {useEfficiencies} from "./useEfficiencies";
 import {EfficienciesDataGrid} from "./components/EfficienciesDataGrid";
-import {SelectContainer} from "./styles";
 import EmptyList from "../../components/EmptyList";
+
+//Hooks
+import {useAuth} from "../../hooks/useAuth";
+import {useEfficiencies} from "./useEfficiencies";
+
+import {SelectContainer} from "./styles";
 
 const Efficiencies = () => {
   const {
@@ -53,7 +55,11 @@ const Efficiencies = () => {
         <EfficienciesDataGrid formattedItems={formattedItems} />
       )}
 
-      {!isLoading && formattedItems.length === 0 && <EmptyList />}
+      {!isLoading && formattedItems.length === 0 && (
+        <EmptyList>
+          Não existe nenhum registro no <strong>período</strong> selecionado!
+        </EmptyList>
+      )}
     </Box>
   );
 };

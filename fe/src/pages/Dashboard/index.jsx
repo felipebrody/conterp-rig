@@ -9,14 +9,10 @@ import DataThresholdingIcon from "@mui/icons-material/DataThresholding";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 
-//Components
-import ListEfficiencies from "../../components/ListEfficiencies";
-
 import StatBox from "../../components/StatBox";
 
 //Hooks
 import {useAuth} from "../../hooks/useAuth";
-import useFormatEfficienciesBarChart from "../../hooks/useFormatEfficienciesBarChart";
 
 import Loader from "../../components/Loader";
 import FiltersContainer from "../../components/FiltersContainer";
@@ -24,6 +20,7 @@ import FiltersContainer from "../../components/FiltersContainer";
 import {useDashboard} from "./DashboardContext/useDashboard";
 import LineChart from "./components/LineChart";
 import BarChart from "./components/BarChart";
+import EmptyList from "../../components/EmptyList";
 
 const Dashboard = () => {
   const {isUserAdm} = useAuth();
@@ -50,25 +47,41 @@ const Dashboard = () => {
     currentDate,
   } = useDashboard();
 
+  const isRigSelected = selectedRig !== undefined;
+
+  const hasEfficiencies = efficiencies?.length > 0;
+
   return (
     <Box height="90%" width="100%" padding="0 2rem">
+      <FiltersContainer
+        isSelectVisible
+        startDate={startDate}
+        endDate={endDate}
+        handleStartDateChange={handleStartDateFiltersChange}
+        handleEndDateChange={handleEndDateFiltersChange}
+        currentDate={currentDate}
+        rigs={rigs}
+        handleRigChange={handleRigChange}
+        selectedRig={selectedRig}
+        isUserAdm={isUserAdm}
+      />
       {isLoading && <Loader size="100" />}
 
-      {!isLoading && (
-        <>
-          <FiltersContainer
-            isSelectVisible
-            startDate={startDate}
-            endDate={endDate}
-            handleStartDateChange={handleStartDateFiltersChange}
-            handleEndDateChange={handleEndDateFiltersChange}
-            currentDate={currentDate}
-            rigs={rigs}
-            handleRigChange={handleRigChange}
-            selectedRig={selectedRig}
-            isUserAdm={isUserAdm}
-          />
+      {!isLoading && !isRigSelected && (
+        <EmptyList>
+          Selecione uma <strong>Sonda</strong>!
+        </EmptyList>
+      )}
 
+      {!isLoading && !hasEfficiencies && isRigSelected && (
+        <EmptyList>
+          Não existe <strong>dados</strong> para a sonda na data{" "}
+          <strong>selecionada</strong>!
+        </EmptyList>
+      )}
+
+      {!isLoading && isRigSelected && hasEfficiencies && (
+        <>
           <GridContainer isNonMobile={isNonMobile}>
             <StatBoxContainer theme={theme}>
               <StatBox
@@ -129,7 +142,7 @@ const Dashboard = () => {
 
             {isNonMobile && <GridFiller />}
 
-            {isUserAdm ? (
+            {isUserAdm && (
               <Box
                 gridColumn="span 10"
                 gridRow="span 3"
@@ -143,7 +156,9 @@ const Dashboard = () => {
                   dataType="hours"
                 />
               </Box>
-            ) : (
+            )}
+
+            {!isUserAdm && (
               <Box
                 gridColumn="span 10"
                 gridRow="span 3"

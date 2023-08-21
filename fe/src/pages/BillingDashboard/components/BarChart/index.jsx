@@ -2,8 +2,14 @@ import {ResponsiveBar} from "@nivo/bar";
 import {useTheme} from "@mui/material";
 import {useBarChart} from "./useBarChart";
 
-const BarChart = ({dataType, isDashboard, chartKeys, barChartLegend}) => {
-  const {data} = useBarChart(dataType);
+const BarChart = ({
+  dataType,
+  isDashboard,
+  chartKeys,
+  barChartLegend,
+  efficiencies,
+}) => {
+  const {data} = useBarChart(efficiencies, dataType);
 
   const theme = useTheme();
   return (

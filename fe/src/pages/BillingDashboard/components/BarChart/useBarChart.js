@@ -1,22 +1,15 @@
 import {billingFormatEfficiencies} from "../../../../utils/billingFormatEfficiencies";
-import {useBillingDashboard} from "../../useBillingDashboard";
 
 //Hook para criar dados para o gráfico de Barras
 
-export const useBarChart = (dataType, selectedRig) => {
-  const {efficiencies} = useBillingDashboard();
-
+export const useBarChart = (efficiencies, dataType) => {
   let hoursData = [];
-  let mappedEfficiencies = [];
 
   if (efficiencies) {
     // Filrando as efficiencias pelo mês selecionado
-    efficiencies.map((efficiency) => {
-      mappedEfficiencies.push(efficiency);
-    });
 
     if (dataType === "hours") {
-      hoursData = mappedEfficiencies.reduce((acc, efficiency, index) => {
+      hoursData = efficiencies.reduce((acc, efficiency, index) => {
         const rigName = efficiency.rig_name;
         const hours = parseFloat(efficiency.available_hours);
 
@@ -51,10 +44,6 @@ export const useBarChart = (dataType, selectedRig) => {
       const data = hoursData.map(({rig, availableHours}) => {
         const fixedAvailableHours = availableHours.toFixed(2);
 
-        if (selectedRig === rig) {
-          return {rig, availableHours: fixedAvailableHours, highlight: true};
-        }
-
         return {rig, availableHours: fixedAvailableHours};
       });
 
@@ -63,7 +52,7 @@ export const useBarChart = (dataType, selectedRig) => {
 
     if (dataType === "invoicing") {
       //Inicio da logica de faturamento
-      const data = billingFormatEfficiencies(mappedEfficiencies);
+      const data = billingFormatEfficiencies(efficiencies);
 
       const totalValue = data.reduce((acc, {totalValue}) => {
         acc += totalValue;

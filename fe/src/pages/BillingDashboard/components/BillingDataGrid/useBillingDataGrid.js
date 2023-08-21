@@ -1,7 +1,3 @@
-import {useGetEfficiencies} from "../../../../hooks/useGetEfficiencies";
-import {useGetRigs} from "../../../../hooks/useGetRigs";
-import {useEffect, useState} from "react";
-
 import {billingFormatEfficiencies} from "../../../../utils/billingFormatEfficiencies";
 import {useBillingDashboard} from "../../BillingDashboardContext/useBillingDashboard";
 

@@ -8,6 +8,7 @@ const DeleteModal = ({
   handleDelete,
   id,
   handleModalVisibility,
+  isLoading,
 }) => {
   const theme = useTheme();
   return ReactDOM.createPortal(
@@ -27,6 +28,7 @@ const DeleteModal = ({
         </Typography>
         <Footer>
           <Button
+            disabled={isLoading}
             type="button"
             className="cancelButton"
             onClick={() => handleModalVisibility()}
@@ -35,6 +37,7 @@ const DeleteModal = ({
             Não
           </Button>
           <Button
+            disabled={isLoading}
             variant="contained"
             color="error"
             onClick={() => handleDelete(id)}
