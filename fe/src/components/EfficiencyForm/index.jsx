@@ -1,18 +1,7 @@
-//React / Redux / Router
-import React, {useEffect, useMemo, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import React from "react";
 
 //MUI
-import {
-  Box,
-  Button,
-  useMediaQuery,
-  useTheme,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import {Box, Button, InputLabel, Select, MenuItem} from "@mui/material";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
@@ -20,9 +9,6 @@ import {TimePicker} from "@mui/x-date-pickers/TimePicker";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-//Utils
-import {stringify, v4 as uuidv4} from "uuid";
-import toast from "../../utils/toast";
 import {
   glossClassification,
   repairClassification,
@@ -40,281 +26,39 @@ import {
 } from "./styles";
 import {StyledTextField} from "../StyledTextField";
 
-//Services
-import OilWellsServices from "../../services/OilWellsServices";
-import EfficienciesServices from "../../services/EfficienciesServices";
-import EfficiencyMapper from "../../services/mappers/EfficiencyMapper";
-
 //Components
 import Loader from "../Loader";
+import {useEfficiencyForm} from "./useEfficiencyForm";
 
-const EfficiencyForm = ({pageType: type, id}) => {
-  const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
-  const theme = useTheme();
-
-  //Estado da data
-  const [date, setDate] = useState("");
-
-  //Estado do form
-  const [pageType, setPageType] = useState(type);
-  //Estados das operações
-  const [periods, setPeriods] = useState([
-    {
-      id: uuidv4(),
-      startHour: "",
-      endHour: "",
-      type: "",
-      oilWell: "",
-      glossClassification: "",
-      repairClassification: "",
-      description: "",
-      DTMDistance: "",
-      equipmentRatio: "",
-      fluidRatio: "",
-    },
-  ]);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [oilWells, setOilWells] = useState([]);
-  const [isLoadingOilWells, setIsLoadingOilWells] = useState(true);
-  const [minutes, setMinutes] = useState(0);
-  // const [remainingMinutes, setRemainingMinutes] = useState(1440);
-
-  const isFormValid = !isLoadingOilWells && minutes === 1440 && date;
-
-  useEffect(() => {
-    const loadRigs = async () => {
-      setIsLoadingOilWells(true);
-      try {
-        if (id) {
-          //Service to get id from database
-          const efficiency = await EfficienciesServices.getEfficiencyById(id);
-          const mappedEfficiencyToUpdate =
-            EfficiencyMapper.toPersistenceUpdate(efficiency);
-        }
-        const response = await OilWellsServices.listOilWells();
-        setOilWells(response);
-      } catch (error) {
-        toast({
-          type: "error",
-          text: "Erro ao carregar os Poços!",
-        });
-        console.log(error);
-      } finally {
-        setIsLoadingOilWells(false);
-      }
-    };
-    loadRigs();
-  }, [setOilWells]);
-
-  const isNonMobile = useMediaQuery("(min-width:800px)");
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const result = EfficiencyMapper.toDomain(periods, date, user);
-
-    setIsLoading(true);
-
-    try {
-      await EfficienciesServices.createEfficiency(result);
-
-      toast({
-        type: "default",
-        text: "Dados Enviados com Sucesso!",
-      });
-
-      navigate(`/user/home`);
-    } catch (error) {
-      console.log("caiu dentro do try/catch ### error");
-      console.log(error);
-      toast({
-        type: "error",
-        text: error.message,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleDateChange = (value) => {
-    setDate(value);
-  };
-
-  const handleStartHourChange = (id, value) => {
-    const newPeriods = periods.map((period) => {
-      return period.id === id ? {...period, startHour: value} : period;
-    });
-
-    setPeriods(newPeriods);
-  };
-
-  const handleEndHourChange = (id, value, index) => {
-    const newPeriods = periods.map((period) => {
-      return period.id === id ? {...period, endHour: value} : period;
-    });
-
-    setPeriods(newPeriods);
-  };
-
-  const handleTypeChange = (id, event) => {
-    const newPeriods = periods.map((period) => {
-      return period.id === id ? {...period, type: event.target.value} : period;
-    });
-
-    setPeriods(newPeriods);
-  };
-
-  const handleOilWellChange = (id, event) => {
-    const newPeriods = periods.map((period) => {
-      return period.id === id
-        ? {...period, oilWell: event.target.value}
-        : period;
-    });
-
-    setPeriods(newPeriods);
-  };
-
-  const handleChangeDescription = (id, event) => {
-    const newPeriods = periods.map((period) => {
-      return period.id === id
-        ? {...period, description: event.target.value}
-        : period;
-    });
-
-    setPeriods(newPeriods);
-  };
-
-  const handleGlossClassificationChange = (id, event) => {
-    const newPeriods = periods.map((period) => {
-      return period.id === id
-        ? {...period, glossClassification: event.target.value}
-        : period;
-    });
-
-    setPeriods(newPeriods);
-  };
-
-  const handleDTMDistanceChange = (id, event) => {
-    const newPeriods = periods.map((period) => {
-      return period.id === id
-        ? {...period, DTMDistance: event.target.value}
-        : period;
-    });
-
-    setPeriods(newPeriods);
-  };
-
-  const handleRepairClassificationChange = (id, event) => {
-    const newPeriods = periods.map((period) => {
-      return period.id === id
-        ? {...period, repairClassification: event.target.value}
-        : period;
-    });
-
-    setPeriods(newPeriods);
-  };
-
-  const handleEquipmentRatioChange = (id, event) => {
-    const newPeriods = periods.map((period) => {
-      return period.id === id
-        ? {...period, equipmentRatio: event.target.value}
-        : period;
-    });
-
-    setPeriods(newPeriods);
-  };
-
-  const handleFluidRatioChange = (id, event) => {
-    const newPeriods = periods.map((period) => {
-      return period.id === id
-        ? {...period, fluidRatio: event.target.value}
-        : period;
-    });
-
-    setPeriods(newPeriods);
-  };
-
-  const handleDeletePeriod = (id) => {
-    const newPeriods = periods.filter((period) => period.id !== id);
-
-    setPeriods(newPeriods);
-  };
-
-  const addPeriod = () => {
-    setPeriods([
-      ...periods,
-      {
-        id: uuidv4(),
-        startHour: periods[periods.length - 1].endHour,
-        endHour: "",
-        type: "",
-        oilWell: "",
-        glossClassification: "",
-        repairClassification: "",
-        description: "",
-        DTMDistance: "",
-        equipmentRatio: "",
-        fluidRatio: "",
-      },
-    ]);
-  };
-
-  const calculateRemainingMinutes = () => {
-    const remainingMinutes = 1440 - minutes;
-    return remainingMinutes > 0 ? remainingMinutes : 0;
-  };
-
-  const remainingMinutes = useMemo(
-    () => calculateRemainingMinutes(),
-    [minutes]
-  );
-
-  useEffect(() => {
-    let minutesSelected = 0;
-
-    const calculateRemainingMinutes = ({
-      endHour,
-      startHour,
-      minutesSelected,
-    }) => {
-      console.log("minutes selected: " + minutesSelected);
-      if (!endHour) {
-        return minutesSelected;
-      }
-      let startHourInMinutes = startHour?.$H * 60 + startHour?.$m;
-      let endHourInMinutes = 0;
-
-      if (endHour.$H === 23 && endHour.$m === 55) {
-        endHourInMinutes = 1440;
-      } else {
-        endHourInMinutes = endHour?.$H * 60 + endHour?.$m;
-      }
-
-      minutesSelected += endHourInMinutes - startHourInMinutes;
-
-      return minutesSelected;
-    };
-    for (const {endHour, startHour} of periods) {
-      minutesSelected = calculateRemainingMinutes({
-        endHour,
-        startHour,
-        minutesSelected,
-      });
-      console.log("teste");
-    }
-    setMinutes(minutesSelected);
-
-    //setRemainingMinutes(1440 - minutes);
-  }, [periods]);
-
-  console.log(JSON.stringify(periods[0].startHour));
-  console.log(periods[0].startHour);
+const EfficiencyForm = () => {
+  const {
+    handleSubmit,
+    handleDateChange,
+    handleStartHourChange,
+    handleEndHourChange,
+    handleTypeChange,
+    handleOilWellChange,
+    handleChangeDescription,
+    handleGlossClassificationChange,
+    handleDTMDistanceChange,
+    handleRepairClassificationChange,
+    handleEquipmentRatioChange,
+    handleFluidRatioChange,
+    handleDeletePeriod,
+    addPeriod,
+    remainingMinutes,
+    periods,
+    isFormValid,
+    isNonMobile,
+    isLoading,
+    theme,
+    oilWells,
+    date,
+  } = useEfficiencyForm();
 
   return (
     <>
-      {isLoading || isLoadingOilWells ? (
+      {isLoading ? (
         <Loader size="100" />
       ) : (
         <>
@@ -666,6 +410,7 @@ const EfficiencyForm = ({pageType: type, id}) => {
                 sx={{mt: "1rem"}}
                 color="secondary"
                 onClick={addPeriod}
+                disabled={isFormValid}
               >
                 Adicionar Período
               </Button>

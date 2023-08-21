@@ -16,12 +16,18 @@ const EquipmentRatioRepositories = require("../repositories/EquipmentRatioReposi
 
 class EfficiencyController {
   async index(request, response) {
-    const efficiency = await EfficienciesRepositories.findAll();
+    const {start_date, end_date, rig_id} = request.query;
+
+    const efficiency = await EfficienciesRepositories.findAll(
+      start_date,
+      end_date,
+      rig_id
+    );
     response.json(efficiency);
   }
 
   async indexRig(request, response) {
-    const { id } = request.params;
+    const {id} = request.params;
 
     const efficiencies = await EfficienciesRepositories.findByRigId(id);
     response.json(efficiencies);
@@ -29,7 +35,7 @@ class EfficiencyController {
 
   async store(request, response) {
     const {
-      date,
+      bodyDate: date,
       available_hours,
       efficiency,
       equipment_ratio,
@@ -42,33 +48,35 @@ class EfficiencyController {
       dtm_periods,
     } = request.body;
 
+    console.log(date);
+
     if (!date || !rig_id || !user_id) {
       return response
         .status(404)
-        .json({ error: "O usuário precisa estar vinculado a uma sonda!" });
+        .json({error: "O usuário precisa estar vinculado a uma sonda!"});
     }
 
     const rigExists = await RigsRepositories.findById(rig_id);
 
     if (!rigExists) {
-      return response.status(404).json({ error: "Base não encontrada." });
+      return response.status(404).json({error: "Base não encontrada."});
     }
 
     const efficiencyDayAlreadyExists =
-      await EfficienciesRepositories.findByDate({ rig_id, date });
+      await EfficienciesRepositories.findByDate({rig_id, date});
 
     if (efficiencyDayAlreadyExists) {
-      return response.status(404).json({ error: "Data já preenchida" });
+      return response.status(404).json({error: "Data já preenchida"});
     }
 
     if (!isValidUUID(rig_id) || !isValidUUID(user_id)) {
-      return response.status(404).json({ error: "IDs Inválidos!" });
+      return response.status(404).json({error: "IDs Inválidos!"});
     }
 
     const userIdExists = await UsersRepositories.findById(user_id);
 
     if (!userIdExists) {
-      return response.status(404).json({ error: "Usuário não encontrado." });
+      return response.status(404).json({error: "Usuário não encontrado."});
     }
 
     const verifyPeriodsHours = (startTime, endTime) => {
@@ -110,7 +118,7 @@ class EfficiencyController {
           }
         }
       } catch (error) {
-        return response.status(404).json({ error: error.message });
+        return response.status(404).json({error: error.message});
       }
     }
 
@@ -139,13 +147,13 @@ class EfficiencyController {
           }
         }
       } catch (error) {
-        return response.status(404).json({ error: error.message });
+        return response.status(404).json({error: error.message});
       }
     }
 
     if (working_periods.length !== 0) {
       try {
-        for (const { start_time, end_time, oil_well_id } of working_periods) {
+        for (const {start_time, end_time, oil_well_id} of working_periods) {
           if (!oil_well_id) {
             throw new Error(`Período sem poço selecionado`);
           }
@@ -157,7 +165,7 @@ class EfficiencyController {
           }
         }
       } catch (error) {
-        return response.status(404).json({ error: error.message });
+        return response.status(404).json({error: error.message});
       }
     }
 
@@ -184,7 +192,7 @@ class EfficiencyController {
           }
         }
       } catch (error) {
-        return response.status(404).json({ error: error.message });
+        return response.status(404).json({error: error.message});
       }
     }
 
@@ -309,22 +317,22 @@ class EfficiencyController {
   }
 
   async show(request, response) {
-    const { id } = request.params;
+    const {id} = request.params;
 
     const efficiency = await EfficienciesRepositories.findById(id);
     response.json(efficiency);
   }
 
   async update(request, response) {
-    const { id } = request.params;
+    const {id} = request.params;
 
-    const { date, gloss_hours, available_hours, repair_hours, dtm_hours } =
+    const {date, gloss_hours, available_hours, repair_hours, dtm_hours} =
       request.body;
 
     if (!date || !available_hours) {
       return response
         .status(404)
-        .json({ error: "Todos os campos são obrigatórios!" });
+        .json({error: "Todos os campos são obrigatórios!"});
     }
 
     const updatedEfficiency = await EfficienciesRepositories.update(id, {
@@ -339,7 +347,7 @@ class EfficiencyController {
   }
 
   async delete(request, response) {
-    const { id } = request.params;
+    const {id} = request.params;
 
     await EfficienciesRepositories.delete(id);
 

@@ -1,4 +1,4 @@
-const { Client } = require("pg");
+const {Client} = require("pg");
 
 const localHost = "localhost";
 const renderHost = "dpg-ciaphj98g3nden686mlg-a";
@@ -18,7 +18,7 @@ const client = new Client({
 client.connect();
 
 exports.query = async (query, values) => {
-  const { rows } = await client.query(query, values);
+  const {rows} = await client.query(query, values);
 
   return rows;
 };

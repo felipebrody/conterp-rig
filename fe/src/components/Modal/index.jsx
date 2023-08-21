@@ -1,8 +1,8 @@
 import ReactDOM from "react-dom";
-import { Button, Typography } from "@mui/material";
-import { Container, Overlay, Footer } from "./styles";
-import { useTheme } from "@emotion/react";
-const Modal = ({
+import {Button, Typography} from "@mui/material";
+import {Container, Overlay, Footer} from "./styles";
+import {useTheme} from "@emotion/react";
+const DeleteModal = ({
   title,
   subtitle,
   handleDelete,
@@ -44,8 +44,8 @@ const Modal = ({
         </Footer>
       </Container>
     </Overlay>,
-    document.getElementById("modal-root")
+    document.getElementById("delete-modal-root")
   );
 };
 
-export default Modal;
+export default DeleteModal;

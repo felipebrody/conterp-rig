@@ -1,5 +1,5 @@
 export const billingFormatEfficiencies = (efficiencies) => {
-  let invoicingTest = efficiencies.reduce((acc, efficiency, index) => {
+  let invoicingObject = efficiencies.reduce((acc, efficiency) => {
     const rigName = efficiency.rig_name;
     const hours = parseFloat(efficiency.available_hours);
 
@@ -51,8 +51,8 @@ export const billingFormatEfficiencies = (efficiencies) => {
 
   //Contando os tipos de periodo
 
-  invoicingTest.forEach((item) => {
-    item.dtm_periods.forEach(({ distance }) => {
+  invoicingObject.forEach((item) => {
+    item.dtm_periods.forEach(({distance}) => {
       if (distance === "less_than_20") {
         item.dtmLessThanTwenty++;
       }
@@ -66,7 +66,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
       }
     });
 
-    item.equipment_ratio.forEach(({ ratio }) => {
+    item.equipment_ratio.forEach(({ratio}) => {
       if (ratio === "less_than_20") {
         item.equipmentLessThanTwenty++;
       }
@@ -80,7 +80,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
       }
     });
 
-    item.fluid_ratio.forEach(({ ratio }) => {
+    item.fluid_ratio.forEach(({ratio}) => {
       if (ratio === "less_than_20") {
         item.fluidLessThanTwenty++;
       }
@@ -95,7 +95,7 @@ export const billingFormatEfficiencies = (efficiencies) => {
     });
   });
 
-  const mappedInvoices = invoicingTest.map((efficiency) => {
+  const mappedInvoices = invoicingObject.map((efficiency) => {
     if (efficiency.rig === "SPT 111") {
       const availableHoursBilling = efficiency.availableHours * 919;
       const dtmLessThanTwentyBilling = efficiency.dtmLessThanTwenty * 5514;

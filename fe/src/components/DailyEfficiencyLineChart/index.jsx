@@ -1,28 +1,21 @@
-import { ResponsiveLine } from "@nivo/line";
-import { useTheme } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import EfficienciesServices from "../../services/EfficienciesServices";
-import { useFormatEfficienciesLineChart } from "../../hooks/useFormatEfficienciesLineChart";
-import { Navigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import {ResponsiveLine} from "@nivo/line";
+import {useTheme} from "@mui/material";
+import {useFormatEfficienciesLineChart} from "../../hooks/useFormatEfficienciesLineChart";
+import {useNavigate} from "react-router-dom";
 
 const DailyEfficiencyLineChart = ({
   isDashboard,
   efficiencies,
   selectedRig = "SPT",
-  selectedMonth,
   startDate,
   endDate,
 }) => {
   const theme = useTheme();
-  const user = useSelector((state) => state.user);
 
   const navigate = useNavigate();
 
   const mappedEfficiencies = useFormatEfficienciesLineChart(
     efficiencies,
-    selectedMonth,
     selectedRig,
     startDate,
     endDate
@@ -76,9 +69,9 @@ const DailyEfficiencyLineChart = ({
         onClick={(e) =>
           navigate(`/user/list-efficiencies/details/${e.data.id}`)
         }
-        margin={{ top: 50, right: 50, bottom: 30, left: 60 }}
-        colors={{ datum: "color" }}
-        xScale={{ type: "point" }}
+        margin={{top: 50, right: 50, bottom: 30, left: 60}}
+        colors={{datum: "color"}}
+        xScale={{type: "point"}}
         yScale={{
           type: "linear",
           min: "0",
@@ -112,9 +105,9 @@ const DailyEfficiencyLineChart = ({
         }}
         lineWidth={4}
         pointSize={11}
-        pointColor={{ from: "color", modifiers: [] }}
+        pointColor={{from: "color", modifiers: []}}
         pointBorderWidth={2}
-        pointBorderColor={{ from: "serieColor" }}
+        pointBorderColor={{from: "serieColor"}}
         enablePointLabel={true}
         pointLabel={(e) => {
           //if (e.y === 100) return "";

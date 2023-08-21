@@ -1,6 +1,9 @@
 const queryString = `SELECT
 efficiencies.id AS efficiency_id,
 efficiencies.date,
+DATE_PART('day', efficiencies.date) AS day,
+  DATE_PART('month', efficiencies.date) AS month,
+  DATE_PART('year', efficiencies.date) AS year,
 efficiencies.available_hours,
 efficiencies.efficiency,
 rigs.name AS rig_name,

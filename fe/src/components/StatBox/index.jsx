@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import {Box, Typography, useTheme} from "@mui/material";
 import ProgressCircle from "../ProgressCircle";
 
 const StatBox = ({
@@ -16,7 +16,7 @@ const StatBox = ({
       <Box display="flex" justifyContent="space-between">
         <Box color={color}>
           {icon}
-          <Typography variant="h4" fontWeight="bold" sx={{ color: color }}>
+          <Typography variant="h4" fontWeight="bold" sx={{color: color}}>
             {title}
           </Typography>
         </Box>
@@ -30,10 +30,10 @@ const StatBox = ({
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between" mt="2px">
-        <Typography fontSize=".75rem" variant="h5" sx={{ color: color }}>
+        <Typography fontSize=".75rem" variant="h5" sx={{color: color}}>
           {subtitle}
         </Typography>
-        <Typography variant="h5" fontStyle="italic" sx={{ color: color }}>
+        <Typography variant="h5" fontStyle="italic" sx={{color: color}}>
           {percentage}
         </Typography>
       </Box>

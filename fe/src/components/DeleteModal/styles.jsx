@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import {Box} from "@mui/material";
+import {styled} from "@mui/material/styles";
 
-export const Overlay = styled(Box)(({ theme }) => ({
+export const Overlay = styled(Box)(({theme}) => ({
   background: "rgba(0,0,0,0.6)",
   backdropFilter: "blur(5px)",
   position: "fixed",
@@ -12,9 +12,11 @@ export const Overlay = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+
+  zIndex: 9999,
 }));
 
-export const Container = styled(Box)(({ theme }) => ({
+export const Container = styled(Box)(({theme}) => ({
   background: " #fff",
   borderRadius: " 4px",
   padding: "24px",
@@ -23,7 +25,7 @@ export const Container = styled(Box)(({ theme }) => ({
   width: "100%",
 }));
 
-export const Footer = styled(Box)(({ theme }) => ({
+export const Footer = styled(Box)(({theme}) => ({
   marginTop: "32px",
   display: "flex",
   alignItems: "center",

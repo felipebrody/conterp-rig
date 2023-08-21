@@ -19,14 +19,24 @@ class EfficienciesRepositories {
     return rows;
   }
 
-  async findAll() {
-    const rows = await db.query(`${queryString}`);
+  async findAll(start_date, end_date, rig_id) {
+    if (!rig_id) {
+      const rows = await db.query(
+        `${queryString} WHERE efficiencies.date BETWEEN $1 AND $2 `,
+        [start_date, end_date]
+      );
+      return rows;
+    }
+    const rows = await db.query(
+      `${queryString} WHERE efficiencies.date BETWEEN $1 AND $2 AND efficiencies.rig_id = $3`,
+      [start_date, end_date, rig_id]
+    );
     return rows;
   }
 
   async update(
     id,
-    { date, gloss_hours, available_hours, repair_hours, dtm_hours }
+    {date, gloss_hours, available_hours, repair_hours, dtm_hours}
   ) {
     const [row] = await db.query(
       `
@@ -41,7 +51,7 @@ class EfficienciesRepositories {
     return row;
   }
 
-  async findByDate({ rig_id, date }) {
+  async findByDate({rig_id, date}) {
     const [row] = await db.query(
       `
         SELECT * FROM efficiencies
@@ -52,7 +62,7 @@ class EfficienciesRepositories {
     return row;
   }
 
-  async create({ date, available_hours, efficiency, rig_id, user_id }) {
+  async create({date, available_hours, efficiency, rig_id, user_id}) {
     const [row] = await db.query(
       `INSERT INTO efficiencies(
         date,

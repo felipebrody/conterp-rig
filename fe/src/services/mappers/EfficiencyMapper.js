@@ -124,7 +124,7 @@ class EfficiencyMapper {
 
     return {
       ...toDatabase,
-      date: date,
+      bodyDate: date,
       user_id: user.id,
       rig_id: user.rig_id,
       efficiency: (toDatabase.available_hours.toFixed(2) / 24) * 100,
@@ -141,7 +141,7 @@ class EfficiencyMapper {
         let name = null;
 
         if (type === "repair") {
-          const res = repairClassification.find(({ name, value }) => {
+          const res = repairClassification.find(({name, value}) => {
             if (value === text) {
               return name;
             }
@@ -151,7 +151,7 @@ class EfficiencyMapper {
         }
 
         if (type === "gloss") {
-          const res = glossClassification.find(({ name, value }) => {
+          const res = glossClassification.find(({name, value}) => {
             if (value === text) {
               return name;
             }
@@ -161,7 +161,7 @@ class EfficiencyMapper {
         }
 
         if (type === "DTM") {
-          const res = distanceClassification.find(({ name, value }) => {
+          const res = distanceClassification.find(({name, value}) => {
             if (value === text) {
               return name;
             }
