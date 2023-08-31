@@ -97,13 +97,7 @@ function App() {
                   />
                   <Route
                     path="/user/rig-form/:id"
-                    element={
-                      !isUserAdm ? (
-                        <Rig />
-                      ) : (
-                        <Navigate to="/user/list-efficiencies" />
-                      )
-                    }
+                    element={<Rig />}
                   />
                   <Route
                     path="/user/list-efficiencies"
